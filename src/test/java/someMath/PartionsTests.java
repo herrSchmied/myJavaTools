@@ -16,14 +16,13 @@ public class PartionsTests
 	public void summandsBiggerTest() throws CollectionException, MathException
 	{
 		
-		int minSize = 1;
-		int nrOfSummands = 8;
-		int sum = 10;
+		int minSize = 3;
+		int nrOfSummands = 3;
+		int sum = 12;
 		Set<List<Integer>> set =Partitions.summandsBiggerSet(minSize, nrOfSummands, sum);
-		System.out.println("Min Size: " + minSize);
-		System.out.println("Nr of Summands: " + nrOfSummands);
-		System.out.println("Sum: " + sum + "\n");
-		System.out.println(set + "\n");
+		int partitions = set.size();
+		
+		printStats(minSize,nrOfSummands, sum, partitions, set);
 		
 		for(List<Integer> list: set)
 		{
@@ -33,13 +32,9 @@ public class PartionsTests
 		
 		sum = 6;
 		set = Partitions.partionsOfNAsLists(sum);
-		int p = set.size();
-		
-		System.out.println("Min Size: " + minSize);
-		System.out.println("Nr of Summand: 1 to " + sum);
-		System.out.println("Sum: " + sum);
-		System.out.println("Partitions: " + p + "\n");
-		System.out.println(set);
+		partitions = set.size();
+		printStats(1, null, sum, partitions, set);
+
 		
 		for(List<Integer> list: set)
 		{
@@ -47,7 +42,21 @@ public class PartionsTests
 			assert(1<=list.size()&&sum>=list.size());
 			assert(Partitions.sumOfListEntries(list)==sum);
 		}
+	}
+	
+	public void printStats(Integer minSize, Integer nrOfSummands, Integer sum, Integer partitions, Set<List<Integer>> set)
+	{
 
+		
+		System.out.println("min Size: " + minSize);
+		
+		if(nrOfSummands==null)System.out.println("Nr of Summands: any");
+		else System.out.println("Nr of Summands: " + nrOfSummands);
+
+		System.out.println("Partitions: " + partitions);
+		System.out.println("Sum: " + sum + "\n");
+		System.out.println(set + "\n");
+		
 
 	}
 }
