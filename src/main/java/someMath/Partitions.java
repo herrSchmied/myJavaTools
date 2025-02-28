@@ -35,7 +35,7 @@ public class Partitions
 			return output;
 		}
 		
-		for(int i=minSizeOfSummand;i<sum;i++)
+		for(int i=minSizeOfSummand;i<sum-nrOfSummands+1;i++)
 		{
 			
 			Set<List<Integer>> set =summandsBiggerSet(i, nrOfSummands-1, sum-i);

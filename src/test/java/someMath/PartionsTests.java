@@ -36,13 +36,15 @@ public class PartionsTests
 		int p = set.size();
 		
 		System.out.println("Min Size: " + minSize);
-		System.out.println("Nr of Summands: " + nrOfSummands);
+		System.out.println("Nr of Summand: 1 to " + sum);
 		System.out.println("Sum: " + sum);
 		System.out.println("Partitions: " + p + "\n");
 		System.out.println(set);
 		
 		for(List<Integer> list: set)
 		{
+			
+			assert(1<=list.size()&&sum>=list.size());
 			assert(Partitions.sumOfListEntries(list)==sum);
 		}
 
