@@ -10,14 +10,36 @@ import someMath.exceptions.MathException;
 public class Partitions
 {
 
-	public static Set<List<Integer>> summandsBiggerSet(int minSizeOfSummand, int nrOfSummands, int sum) throws MathException
-	{
+	private int callCounter = 0;
+	private int invalideCalls = 0;
+	private int emptyCalls = 0;
+	
 
+	public Set<List<Integer>> summandsBiggerSet(int minSizeOfSummand, int nrOfSummands, int sum) throws MathException
+	{
+		
+		callCounter++;
+		
 		Set<List<Integer>> output = new HashSet<>();
 		
-		if(minSizeOfSummand*nrOfSummands>sum)return output;
-
-		if(minSizeOfSummand<=0||nrOfSummands<=0||sum<=0)throw new MathException("At least one of the Arguments is Zero or Below.");
+		PartitionsSetsFrame frame = new PartitionsSetsFrame(minSizeOfSummand, nrOfSummands, sum);
+		
+		try
+		{
+			boolean valide = PartitionsSetsFrame.validator(frame);
+			
+			if(!valide)
+			{
+				emptyCalls++;
+				return output;
+			}
+		}
+		catch(MathException mExce)
+		{
+			invalideCalls++;
+			return output;
+		}
+		
 		if(sum==1)
 		{
 			List<Integer> list = new ArrayList<>();
@@ -38,6 +60,9 @@ public class Partitions
 		for(int i=minSizeOfSummand;i<=sum-nrOfSummands+1;i++)
 		{
 			
+			PartitionsSetsFrame frame2 = new PartitionsSetsFrame(i, nrOfSummands-1, sum-i);
+			if(!PartitionsSetsFrame.validator(frame2))continue;//Gets the nr of useless calls down.
+			
 			Set<List<Integer>> set =summandsBiggerSet(i, nrOfSummands-1, sum-i);
 			
 			for(List<Integer> listRight: set)
@@ -51,9 +76,8 @@ public class Partitions
 
 		return output;
 	}
-	
-	
-	public static Set<List<Integer>> partionsOfNAsLists(int sum) throws MathException
+
+	public Set<List<Integer>> partionsOfNAsLists(int sum) throws MathException
 	{
 		Set<List<Integer>> output = new HashSet<>();
 		
@@ -71,7 +95,29 @@ public class Partitions
 		return output;
 
 	}
+		
+	public void resetCalls()
+	{
+		callCounter = 0;
+		emptyCalls = 0;
+		invalideCalls = 0;
+	}
 	
+	public int getEmptyCalls()
+	{
+		return emptyCalls;
+	}
+
+	public int getCallCounter()
+	{
+		return callCounter;
+	}
+
+	public int getInValideCalls()
+	{
+		return invalideCalls;
+	}
+
 	public static int sumOfListEntries(List<Integer> list)
 	{
 		int sum = 0;

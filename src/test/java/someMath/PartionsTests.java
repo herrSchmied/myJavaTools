@@ -16,13 +16,17 @@ public class PartionsTests
 	public void summandsBiggerTest() throws CollectionException, MathException
 	{
 		
+		Partitions partitions = new Partitions();
 		int minSize = 3;
-		int nrOfSummands = 3;
-		int sum = 12;
-		Set<List<Integer>> set =Partitions.summandsBiggerSet(minSize, nrOfSummands, sum);
-		int partitions = set.size();
+		int nrOfSummands = 5;
+		int sum = 30;
+		Set<List<Integer>> set =partitions.summandsBiggerSet(minSize, nrOfSummands, sum);
+		int nrPartitions = set.size();
+		int callCount = partitions.getCallCounter();
+		int invalideCalls = partitions.getInValideCalls();
+		int emptyCalls = partitions.getEmptyCalls();
 		
-		printStats(minSize,nrOfSummands, sum, partitions, set);
+		printStats(minSize,nrOfSummands, sum, nrPartitions, callCount, emptyCalls, invalideCalls, set);
 		
 		for(List<Integer> list: set)
 		{
@@ -31,9 +35,16 @@ public class PartionsTests
 		}
 		
 		sum = 6;
-		set = Partitions.partionsOfNAsLists(sum);
-		partitions = set.size();
-		printStats(1, null, sum, partitions, set);
+		partitions.resetCalls();
+		partitions.resetCalls();
+		set = partitions.partionsOfNAsLists(sum);
+		nrPartitions = set.size();
+		callCount = partitions.getCallCounter();
+		emptyCalls = partitions.getEmptyCalls();
+		invalideCalls = partitions.getInValideCalls();
+		
+		printStats(1, null, sum, nrPartitions, callCount, 
+				emptyCalls, invalideCalls, set);
 
 		
 		for(List<Integer> list: set)
@@ -44,7 +55,8 @@ public class PartionsTests
 		}
 	}
 	
-	public void printStats(Integer minSize, Integer nrOfSummands, Integer sum, Integer partitions, Set<List<Integer>> set)
+	public void printStats(Integer minSize, Integer nrOfSummands, Integer sum, Integer partitions, 
+			int callCount, int emptyCalls, int invalideCalls, Set<List<Integer>> set)
 	{
 
 		
@@ -54,7 +66,10 @@ public class PartionsTests
 		else System.out.println("Nr of Summands: " + nrOfSummands);
 
 		System.out.println("Partitions: " + partitions);
-		System.out.println("Sum: " + sum + "\n");
+		System.out.println("Sum: " + sum);
+		System.out.println("Calls: " + callCount);
+		System.out.println("Empty Calls: " + emptyCalls);
+		System.out.println("Invalide Calls: " + invalideCalls);
 		System.out.println(set + "\n");
 		
 
