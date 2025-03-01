@@ -21,7 +21,7 @@ public class PartitionsSetsFrame
 		this.sum = sum;
 	}
 
-	public static boolean validator(PartitionsSetsFrame frame) throws MathException
+	public static boolean validate(PartitionsSetsFrame frame) throws MathException
 	{
 		
 		int minSizeOfSummand = frame.getMinSizeOfSummand();
@@ -34,12 +34,12 @@ public class PartitionsSetsFrame
 		return true;
 	}
 
-	public static boolean validator(int minSizeOfSummand, int nrOfSummands, int sum)throws MathException
+	public static boolean validate(int minSizeOfSummand, int nrOfSummands, int sum)throws MathException
 	{
 		
 		PartitionsSetsFrame frame = new PartitionsSetsFrame(minSizeOfSummand, nrOfSummands, sum);
 		
-		return validator(frame);
+		return validate(frame);
 	}
 
 }

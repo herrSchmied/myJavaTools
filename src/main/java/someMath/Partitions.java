@@ -26,7 +26,7 @@ public class Partitions
 		
 		try
 		{
-			boolean valide = PartitionsSetsFrame.validator(frame);
+			boolean valide = PartitionsSetsFrame.validate(frame);
 			
 			if(!valide)
 			{
@@ -61,7 +61,7 @@ public class Partitions
 		{
 			
 			PartitionsSetsFrame frame2 = new PartitionsSetsFrame(i, nrOfSummands-1, sum-i);
-			if(!PartitionsSetsFrame.validator(frame2))continue;//Gets the nr of useless calls down.
+			if(!PartitionsSetsFrame.validate(frame2))continue;//Gets the nr of useless calls down.
 			
 			Set<List<Integer>> set =summandsBiggerSet(i, nrOfSummands-1, sum-i);
 			

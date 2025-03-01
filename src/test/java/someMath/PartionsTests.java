@@ -36,9 +36,9 @@ public class PartionsTests
 		
 		sum = 6;
 		partitions.resetCalls();
-		partitions.resetCalls();
 		set = partitions.partionsOfNAsLists(sum);
 		nrPartitions = set.size();
+		assert(nrPartitions==11);//only if sum is 6!!!!
 		callCount = partitions.getCallCounter();
 		emptyCalls = partitions.getEmptyCalls();
 		invalideCalls = partitions.getInValideCalls();
