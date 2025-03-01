@@ -13,38 +13,17 @@ public class PartionsTests
 {
 
 	@Test
-	public void summandsBiggerTest() throws CollectionException, MathException
+	public void partitionsTest2() throws MathException
 	{
 		
 		Partitions partitions = new Partitions();
-		int minSize = 3;
-		int nrOfSummands = 5;
-		int sum = 30;
-		Set<List<Integer>> set =partitions.summandsBiggerSet(minSize, nrOfSummands, sum);
+		int sum = 6;
+
+		Set<List<Integer>> set = partitions.summandsSmallerSet(sum, sum, sum);
 		int nrPartitions = set.size();
-		int callCount = partitions.getCallCounter();
-		int invalideCalls = partitions.getInValideCalls();
-		int emptyCalls = partitions.getEmptyCalls();
-		
-		printStats(minSize,nrOfSummands, sum, nrPartitions, callCount, emptyCalls, invalideCalls, set);
-		
-		for(List<Integer> list: set)
-		{
-			assert(list.size()==nrOfSummands);
-			assert(Partitions.sumOfListEntries(list)==sum);
-		}
-		
-		sum = 6;
-		partitions.resetCalls();
-		set = partitions.partionsOfNAsLists(sum);
-		nrPartitions = set.size();
-		assert(nrPartitions==11);//only if sum is 6!!!!
-		callCount = partitions.getCallCounter();
-		emptyCalls = partitions.getEmptyCalls();
-		invalideCalls = partitions.getInValideCalls();
-		
-		printStats(1, null, sum, nrPartitions, callCount, 
-				emptyCalls, invalideCalls, set);
+		//assert(nrPartitions==11);//only if sum is 6!!!!
+
+		printStats(false, 1, null, sum, nrPartitions, set);
 
 		
 		for(List<Integer> list: set)
@@ -55,23 +34,83 @@ public class PartionsTests
 		}
 	}
 	
-	public void printStats(Integer minSize, Integer nrOfSummands, Integer sum, Integer partitions, 
-			int callCount, int emptyCalls, int invalideCalls, Set<List<Integer>> set)
+
+	@Test
+	public void partitionsTest() throws MathException
+	{
+		
+		Partitions partitions = new Partitions();
+		int sum = 6;
+
+		Set<List<Integer>> set = partitions.partitionsOfN(sum);
+		int nrPartitions = set.size();
+		//assert(nrPartitions==11);//only if sum is 6!!!!
+
+		printStats(false, 1, null, sum, nrPartitions, set);
+
+		
+		for(List<Integer> list: set)
+		{
+			
+			assert(1<=list.size()&&sum>=list.size());
+			assert(Partitions.sumOfListEntries(list)==sum);
+		}
+	}
+
+	@Test
+	public void summandsBiggerTest() throws CollectionException, MathException
+	{
+		
+		Partitions partitions = new Partitions();
+		int minSize = 3;
+		int nrOfSummands = 5;
+		int sum = 30;
+		Set<List<Integer>> set =partitions.summandsBiggerSet(minSize, nrOfSummands, sum);
+		int nrPartitions = set.size();
+		printStats(false, minSize,nrOfSummands, sum, nrPartitions, set);
+		
+		for(List<Integer> list: set)
+		{
+			assert(list.size()==nrOfSummands);
+			assert(Partitions.sumOfListEntries(list)==sum);
+		}
+		
+	}
+	
+	@Test
+	public void summandsSmallerTest() throws CollectionException, MathException
+	{
+		
+		
+		Partitions partitions = new Partitions();
+		int maxSize = 3;
+		int nrOfSummands = 5;
+		int sum = 10;
+		Set<List<Integer>> set =partitions.summandsSmallerSet(maxSize, nrOfSummands, sum);
+		int nrPartitions = set.size();
+		
+		printStats(true, maxSize,nrOfSummands, sum, nrPartitions, set);
+		
+		for(List<Integer> list: set)
+		{
+			//assert(list.size()==nrOfSummands);
+			assert(Partitions.sumOfListEntries(list)==sum);
+		}
+	}
+
+	public void printStats(boolean maxOrMin, Integer size, Integer nrOfSummands, Integer sum, Integer partitions, 
+			Set<List<Integer>> set)
 	{
 
 		
-		System.out.println("min Size: " + minSize);
-		
+		if(!maxOrMin)System.out.println("min Size: " + size);
+		else System.out.println("max Size: " + size);
+
 		if(nrOfSummands==null)System.out.println("Nr of Summands: any");
 		else System.out.println("Nr of Summands: " + nrOfSummands);
 
 		System.out.println("Partitions: " + partitions);
 		System.out.println("Sum: " + sum);
-		System.out.println("Calls: " + callCount);
-		System.out.println("Empty Calls: " + emptyCalls);
-		System.out.println("Invalide Calls: " + invalideCalls);
 		System.out.println(set + "\n");
-		
-
 	}
 }

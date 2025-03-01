@@ -8,37 +8,17 @@ import java.util.Set;
 import someMath.exceptions.MathException;
 
 public class Partitions
-{
-
-	private int callCounter = 0;
-	private int invalideCalls = 0;
-	private int emptyCalls = 0;
-	
+{	
 
 	public Set<List<Integer>> summandsBiggerSet(int minSizeOfSummand, int nrOfSummands, int sum) throws MathException
 	{
 		
-		callCounter++;
 		
 		Set<List<Integer>> output = new HashSet<>();
 		
-		PartitionsSetsFrame frame = new PartitionsSetsFrame(minSizeOfSummand, nrOfSummands, sum);
+		if(minSizeOfSummand<=0||nrOfSummands<=0||sum<=0)throw new MathException("Hi");
 		
-		try
-		{
-			boolean valide = PartitionsSetsFrame.validate(frame);
-			
-			if(!valide)
-			{
-				emptyCalls++;
-				return output;
-			}
-		}
-		catch(MathException mExce)
-		{
-			invalideCalls++;
-			return output;
-		}
+		if(minSizeOfSummand*nrOfSummands>sum)return output;
 		
 		if(sum==1)
 		{
@@ -60,8 +40,7 @@ public class Partitions
 		for(int i=minSizeOfSummand;i<=sum-nrOfSummands+1;i++)
 		{
 			
-			PartitionsSetsFrame frame2 = new PartitionsSetsFrame(i, nrOfSummands-1, sum-i);
-			if(!PartitionsSetsFrame.validate(frame2))continue;//Gets the nr of useless calls down.
+			if(i<=0||nrOfSummands-1<=0||sum-i<=0)return output;
 			
 			Set<List<Integer>> set =summandsBiggerSet(i, nrOfSummands-1, sum-i);
 			
@@ -77,7 +56,58 @@ public class Partitions
 		return output;
 	}
 
-	public Set<List<Integer>> partionsOfNAsLists(int sum) throws MathException
+	public Set<List<Integer>> summandsSmallerSet(int maxSizeOfSummand, int nrOfSummands, int sum) throws MathException
+	{
+		
+		
+		Set<List<Integer>> output = new HashSet<>();
+		
+		
+		if(maxSizeOfSummand<=0||nrOfSummands<=0||sum<=0)throw new MathException("Hi");
+		
+		if(maxSizeOfSummand*nrOfSummands<sum)return output;
+
+		if(sum==1)
+		{
+			List<Integer> list = new ArrayList<>();
+			list.add(1);
+			output.add(list);
+			return output;
+
+		}
+
+		if(nrOfSummands==1)
+		{
+			List<Integer> list = new ArrayList<>();
+			list.add(sum);
+			output.add(list);
+			return output;
+		}
+		
+		for(int i=maxSizeOfSummand;i>=1;i--)
+		{
+			
+			if(i<=0||nrOfSummands-1<=0||sum-i<=0)return output;
+			
+			Set<List<Integer>> set = summandsSmallerSet(i, nrOfSummands-1, sum-i);
+			if(set.isEmpty())continue;
+			
+			for(List<Integer> listRight: set)
+			{
+				
+				if(listRight.size()!=nrOfSummands-1)continue;
+				
+				List<Integer> list = new ArrayList<>();
+				list.add(i);
+				list.addAll(listRight);
+				output.add(list);
+			}
+		}
+
+		return output;
+	}
+
+	public Set<List<Integer>> partitionsOfNAsLists(int sum) throws MathException
 	{
 		Set<List<Integer>> output = new HashSet<>();
 		
@@ -95,29 +125,23 @@ public class Partitions
 		return output;
 
 	}
-		
-	public void resetCalls()
+	
+	public Set<List<Integer>> partitionsOfN(int sum) throws MathException
 	{
-		callCounter = 0;
-		emptyCalls = 0;
-		invalideCalls = 0;
+		Set<List<Integer>> output = new HashSet<>();
+		
+		if(sum<1)return output;
+		
+		for(int e=1;e<sum;e++)
+		{
+			output.addAll(summandsSmallerSet(sum, e, sum));
+		}
+		
+		
+		return output;
+
 	}
 	
-	public int getEmptyCalls()
-	{
-		return emptyCalls;
-	}
-
-	public int getCallCounter()
-	{
-		return callCounter;
-	}
-
-	public int getInValideCalls()
-	{
-		return invalideCalls;
-	}
-
 	public static int sumOfListEntries(List<Integer> list)
 	{
 		int sum = 0;
