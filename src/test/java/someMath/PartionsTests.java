@@ -12,8 +12,7 @@ import someMath.exceptions.MathException;
 
 public class PartionsTests
 {
-	
-	/*
+
 	@Test
 	public void partitionsTest2() throws MathException
 	{
@@ -24,13 +23,13 @@ public class PartionsTests
 		Partitions partitions = new Partitions();
 		int sum = 6;
 
-		Set<List<Integer>> set = partitions.summandsSmallerSet(sum, sum, sum);
+		Set<List<Integer>> set = partitions.partitionsOfN(sum);
 		int nrPartitions = set.size();
-		//assert(nrPartitions==11);//only if sum is 6!!!!
+		assert(nrPartitions==11);//only if sum is 6!!!!
 
 		printStats(false, 1, null, sum, nrPartitions, set);
 
-		
+
 		for(List<Integer> list: set)
 		{
 			
@@ -38,22 +37,21 @@ public class PartionsTests
 			assert(Partitions.sumOfListEntries(list)==sum);
 		}
 	}
-	*/
 
 	@Test
 	public void partitionsTest() throws MathException
 	{
 		
 		System.out.println(BashSigns.bBCPX + "Partitions of N Test." + BashSigns.bBCSX);
-		System.out.println(BashSigns.bBCPX + "Using summandsSmallerSet-Method." + BashSigns.bBCSX);
+		System.out.println(BashSigns.bBCPX + "Using summandsBiggerSet-Method." + BashSigns.bBCSX);
 		Partitions partitions = new Partitions();
 		int sum = 6;
 
-		Set<List<Integer>> set = partitions.partitionsOfN(sum);
+		Set<List<Integer>> set = partitions.partitionsOfNAsLists(sum);
 		int nrPartitions = set.size();
-		//assert(nrPartitions==11);//only if sum is 6!!!!
+		assert(nrPartitions==11);//only if sum is 6!!!!
 
-		printStats(false, 1, null, sum, nrPartitions, set);
+		printStats(true, 1, null, sum, nrPartitions, set);
 
 		
 		for(List<Integer> list: set)

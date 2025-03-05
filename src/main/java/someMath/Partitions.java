@@ -60,45 +60,10 @@ public class Partitions
 	{
 		
 		
-		Set<List<Integer>> output = new HashSet<>();
+		Set<List<Integer>> output = partitionsOfNAsLists(sum);
 		
-		
-		if(maxSize<=0||nrOfSummands<=0||sum<=0)throw new MathException("Hi");
-		
-		if(maxSize*nrOfSummands<sum)return output;
-
-		if(sum==1)
-		{
-			List<Integer> list = new ArrayList<>();
-			list.add(1);
-			output.add(list);
-		}
-
-		if(nrOfSummands==1)
-		{
-			List<Integer> list = new ArrayList<>();
-			list.add(sum);
-			output.add(list);
-			return output;
-		}
-		
-		for(int size=1;size<=maxSize;size++)
-		{
-			
-			if(0>=sum-size||0>=size||0>=nrOfSummands-1)return output;
-			
-			Set<List<Integer>> set = summandsSmallerSet(size, nrOfSummands-1, sum-size);
-			if(set.isEmpty())continue;
-			
-			for(List<Integer> listRight: set)
-			{
-				
-				List<Integer> list = new ArrayList<>();
-				list.add(size);
-				list.addAll(listRight);
-				output.add(list);
-			}
-		}
+		output = maxSizeFilter(maxSize, output);
+		output = nrOfSummandsFilter(nrOfSummands, output);
 
 		return output;
 	}
@@ -128,12 +93,15 @@ public class Partitions
 		
 		if(sum<1)return output;
 		
-		for(int e=1;e<sum;e++)
+		for(int nrOfSummands=1;nrOfSummands<sum;nrOfSummands++)
 		{
-			output.addAll(summandsSmallerSet(sum, e, sum));
+			output.addAll(summandsSmallerSet(sum, nrOfSummands, sum));
 		}
 		
-		
+		List<Integer> bunchOfOnes = new ArrayList<>();
+		for(int n=0;n<sum;n++)bunchOfOnes.add(1);
+		output.add(bunchOfOnes);
+
 		return output;
 
 	}
@@ -147,4 +115,35 @@ public class Partitions
 		}
 		return sum;
 	}
+	
+	public static Set<List<Integer>> maxSizeFilter(int maxSize, Set<List<Integer>> input)
+	{
+		
+		Set<List<Integer>> output = new HashSet<>();
+		
+		for(List<Integer> list: input)
+		{
+			for(Integer i: list)
+			{
+				if(i>maxSize)continue;
+				else output.add(list);
+			}
+		}
+		
+		return output;
+	}
+	
+	
+	public static Set<List<Integer>> nrOfSummandsFilter(int nrOfSummands, Set<List<Integer>> input)
+	{
+		
+		Set<List<Integer>> output = new HashSet<>();
+		
+		for(List<Integer> list: input)
+		{
+			if(list.size()==nrOfSummands)output.add(list);
+		}
+		
+		return output;
+	}	
 }
