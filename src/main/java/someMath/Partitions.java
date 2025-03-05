@@ -10,15 +10,15 @@ import someMath.exceptions.MathException;
 public class Partitions
 {	
 
-	public Set<List<Integer>> summandsBiggerSet(int minSizeOfSummand, int nrOfSummands, int sum) throws MathException
+	public Set<List<Integer>> summandsBiggerSet(int minSize, int nrOfSummands, int sum) throws MathException
 	{
 		
 		
 		Set<List<Integer>> output = new HashSet<>();
 		
-		if(minSizeOfSummand<=0||nrOfSummands<=0||sum<=0)throw new MathException("Hi");
+		if(minSize<=0||nrOfSummands<=0||sum<=0)throw new MathException("Hi");
 		
-		if(minSizeOfSummand*nrOfSummands>sum)return output;
+		if(minSize*nrOfSummands>sum)return output;
 		
 		if(sum==1)
 		{
@@ -37,17 +37,17 @@ public class Partitions
 			return output;
 		}
 		
-		for(int i=minSizeOfSummand;i<=sum-nrOfSummands+1;i++)
+		for(int size=minSize;size<=sum-nrOfSummands+1;size++)
 		{
 			
-			if(i<=0||nrOfSummands-1<=0||sum-i<=0)return output;
+			if(size<=0||nrOfSummands-1<=0||sum-size<=0)return output;
 			
-			Set<List<Integer>> set =summandsBiggerSet(i, nrOfSummands-1, sum-i);
+			Set<List<Integer>> set =summandsBiggerSet(size, nrOfSummands-1, sum-size);
 			
 			for(List<Integer> listRight: set)
 			{
 				List<Integer> list = new ArrayList<>();
-				list.add(i);
+				list.add(size);
 				list.addAll(listRight);
 				output.add(list);
 			}
@@ -56,24 +56,22 @@ public class Partitions
 		return output;
 	}
 
-	public Set<List<Integer>> summandsSmallerSet(int maxSizeOfSummand, int nrOfSummands, int sum) throws MathException
+	public Set<List<Integer>> summandsSmallerSet(int maxSize, int nrOfSummands, int sum) throws MathException
 	{
 		
 		
 		Set<List<Integer>> output = new HashSet<>();
 		
 		
-		if(maxSizeOfSummand<=0||nrOfSummands<=0||sum<=0)throw new MathException("Hi");
+		if(maxSize<=0||nrOfSummands<=0||sum<=0)throw new MathException("Hi");
 		
-		if(maxSizeOfSummand*nrOfSummands<sum)return output;
+		if(maxSize*nrOfSummands<sum)return output;
 
 		if(sum==1)
 		{
 			List<Integer> list = new ArrayList<>();
 			list.add(1);
 			output.add(list);
-			return output;
-
 		}
 
 		if(nrOfSummands==1)
@@ -84,21 +82,19 @@ public class Partitions
 			return output;
 		}
 		
-		for(int i=maxSizeOfSummand;i>=1;i--)
+		for(int size=1;size<=maxSize;size++)
 		{
 			
-			if(i<=0||nrOfSummands-1<=0||sum-i<=0)return output;
+			if(0>=sum-size||0>=size||0>=nrOfSummands-1)return output;
 			
-			Set<List<Integer>> set = summandsSmallerSet(i, nrOfSummands-1, sum-i);
+			Set<List<Integer>> set = summandsSmallerSet(size, nrOfSummands-1, sum-size);
 			if(set.isEmpty())continue;
 			
 			for(List<Integer> listRight: set)
 			{
 				
-				if(listRight.size()!=nrOfSummands-1)continue;
-				
 				List<Integer> list = new ArrayList<>();
-				list.add(i);
+				list.add(size);
 				list.addAll(listRight);
 				output.add(list);
 			}

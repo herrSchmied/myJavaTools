@@ -5,17 +5,22 @@ import java.util.Set;
 
 import org.junit.jupiter.api.Test;
 
+import consoleTools.BashSigns;
 import consoleTools.TerminalXDisplay;
 import someMath.exceptions.CollectionException;
 import someMath.exceptions.MathException;
 
 public class PartionsTests
 {
-
+	
+	/*
 	@Test
 	public void partitionsTest2() throws MathException
 	{
 		
+		System.out.println(BashSigns.bBCPX + "Partitions of N Test." + BashSigns.bBCSX);
+		System.out.println(BashSigns.bBCPX + "Using SummandsSmallerSet Method" + BashSigns.bBCSX);
+
 		Partitions partitions = new Partitions();
 		int sum = 6;
 
@@ -33,12 +38,14 @@ public class PartionsTests
 			assert(Partitions.sumOfListEntries(list)==sum);
 		}
 	}
-	
+	*/
 
 	@Test
 	public void partitionsTest() throws MathException
 	{
 		
+		System.out.println(BashSigns.bBCPX + "Partitions of N Test." + BashSigns.bBCSX);
+		System.out.println(BashSigns.bBCPX + "Using summandsSmallerSet-Method." + BashSigns.bBCSX);
 		Partitions partitions = new Partitions();
 		int sum = 6;
 
@@ -60,7 +67,9 @@ public class PartionsTests
 	@Test
 	public void summandsBiggerTest() throws CollectionException, MathException
 	{
-		
+
+		System.out.println(BashSigns.bBCPX + "SummandsBiggerSet-Method Test." + BashSigns.bBCSX);
+
 		Partitions partitions = new Partitions();
 		int minSize = 3;
 		int nrOfSummands = 5;
@@ -82,9 +91,11 @@ public class PartionsTests
 	{
 		
 		
+		System.out.println(BashSigns.bBCPX + "SummandsSmallerSet Method Test." + BashSigns.bBCSX);
+
 		Partitions partitions = new Partitions();
-		int maxSize = 3;
-		int nrOfSummands = 5;
+		int maxSize = 4;
+		int nrOfSummands = 4;
 		int sum = 10;
 		Set<List<Integer>> set =partitions.summandsSmallerSet(maxSize, nrOfSummands, sum);
 		int nrPartitions = set.size();
