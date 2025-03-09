@@ -8,10 +8,24 @@ import someMath.exceptions.MathException;
 
 public class ComplexNrOperations
 {
+
 	public static Function<List<ComplexNrDouble>, ComplexNrDouble> addComplex = (list)->
 	{
 	
-		return null;
+		ComplexNrDouble current = ComplexNrDouble.getZero();
+		
+		for(ComplexNrDouble z: list)
+		{
+			Double realZ = z.getRealPart();
+			Double imgZ = z.getImaginaryPart();
+			
+			Double realCurrent = current.getRealPart();
+			Double imgCurrent = current.getImaginaryPart();
+
+			current = new ComplexNrDouble(realZ+realCurrent, imgZ+imgCurrent);
+		}
+
+		return current;
 	};
 	
 	public static Operation<ComplexNrDouble> addition;
@@ -27,6 +41,5 @@ public class ComplexNrOperations
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
 	}
 }

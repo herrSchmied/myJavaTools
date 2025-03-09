@@ -7,9 +7,9 @@ import java.util.Objects;
 public class ComplexNrDouble
 {
 
-	private final ComplexNrDouble zero = new ComplexNrDouble(0, 0);
-	private final ComplexNrDouble one = new ComplexNrDouble(1, 0);
-	private final ComplexNrDouble i = new ComplexNrDouble(0,1);
+	private final static ComplexNrDouble zero = new ComplexNrDouble(0, 0);
+	private final static ComplexNrDouble one = new ComplexNrDouble(1, 0);
+	private final static ComplexNrDouble i = new ComplexNrDouble(0,1);
 	
 	private final double real;
 	private final double imaginary;
@@ -38,6 +38,16 @@ public class ComplexNrDouble
 	    ComplexNrDouble other = (ComplexNrDouble)obj;
 	    
 	    return ((other.real== this.real)&&(other.imaginary==this.imaginary));
+	}
+	
+	public static ComplexNrDouble getZero()
+	{
+		return zero;
+	}
+	
+	public static ComplexNrDouble getOne()
+	{
+		return one;
 	}
 	
 	public String toString()

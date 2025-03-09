@@ -73,7 +73,6 @@ public class Partitions
 		output.add(bunchOfOnes);
 		
 		return output;
-
 	}
 	
 	public static int sumOfListEntries(List<Integer> list)

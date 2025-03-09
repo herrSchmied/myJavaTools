@@ -45,9 +45,10 @@ public class Operation<O>
 		return !(neutrum==null);
 	}
 	
-	public O getNeutrum()
+	public O getNeutrum() throws MathException
 	{
-		return neutrum;
+		if(hasNeutralElement())return neutrum;
+		else throw new MathException("This has no Neutrum.");
 	}
 
 	public String getName()

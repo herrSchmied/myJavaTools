@@ -15,7 +15,8 @@ public class PartionsTests
 {
 
 	Partitions partitions;
-	
+	final boolean goForMax = true;
+
 	@BeforeEach
 	public void setup()
 	{
@@ -46,7 +47,7 @@ public class PartionsTests
 		int sum = 30;
 		Set<List<Integer>> set =partitions.summandsBiggerSet(minSize, nrOfSummands, sum);
 		int nrPartitions = set.size();
-		printStats(false, minSize,nrOfSummands, sum, nrPartitions, set);
+		printStats(!goForMax, minSize,nrOfSummands, sum, nrPartitions, set);
 		
 		for(List<Integer> list: set)
 		{
@@ -71,7 +72,7 @@ public class PartionsTests
 		Set<List<Integer>> set =partitions.summandsSmallerSet(maxSize, nrOfSummands, sum);
 		int nrPartitions = set.size();
 		
-		printStats(true, maxSize,nrOfSummands, sum, nrPartitions, set);
+		printStats(goForMax, maxSize,nrOfSummands, sum, nrPartitions, set);
 		
 		for(List<Integer> list: set)
 			assert(Partitions.sumOfListEntries(list)==sum);
@@ -101,7 +102,7 @@ public class PartionsTests
 		int nrPartitions = set.size();
 		assert(nrPartitions==expected);
 		
-		printStats(false, 1, null, sum, nrPartitions, set);
+		printStats(!goForMax, 1, null, sum, nrPartitions, set);
 
 		
 		for(List<Integer> list: set)
