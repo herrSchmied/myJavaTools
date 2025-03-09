@@ -44,10 +44,11 @@ public class Matrix<E, O extends Operations<E>>
 	public Matrix(Operations<E> mOps, E[][] valArr)
 	{
 		
+		if(valArr==null)throw new IllegalArgumentException("Can't create Matrix with null Array.");
+
 		valList = new ArrayList<>();
 		this.columns = valArr[0].length;
 		this.rows = valArr.length;
-		if(valArr==null)throw new IllegalArgumentException("Can't create Matrix with null Array.");
 		int homogeneLengthStndrt = 1;
 		for(int n=0;n<valArr.length;n++)
 		{

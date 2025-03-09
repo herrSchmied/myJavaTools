@@ -13,19 +13,47 @@ import someMath.exceptions.MathException;
 public class PartionsTests
 {
 
+
+
 	@Test
-	public void partitionsTest2() throws MathException
+	public void partitionsOfSixTest() throws MathException
 	{
 		
-		System.out.println(BashSigns.bBCPX + "Partitions of N Test." + BashSigns.bBCSX);
-		System.out.println(BashSigns.bBCPX + "Using SummandsSmallerSet Method" + BashSigns.bBCSX);
+		System.out.println(BashSigns.bBCPX + "Partitions of 6 Test." + BashSigns.bBCSX);
 
 		Partitions partitions = new Partitions();
 		int sum = 6;
 
-		Set<List<Integer>> set = partitions.partitionsOfN(sum);
+		Set<List<Integer>> set = partitions.partitionsOfNAsLists(sum);
 		int nrPartitions = set.size();
-		assert(nrPartitions==11);//only if sum is 6!!!!
+		assert(nrPartitions==11);
+		
+		printStats(true, 1, null, sum, nrPartitions, set);
+
+		
+		for(List<Integer> list: set)
+		{
+			
+			assert(1<=list.size()&&sum>=list.size());
+			assert(Partitions.sumOfListEntries(list)==sum);
+		}
+		
+		assert(Partitions.maxSizeFilter(1, set).size()==1);
+
+	}
+
+	@Test
+	public void partitionsOfSevenTest() throws MathException
+	{
+		
+		System.out.println(BashSigns.bBCPX + "Partitions of 7 Test." + BashSigns.bBCSX);
+
+		Partitions partitions = new Partitions();
+		int sum = 7;
+
+		Set<List<Integer>> set = partitions.partitionsOfNAsLists(sum);
+		int nrPartitions = set.size();
+		assert(nrPartitions==15);
 
 		printStats(false, 1, null, sum, nrPartitions, set);
 
@@ -36,30 +64,36 @@ public class PartionsTests
 			assert(1<=list.size()&&sum>=list.size());
 			assert(Partitions.sumOfListEntries(list)==sum);
 		}
-	}
+		
+		assert(Partitions.maxSizeFilter(1, set).size()==1);
 
+	}
+	
 	@Test
-	public void partitionsTest() throws MathException
+	public void partitionsOfTenTest() throws MathException
 	{
 		
 		System.out.println(BashSigns.bBCPX + "Partitions of N Test." + BashSigns.bBCSX);
-		System.out.println(BashSigns.bBCPX + "Using summandsBiggerSet-Method." + BashSigns.bBCSX);
+
 		Partitions partitions = new Partitions();
-		int sum = 6;
+		int sum = 10;
 
 		Set<List<Integer>> set = partitions.partitionsOfNAsLists(sum);
 		int nrPartitions = set.size();
-		assert(nrPartitions==11);//only if sum is 6!!!!
+		assert(nrPartitions==42);
 
-		printStats(true, 1, null, sum, nrPartitions, set);
+		printStats(false, 1, null, sum, nrPartitions, set);
 
-		
+
 		for(List<Integer> list: set)
 		{
 			
 			assert(1<=list.size()&&sum>=list.size());
 			assert(Partitions.sumOfListEntries(list)==sum);
 		}
+
+		assert(Partitions.maxSizeFilter(1, set).size()==1);
+
 	}
 
 	@Test
@@ -81,7 +115,6 @@ public class PartionsTests
 			assert(list.size()==nrOfSummands);
 			assert(Partitions.sumOfListEntries(list)==sum);
 		}
-		
 	}
 	
 	@Test

@@ -87,25 +87,6 @@ public class Partitions
 
 	}
 	
-	public Set<List<Integer>> partitionsOfN(int sum) throws MathException
-	{
-		Set<List<Integer>> output = new HashSet<>();
-		
-		if(sum<1)return output;
-		
-		for(int nrOfSummands=1;nrOfSummands<sum;nrOfSummands++)
-		{
-			output.addAll(summandsSmallerSet(sum, nrOfSummands, sum));
-		}
-		
-		List<Integer> bunchOfOnes = new ArrayList<>();
-		for(int n=0;n<sum;n++)bunchOfOnes.add(1);
-		output.add(bunchOfOnes);
-
-		return output;
-
-	}
-	
 	public static int sumOfListEntries(List<Integer> list)
 	{
 		int sum = 0;
@@ -123,11 +104,14 @@ public class Partitions
 		
 		for(List<Integer> list: input)
 		{
+			int cnt = 0;
 			for(Integer i: list)
 			{
-				if(i>maxSize)continue;
-				else output.add(list);
+				if(i>maxSize)break;
+				else cnt++;
 			}
+			
+			if(cnt==list.size())output.add(list);
 		}
 		
 		return output;
