@@ -16,19 +16,10 @@ public class Partitions
 		
 		Set<List<Integer>> output = new HashSet<>();
 		
-		if(minSize<=0||nrOfSummands<=0||sum<=0)throw new MathException("Hi");
+		if(minSize<=0||nrOfSummands<=0||sum<=0)return output;
 		
 		if(minSize*nrOfSummands>sum)return output;
 		
-		if(sum==1)
-		{
-			List<Integer> list = new ArrayList<>();
-			list.add(1);
-			output.add(list);
-			return output;
-
-		}
-
 		if(nrOfSummands==1)
 		{
 			List<Integer> list = new ArrayList<>();
@@ -37,10 +28,8 @@ public class Partitions
 			return output;
 		}
 		
-		for(int size=minSize;size<=sum-nrOfSummands+1;size++)
+		for(int size=minSize;size<=sum-nrOfSummands;size++)
 		{
-			
-			if(size<=0||nrOfSummands-1<=0||sum-size<=0)return output;
 			
 			Set<List<Integer>> set =summandsBiggerSet(size, nrOfSummands-1, sum-size);
 			
@@ -62,7 +51,7 @@ public class Partitions
 		
 		Set<List<Integer>> output = partitionsOfNAsLists(sum);
 		
-		output = maxSizeFilter(maxSize, output);
+		output = sizeFilter(true, maxSize, output);
 		output = nrOfSummandsFilter(nrOfSummands, output);
 
 		return output;
@@ -97,21 +86,31 @@ public class Partitions
 		return sum;
 	}
 	
-	public static Set<List<Integer>> maxSizeFilter(int maxSize, Set<List<Integer>> input)
+	public static Set<List<Integer>> sizeFilter(boolean maxOrMin, int maxSize, Set<List<Integer>> input)
 	{
 		
 		Set<List<Integer>> output = new HashSet<>();
 		
 		for(List<Integer> list: input)
 		{
-			int cnt = 0;
+			boolean hasOneTooLarge = false;
+			boolean hasOneTooSmall = false;
 			for(Integer i: list)
 			{
-				if(i>maxSize)break;
-				else cnt++;
+				if((i>maxSize)&&(maxOrMin))
+				{
+					hasOneTooLarge = true;
+					break;
+				}
+
+				if((i<maxSize)&&(!maxOrMin))
+				{
+					hasOneTooSmall = true;
+					break;
+				}
 			}
 			
-			if(cnt==list.size())output.add(list);
+			if(!(hasOneTooLarge||hasOneTooSmall))output.add(list);
 		}
 		
 		return output;
