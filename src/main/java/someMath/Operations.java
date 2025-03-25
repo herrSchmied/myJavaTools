@@ -94,7 +94,7 @@ public class Operations<O>
 		return op.operate(oArray);
 	}
 
-	public O getNeutrumOfOperation(String name)
+	public O getNeutrumOfOperation(String name) throws MathException
 	{
 		
 		Operation<O> op = definedOperations.get(name);
