@@ -25,7 +25,7 @@ public class SequenzSearchTest
 		Point destPoint = new Point(2, 2);
 		
 		
-		TerminalXDisplay.printBoldAndGreen("\ntool Test!");
+		System.out.println(TerminalXDisplay.formatBashStringBoldAndGreen("\ntool Test!"));
 		
 		List<Point> snakeSequenz = new ArrayList<>(Arrays.asList(startPoint, centerPoint, leftCenter, centerUp, destPoint));
 		List<Point> snakeSubSequenz = snakeSequenz.subList(1, 4);

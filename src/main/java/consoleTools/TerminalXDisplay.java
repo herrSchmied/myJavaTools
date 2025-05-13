@@ -99,24 +99,44 @@ public class TerminalXDisplay
 		return collectionToString(collection, 0);
 	}
 
-	public static void printBoldAndGreen(String s)
+	public static String formatBashStringBoldAndGreen(String s)
 	{
-		System.out.println(boldGBCPX+s+boldGBCSX);
+		return boldGBCPX+s+boldGBCSX;
 	}
 
-	public static void printBoldAndBlue(String s)
+	public static String formatBashStringBoldAndBlue(String s)
 	{
-		System.out.println(boldBBCPX+s+boldBBCSX);
+		return boldBBCPX+s+boldBBCSX;
 	}
 	
-	public static void printBoldAndYellow(String s)
+	public static String formatBashStringBoldAndYellow(String s)
 	{
-		System.out.println(boldYBCPX+s+boldYBCSX);
+		return boldYBCPX+s+boldYBCSX;
 	}
 
-	public static void printBoldAndRed(String s)
+	public static String formatBashStringBoldAndRed(String s)
 	{
-		System.out.println(boldRBCPX+s+boldRBCSX);
+		return boldRBCPX+s+boldRBCSX;
+	}
+
+	public static String formatBashStringGreen(String s)
+	{
+		return gBCPX+s+gBCSX;
+	}
+
+	public static String formatBashStringBlue(String s)
+	{
+		return bBCPX+s+bBCSX;
 	}
 	
+	public static String formatBashStringYellow(String s)
+	{
+		return yBCPX+s+yBCSX;
+	}
+
+	public static String formatBashStringRed(String s)
+	{
+		return rBCPX+s+rBCSX;
+	}
+
 }
