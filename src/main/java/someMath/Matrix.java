@@ -23,8 +23,8 @@ public class Matrix<O>
 	{
 			
 	    
-		this.rows = valueArr.length;
-		this.columns = valueArr[0].length;
+		this.rows = valueArr[0].length;
+		this.columns = valueArr.length;
 
 		isQuadratic = (rows==columns);
 		this.valueArr = (O[][]) valueArr;
@@ -42,12 +42,13 @@ public class Matrix<O>
 		
 		for(int n=0;n<valueList.size();n++)
 		{
-			int col = n%rows;
-			int row = (n-col)/rows;
+			int col = n%columns;
+			int row = (n-col)/columns;
 			
 			arrayOfValues[col][row] = valueList.get(n);
 		}
 		
+	
 		valueArr = (O[][])arrayOfValues;
 	}
 
@@ -59,7 +60,7 @@ public class Matrix<O>
 	
 	public O getValue(int column, int row)
 	{
-		return (O)valueArr[column][row];
+		return valueArr[column][row];
 	}
 
 	public Matrix<O> getColumn(int column)
@@ -114,6 +115,7 @@ public class Matrix<O>
 			int valueLength = getValue(x, y).toString().length();
 			if(valueLength>longestValue[0])longestValue[0]=valueLength; 
 		};
+
 		walkThrouMatrix(bic);
 		
 		for(int n=0;n<rows;n++)
@@ -121,11 +123,11 @@ public class Matrix<O>
 			for(int m=0;m<columns;m++)
 			{
 				
-				int l = getValue(n, m).toString().length();
+				int l = getValue(m, n).toString().length();
 				int d = longestValue[0]-l+1;
 				String whiteSpace = StringManipulation.customMonoRepeatChar(' ',d);
 				
-				output = output.concat(whiteSpace+getValue(n, m).toString());
+				output = output.concat(whiteSpace+getValue(m, n).toString());
 			}
 			output = output.concat("\n");
 		}
@@ -181,13 +183,13 @@ public class Matrix<O>
 	public void walkThrouMatrix(BiConsumer<Point, O> bic)
 	{
 		
-		for(int columns=0;columns<getColumns();columns++)
+		for(int column=0;column<columns;column++)
 		{
-			for(int rows=0;rows<getColumns();rows++)
+			for(int row=0;row<rows;row++)
 			{
 				
-				Point p = new Point(columns, rows);
-				O value = getValue(columns, rows);
+				Point p = new Point(column, row);
+				O value = getValue(column, row);
 				bic.accept(p, value);
 			}
 		}
