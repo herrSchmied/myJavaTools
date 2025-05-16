@@ -19,7 +19,7 @@ public class Matrix<O>
 	private final boolean isQuadratic;
 	private final O[][] valueArr;
 
-	public Matrix(Object[][] valueArr)
+	public Matrix(O[][] valueArr)
 	{
 			
 	    
@@ -28,6 +28,27 @@ public class Matrix<O>
 
 		isQuadratic = (rows==columns);
 		this.valueArr = (O[][]) valueArr;
+	}
+	
+	public Matrix(int rows, List<O> valueList) throws MathException
+	{
+		if(rows<1)throw new MathException("To few rows.");
+		if(valueList.size()%rows!=0)throw new MathException("Matrix can not be initiated due to nr. of Values they don't fit");
+		this.rows = rows;
+		this.columns = valueList.size()/rows;
+		isQuadratic = (rows==columns);
+		
+		Object [][] arrayOfValues = new Object[columns][rows];
+		
+		for(int n=0;n<valueList.size();n++)
+		{
+			int col = n%rows;
+			int row = (n-col)/rows;
+			
+			arrayOfValues[col][row] = valueList.get(n);
+		}
+		
+		valueArr = (O[][])arrayOfValues;
 	}
 
 	public int getRows()
