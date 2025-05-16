@@ -9,10 +9,10 @@ import java.util.function.Function;
 
 import someMath.exceptions.MathException;
 
-public class MatrixOps <E, O extends Operations<E>>
+public class MatrixOps <O, E extends Operations<O>>
 {	
 
-	Operations<Matrix<E, O>> ops;
+	Operations<Matrix<O>> ops;
 	
 	/*TODO:
 	public final Function<List<Matrix<E, O>>, Matrix<E, O>> addFunc = (matrixList)->

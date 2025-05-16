@@ -22,7 +22,7 @@ public class Operations<O>
 	public final Set<String> opNames = new HashSet<>(Arrays.asList(add, multiply, minus, divide, pow, root, log));
 
 	public final Map<String, Operation<O>> definedOperations = new HashMap<>();
-
+	
 	public Operations(Set<Operation<O>> set)
 	{
 		

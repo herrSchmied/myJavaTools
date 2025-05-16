@@ -1,5 +1,6 @@
 package someMath;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.function.BiFunction;
@@ -46,21 +47,21 @@ public class DoubleField extends Operations<Double>
 	Operation<Double> addOpp;
 	Operation<Double> multiplyOpp;
 	
-	private final Set<Operation<Double>> setOffOperations;
+	private static final Set<Operation<Double>> setOfOperations = new HashSet<>();
 
-	public DoubleField(Set<Operation<Double>> set) throws MathException
+	
+	public DoubleField() throws MathException
 	{
-		super(set);
+		
+		super(setOfOperations);
 		
 		addOpp = new Operation(Operations.add, neutrumAddition, minOperandsAddition,
 				maxOperandsAddition, addition);
 		multiplyOpp = new Operation(Operations.multiply, neutrumMultiplication, minOperandsMultiplication,
 				maxOperandsMultiplication, multiplication);
 		
-		set.add(addOpp);
-		set.add(multiplyOpp);
-		
-		setOffOperations = set;
+		setOfOperations.add(addOpp);
+		setOfOperations.add(multiplyOpp);
 	}
 
 }
