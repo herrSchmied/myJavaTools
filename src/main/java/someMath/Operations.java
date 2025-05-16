@@ -11,13 +11,13 @@ import someMath.exceptions.MathException;
 public class Operations<O>
 {	
 	
-	public final String add = "add";
-	public final String multiply = "multiply";
-	public final String minus = "minus";
-	public final String divide = "div";
-	public final String pow = "pow";
-	public final String root = "root";
-	public final String log = "log";
+	public final static String add = "addition";
+	public final static String multiply = "multiplication";
+	public final static String minus = "subtraction";
+	public final static String divide = "division";
+	public final static String pow = "power";
+	public final static String root = "root";
+	public final static String log = "logarythm";
 
 	public final Set<String> opNames = new HashSet<>(Arrays.asList(add, multiply, minus, divide, pow, root, log));
 
@@ -25,6 +25,8 @@ public class Operations<O>
 
 	public Operations(Set<Operation<O>> set)
 	{
+		
+		if(set==null)throw new NullPointerException("Set is null");
 		
 		for(Operation<O> op: set)
 		{
