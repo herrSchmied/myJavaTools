@@ -14,57 +14,20 @@ import someMath.exceptions.MathException;
 public class Matrix<O>
 {
 
-	private final List<O> valList;
 	private final int rows;
 	private final int columns;
 	private final boolean isQuadratic;
+	private final O[][] valueArr;
 
-	public Matrix(int rows, List<O> values)
+	public Matrix(Object[][] valueArr)
 	{
-				
-	    int size = values.size();
-	    int cols =(int)(size/rows);
-	    
-		if(cols*rows!=values.size()) throw new IllegalArgumentException("Values don't Fit");
-		if(values.remove(null)) throw new IllegalArgumentException("Please no Null values.");
-		this.rows = rows;
-		this.columns = cols;
-
-		isQuadratic = (rows==columns);
-		
-		/*
-		 * Cannot create a Array of Generic Type: "MultiplyableAndAddable<E>[][]" 
-		 * The line below causes the Suppress Warning. How can i get rid of This?
-		 */
-		valList = new ArrayList<>();
-		
-		BiConsumer<Point, O> bic = (p,v)-> valList.add(v);
-		walkThrouMatrix(bic);
-	}
-	
-	public Matrix(O[][] valArr)
-	{
-		
-		if(valArr==null)throw new IllegalArgumentException("Can't create Matrix with null Array.");
-
-		valList = new ArrayList<>();
-		this.columns = valArr[0].length;
-		this.rows = valArr.length;
-		int homogeneLengthStndrt = 1;
-		for(int n=0;n<valArr.length;n++)
-		{
-			int l = valArr[n].length;
-			if(n==0)homogeneLengthStndrt = l;
-			if(l!=homogeneLengthStndrt)throw new IllegalArgumentException("Row's aren't all of same Length.");
 			
-			for(int m=0;m<l;m++)
-			{
-				if(valArr[n][m]==null)throw new IllegalArgumentException("Null Values at row: "+n+" column:"+m);
-				else valList.set(n*columns+m, valArr[n][m]);
-			}
-		}
+	    
+		this.rows = valueArr.length;
+		this.columns = valueArr[0].length;
 
 		isQuadratic = (rows==columns);
+		this.valueArr = (O[][]) valueArr;
 	}
 
 	public int getRows()
@@ -73,56 +36,46 @@ public class Matrix<O>
 	public int getColumns()
 	{ return columns;}
 	
-	public O getValue(int row, int column)
+	public O getValue(int column, int row)
 	{
-		return valList.get(row*columns+column);
+		return (O)valueArr[column][row];
 	}
 
 	public Matrix<O> getColumn(int column)
 	{
 		
+		Object[][] valueArr = new Object[1][rows];
 		List<O> list = new ArrayList<>();
 		
-		for(int i=0;i<rows;i++)list.add(getValue(i, column));
+		for(int i=0;i<rows;i++)valueArr[0][i]=getValue(column, i);
 		
-		Matrix<O> outputRowMatrix = new Matrix<O>(rows, list);
+		Matrix<O> outputRowMatrix = new Matrix(valueArr);
 		
 		return outputRowMatrix;
 	}
 	
 	public void setColumn(List<O> list, int column)
 	{
-		for(int i=0;i<rows;i++)valList.set(i*columns +column, list.get(i));
+		for(int i=0;i<rows;i++)valueArr[column][i]= list.get(i);
 	}
 	
-	public void setColumn(Matrix<O> input, int column)
+	public Matrix<O> getRow(int row)
 	{
-		for(int i=0;i<rows;i++)valList.set(i*columns + column, input.getValue(i,0));
-	}
-
-	public Matrix<O> getRow(int n)
-	{
-		List<O> list = new ArrayList<>();
+		Object[][] valueArr = new Object[columns][1];
 		
-		for(int i=0;i<columns;i++)list.add(getValue(n, i));
+		for(int i=0;i<columns;i++)valueArr[i][row]=getValue(i, row);
 		
-		Matrix<O> outputRowMatrix = new Matrix<O>(1, list);
+		Matrix<O> outputRowMatrix = new Matrix(valueArr);
 		
 		return outputRowMatrix;
 	}
 	
 	public void setRow(List<O> list, int row)
 	{
-		for(int i=0;i<columns;i++)valList.set(row*columns + i, list.get(i));
+		for(int i=0;i<columns;i++)valueArr[i][row]=list.get(i);
 	}
 
-	public void setRow(Matrix<O> input, int row)
-	{
-		for(int i=0;i<columns;i++)valList.set(row*columns+i, input.getValue(0, i));
-	}
-
-	public boolean isQuadratic() {return isQuadratic;}
-	
+	public boolean isQuadratic() {return isQuadratic;}	
 
 	//It is important that the values of Type E have a good overwritten toString Method.
 	public String toString()
@@ -169,7 +122,7 @@ public class Matrix<O>
 	
 	public int hashCode()
 	{
-		return Objects.hash(valList);
+		return Objects.hash(valueArr);
 	}
 	
 	public boolean equals(Object obj)
@@ -207,13 +160,13 @@ public class Matrix<O>
 	public void walkThrouMatrix(BiConsumer<Point, O> bic)
 	{
 		
-		for(int n=0;n<getRows();n++)
+		for(int columns=0;columns<getColumns();columns++)
 		{
-			for(int m=0;m<getColumns();m++)
+			for(int rows=0;rows<getColumns();rows++)
 			{
 				
-				Point p = new Point(m, n);
-				O value = getValue(m, n);
+				Point p = new Point(columns, rows);
+				O value = getValue(columns, rows);
 				bic.accept(p, value);
 			}
 		}

@@ -45,7 +45,7 @@ public class MatrixField<O, E extends Operations<O>> extends Operations<Matrix<O
 		List<O> neutrals = new ArrayList<>();
 		int l = columns*rows;
 		for(int n=0;n<l;n++)neutrals.add(neutrumOfUnderFieldAddition);
-		neutrumOfMatrixAddition = new Matrix(rows, neutrals);
+		neutrumOfMatrixAddition = null;//needed !!!!new Matrix(rows, neutrals);
 		
 		addOpp = new Operation(Operations.add, neutrumOfMatrixAddition, minMatrixAddition,
 				maxMatrixAddition, getAdditionLambda());
@@ -58,7 +58,7 @@ public class MatrixField<O, E extends Operations<O>> extends Operations<Matrix<O
 		Function<List<Matrix<O>>, Matrix<O>> addition = (list)-> 
 		{
 		
-			Matrix<O> sum = new Matrix(rows,null);
+			Matrix<O> sum = null;//TODO:!!!!!!!!new Matrix(rows,null);
 		
 			//No specific order approach commutative or not!?
 			for(Matrix<O> summand: list)

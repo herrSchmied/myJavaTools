@@ -24,12 +24,12 @@ public class PartitionsSetsFrame
 	public static boolean validate(PartitionsSetsFrame frame) throws MathException
 	{
 		
-		int minSizeOfSummand = frame.getMinSizeOfSummand();
+		//int minSizeOfSummand = frame.getMinSizeOfSummand();
 		int nrOfSummands = frame.nrOfSummands;
-		int sum = frame.getSum();
+		//int sum = frame.getSum();
 		
-		if(minSizeOfSummand<=0||nrOfSummands<=0||sum<=0) throw new MathException("At least one of the Arguments is Zero or Below.");
-		if(minSizeOfSummand*nrOfSummands>sum) return false;
+		//if(minSizeOfSummand<=0||nrOfSummands<=0||sum<=0) throw new MathException("At least one of the Arguments is Zero or Below.");
+		//if(minSizeOfSummand*nrOfSummands>sum) return false;
 
 		return true;
 	}
