@@ -1,7 +1,9 @@
 package someMath;
 
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.junit.jupiter.api.Test;
 
@@ -51,5 +53,21 @@ public class MatrixTests
 		m2 = new Matrix<>(3, valueList);
 		assert(matrix.getColumn(0).equals(m2));
 		System.out.println(matrix.getColumn(0));
+	}
+	
+	@Test
+	public void testMatrixAdditionTest() throws MathException
+	{
+		
+		Set<Operation<Matrix<Double>>> set = new HashSet<>();
+		
+		MatrixField field = new MatrixField(set, 2, 2);
+		List<Double> neutrals = Arrays.asList(0.0, 0.0, 0.0, 0.0);
+		Matrix<Double> zero = new Matrix<>(2, neutrals);
+		
+		Matrix<Double> sum = field.add(zero, zero);
+		
+		assert(sum.equals(zero));
+		
 	}
 }
