@@ -63,6 +63,11 @@ public class Matrix<O>
 		return valueArr[column][row];
 	}
 
+	public void setValue(int column, int row, O o)
+	{
+		valueArr[column][row] = o;
+	}
+
 	public Matrix<O> getColumn(int column)
 	{
 		
