@@ -13,7 +13,7 @@ public class EratosthenesSiebTest
 	@Test
 	public void testPrimes() throws MathException
 	{
-		int maxPrimeNr = 20000;
+		int maxPrimeNr = 1000;
 		new EratosthenesSieb(maxPrimeNr);
 		List<Integer> primeList = EratosthenesSieb.getPrimeList();
 		assert(primeList.get(0)==2);

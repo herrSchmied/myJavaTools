@@ -23,10 +23,14 @@ public class Operations<O>
 
 	public final Map<String, Operation<O>> definedOperations = new HashMap<>();
 	
+	public final Set<Operation<O>> setOfOperations = new HashSet<>();
+	
 	public Operations(Set<Operation<O>> set)
 	{
 		
 		if(set==null)throw new NullPointerException("Set is null");
+		
+		setOfOperations.addAll(set);
 		
 		for(Operation<O> op: set)
 		{

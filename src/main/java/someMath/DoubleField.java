@@ -1,5 +1,6 @@
 package someMath;
 
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -13,21 +14,21 @@ import java.lang.Double;
 public class DoubleField extends Operations<Double>
 {
 
-	Double neutrumAddition = 0.0;
-	Integer minOperandsAddition = 2;
-	Integer maxOperandsAddition = 1000;
+	static Double neutrumAddition = 0.0;
+	static Integer minOperandsAddition = 2;
+	static Integer maxOperandsAddition = 1000;
 
-	Integer minOperandsSubtraction = 2;
-	Integer maxOperandsSubtraction = 2;
+	static Integer minOperandsSubtraction = 2;
+	static Integer maxOperandsSubtraction = 2;
 
-	Double neutrumMultiplication = 0.0;
-	Integer minOperandsMultiplication = 2;
-	Integer maxOperandsMultiplication = 10;
+	static Double neutrumMultiplication = 1.0;
+	static Integer minOperandsMultiplication = 2;
+	static Integer maxOperandsMultiplication = 10;
 
-	Integer minOperandsDivision = 2;
-	Integer maxOperandsDivision = 2;
+	static Integer minOperandsDivision = 2;
+	static Integer maxOperandsDivision = 2;
 
-	Function<List<Double>, Double> addition = (list)-> 
+	static Function<List<Double>, Double> addition = (list)-> 
 	{
 		
 		Double sum = neutrumAddition;
@@ -38,9 +39,9 @@ public class DoubleField extends Operations<Double>
 		return sum; 
 	};
 	
-	Function<List<Double>, Double> subtraction = (list)-> list.get(0)-list.get(1); 
+	static Function<List<Double>, Double> subtraction = (list)-> list.get(0)-list.get(1); 
 
-	Function<List<Double>, Double> multiplication = (list)-> 
+	static Function<List<Double>, Double> multiplication = (list)-> 
 	{
 		
 		Double product = neutrumMultiplication;
@@ -51,34 +52,19 @@ public class DoubleField extends Operations<Double>
 		return product; 
 	};
 
-	Function<List<Double>, Double> division = (list)-> list.get(0)/list.get(1); 
+	static Function<List<Double>, Double> division = (list)-> list.get(0)/list.get(1); 
 
-	Operation<Double> addOp;
-	Operation<Double> subtractOp;
-	Operation<Double> multiplyOp;
-	Operation<Double> divisionOp;
-	
-	private static final Set<Operation<Double>> setOfOperations = new HashSet<>();
-
-	
 	public DoubleField() throws MathException
 	{
 		
-		super(setOfOperations);
-		
-		addOp = new Operation(Operations.add, neutrumAddition, minOperandsAddition,
-				maxOperandsAddition, addition);
-		subtractOp = new Operation(Operations.minus, null, minOperandsSubtraction, 
-				maxOperandsSubtraction, subtraction);
-		multiplyOp = new Operation(Operations.multiply, neutrumMultiplication, minOperandsMultiplication,
-				maxOperandsMultiplication, multiplication);
-		divisionOp = new Operation(Operations.divide, null, minOperandsDivision, 
-				maxOperandsDivision, division);
-
-		setOfOperations.add(addOp);
-		setOfOperations.add(subtractOp);
-		setOfOperations.add(multiplyOp);
-		setOfOperations.add(divisionOp);
+		super(new HashSet<>(Arrays.asList(new Operation(Operations.add, neutrumAddition, minOperandsAddition,
+				maxOperandsAddition, addition),
+				new Operation(Operations.minus, null, minOperandsSubtraction, 
+						maxOperandsSubtraction, subtraction),
+				new Operation(Operations.multiply, neutrumMultiplication, minOperandsMultiplication,
+						maxOperandsMultiplication, multiplication),
+				new Operation(Operations.divide, null, minOperandsDivision, 
+						maxOperandsDivision, division))));
 	}
 
 }
