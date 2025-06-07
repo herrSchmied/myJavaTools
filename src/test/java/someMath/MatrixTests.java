@@ -62,19 +62,24 @@ public class MatrixTests
 	int minMatrixAddition = 2;
 	int maxMatrixAddition = 50;
 	
+	
+	List<Double> neutrals = Arrays.asList(0.0, 0.0, 0.0, 0.0);
+	Matrix<Double> neutrumOfMatrixAddition;
+
 	Function<List<Matrix<Double>>, Matrix<Double>> addition = (list)-> 
 	{
 		
 		int cols = 2;
 		int rows = 2;
-		DoubleField df;
 		
 		Matrix<Double> sum;
 		try
 		{
 			
-			df = new DoubleField();
+			DoubleField df = new DoubleField();
+
 			Double neutrum = df.neutrumAddition;
+
 			List<Double> neutrals = new ArrayList<>();
 			for(int n=0;n<rows*cols;n++)neutrals.add(neutrum);
 
@@ -103,25 +108,17 @@ public class MatrixTests
 				}
 			}
 		};
-		
-		try
-		{
-			Matrix<Double> output = new Matrix<>(2, valueList);
-			return output;
-		}
-		catch (MathException e)
-		{
-			e.printStackTrace();
-			throw new RuntimeException();//Remember: Is this optimal?
-		}
+
+		return sum;
 	};		
 
 	@Test
 	public void testMatrixAdditionTest() throws MathException
 	{
+
+		neutrumOfMatrixAddition = new Matrix<>(2, neutrals);
 		
-		List<Double> neutrals = Arrays.asList(0.0, 0.0, 0.0, 0.0);
-		Matrix<Double>neutrumOfMatrixAddition = new Matrix<>(2, neutrals);
+		System.out.println(neutrumOfMatrixAddition);
 		Operation<Matrix<Double>> addOpp = new Operation(Operations.add, neutrumOfMatrixAddition,
 				minMatrixAddition, maxMatrixAddition, addition);
 
@@ -129,13 +126,22 @@ public class MatrixTests
 		set.add(addOpp);
 		
 		MatrixField field = new MatrixField(set, 2, 2);
-		List<Double> neutrums = Arrays.asList(0.0, 0.0, 0.0, 0.0);
-		Matrix<Double> zero = new Matrix<>(2, neutrums);
+		Matrix<Double> zero = new Matrix<>(2, neutrals);
 		
-		Matrix<Double> s = new Matrix<>(2, neutrums);
+		List<Double> listOfValues = Arrays.asList(1.0, 0.0, 1.0, 0.0);
+
+		Matrix<Double> one = new Matrix<>(2, listOfValues);
+		System.out.println(zero);
+		
+		Matrix<Double> s = new Matrix<>(2, neutrals);
+		System.out.println(s);
+
 		s = field.add(zero, zero);
 		
 		assert(s.equals(zero));
+		
+		Matrix<Double> unchanged = field.add(one, zero);
+		assert(one.equals(unchanged));
 		
 	}
 }

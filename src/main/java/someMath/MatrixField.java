@@ -23,12 +23,12 @@ public class MatrixField extends Operations<Matrix<Double>>
 	private Integer minMatrixAddition = 2;
 	private Integer maxMatrixAddition = 1000;
 
-	private final Set<Operation<Matrix<Double>>> setOfOperations = new HashSet<>();
-
-	private Operation<Matrix<Double>> addOpp;
-
-	
-
+	/*
+	 * private final Set<Operation<Matrix<Double>>> setOfOperations = new
+	 * HashSet<>();
+	 * 
+	 * private Operation<Matrix<Double>> addOpp;
+	 */
 
 	public MatrixField(Set<Operation<Matrix<Double>>> set, int rows, int columns) throws MathException
 	{
