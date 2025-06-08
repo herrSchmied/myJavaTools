@@ -31,6 +31,8 @@ public class MatrixTests
 
 	Set<Operation<Matrix<Double>>> set = new HashSet<>();
 	MatrixRing field;
+	
+	DoubleField dField;
 
 	@BeforeEach
 	public void setup() throws MathException
@@ -49,6 +51,8 @@ public class MatrixTests
 		set.add(multiply);
 		
 		field = new MatrixRing(set);
+		
+		dField = new DoubleField();
 
 	}
 
@@ -231,12 +235,22 @@ public class MatrixTests
 		
 		List<Double> listOfValues = Arrays.asList(0.0, 2.0, 1.0, 1.0);
 		Matrix<Double> detTwoMinus = new Matrix<Double>(2, listOfValues);
-		System.out.println(detTwoMinus);
-		System.out.println(detTwoMinus.getRow(0));
-		System.out.println(detTwoMinus.getColumn(0));
 		
 		Matrix<Double> prod = field.multiply(detTwoMinus, neutrumOfMatrixMultiplication);
-		System.out.println(prod);
+
 		assert(prod.equals(detTwoMinus));
 	}
+	
+	@Test
+	public void testMatrixDetSimpleCaseTest() throws MathException
+	{
+		
+		List<Double> listOfValues = Arrays.asList(0.0, 2.0, 1.0, 1.0);
+		Matrix<Double> detTwoMinus = new Matrix<Double>(2, listOfValues);
+		
+		Double o = MatrixProperties.determinantSimpleCase(dField, detTwoMinus);
+		
+		assert(o.equals(-2.0));
+	}
+
 }
