@@ -30,7 +30,7 @@ public class MatrixTests
 	Matrix<Double> neutrumOfMatrixMultiplication;
 
 	Set<Operation<Matrix<Double>>> set = new HashSet<>();
-	MatrixField field;
+	MatrixRing field;
 
 	@BeforeEach
 	public void setup() throws MathException
@@ -48,7 +48,7 @@ public class MatrixTests
 		set.add(addOpp);
 		set.add(multiply);
 		
-		field = new MatrixField(set, 2, 2);
+		field = new MatrixRing(set);
 
 	}
 
