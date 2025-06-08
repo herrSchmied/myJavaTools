@@ -90,7 +90,7 @@ public class Matrix<O>
 	{
 		Object[][] valueArr = new Object[columns][1];
 		
-		for(int i=0;i<columns;i++)valueArr[i][row]=getValue(i, row);
+		for(int i=0;i<columns;i++)valueArr[i][0]=getValue(i, row);
 		
 		Matrix<O> outputRowMatrix = new Matrix(valueArr);
 		
