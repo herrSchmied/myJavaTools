@@ -240,16 +240,17 @@ public class MatrixTests
 
 		assert(prod.equals(detTwoMinus));
 	}
-	
+
 	@Test
-	public void testMatrixDetSimpleCaseTest() throws MathException
+	public void testMatrixDetTest() throws MathException
 	{
 		
-		List<Double> listOfValues = Arrays.asList(0.0, 2.0, 1.0, 1.0);
-		Matrix<Double> detTwoMinus = new Matrix<Double>(2, listOfValues);
+		List<Double> listOfValues = Arrays.asList(1.0, 0.0, 0.0, 0.0, 1.0, 3.0, 0.0, 1.0, 1.0);
+		Matrix<Double> detTwoMinus = new Matrix<Double>(3, listOfValues);
+		System.out.println(detTwoMinus);
 		
-		Double o = MatrixProperties.determinantSimpleCase(dField, detTwoMinus);
-		
+		Double o = MatrixProperties.determinant(dField, detTwoMinus);
+
 		assert(o.equals(-2.0));
 	}
 

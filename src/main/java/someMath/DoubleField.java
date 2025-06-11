@@ -1,6 +1,7 @@
 package someMath;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -54,17 +55,23 @@ public class DoubleField extends Operations<Double>
 
 	static Function<List<Double>, Double> division = (list)-> list.get(0)/list.get(1); 
 
+	static HashSet<Operation<Double>> set = new HashSet<Operation<Double>>();
+	
 	public DoubleField() throws MathException
 	{
+		super(set);
 		
-		super(new HashSet<>(Arrays.asList(new Operation(Operations.add, neutrumAddition, minOperandsAddition,
-				maxOperandsAddition, addition),
-				new Operation(Operations.minus, null, minOperandsSubtraction, 
-						maxOperandsSubtraction, subtraction),
-				new Operation(Operations.multiply, neutrumMultiplication, minOperandsMultiplication,
-						maxOperandsMultiplication, multiplication),
-				new Operation(Operations.divide, null, minOperandsDivision, 
-						maxOperandsDivision, division))));
+		super.setOperation(new Operation(Operations.add, neutrumAddition, minOperandsAddition,
+			maxOperandsAddition, addition));
+		
+		super.setOperation(new Operation(Operations.minus, null, minOperandsSubtraction, 
+				maxOperandsSubtraction, subtraction));
+		
+		super.setOperation(new Operation(Operations.multiply, neutrumMultiplication, minOperandsMultiplication,
+						maxOperandsMultiplication, multiplication));
+
+		super.setOperation(new Operation(Operations.divide, null, minOperandsDivision, 
+				maxOperandsDivision, division));
 	}
 
 }
