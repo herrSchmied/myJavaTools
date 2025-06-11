@@ -28,14 +28,31 @@ public class MatrixProperties
 			
 			O o = t.getNeutrumOfOperation(Operations.add);
 			O o2 = t.getNeutrumOfOperation(Operations.multiply);
-			O minusOne = t.minus(o, o2);
+			List<O> operands = new ArrayList<>();
+			operands.add(o);
+			operands.add(o2);
+			
+			O minusOne = t.minus(operands);
 			
 			O o3;
 			
-			if((row+col)%2==0)o3= t.multiply(subDet, m);
-			else o3 = t.multiply(minusOne, subDet, m);
+			operands.clear();
+			operands.add(subDet);
+			operands.add(m);
+			if((row+col)%2==0)o3= t.multiply(operands);
+			else
+			{
+				operands.clear();
+				operands.add(minusOne);
+				operands.add(subDet);
+				operands.add(m);
+				o3 = t.multiply(operands);
+			}
 			
-			sum = t.add(sum, o3);
+			operands.clear();
+			operands.add(sum);
+			operands.add(o3);
+			sum = t.add(operands);
 		}
 		
 		return sum;
@@ -52,10 +69,21 @@ public class MatrixProperties
 		O o21 = matrix.getValue(0, 1);
 		O o22 = matrix.getValue(1, 1);
 		
-		O q1 = t.multiply(o11, o22);
-		O q2 = t.multiply(o12, o21);
+		List<O> operands = new ArrayList<>();
+		operands.add(o11);
+		operands.add(o22);
+		O q1 = t.multiply(operands);
 		
-		O det = t.minus(q1, q2);
+		operands.clear();
+		operands.add(o12);
+		operands.add(o21);
+		O q2 = t.multiply(operands);
+		
+		
+		operands.clear();
+		operands.add(q1);
+		operands.add(q2);
+		O det = t.minus(operands);
 		
 		return det;
 	}

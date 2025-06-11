@@ -29,15 +29,13 @@ public class Operation<O>
 		this.op = op;
 	}
 	
-	public O operate(O... operands) throws MathException
+	public O operate(List<O> operands) throws MathException
 	{		
-		int size = operands.length;
+		int size = operands.size();
 		if(size>maxOperands||size<minOperands)throw new MathException("Not the right nr of Operands");
 		
 		
-		List<O> operandsAsList = Arrays.asList(operands);
-		
-		return op.apply(operandsAsList);
+		return op.apply(operands);
 	}
 
 	public Boolean hasNeutralElement()

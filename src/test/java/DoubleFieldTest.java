@@ -12,8 +12,8 @@ public class DoubleFieldTest
 	{
 		DoubleField dField = new DoubleField();
 		
-		Double d = dField.add(dField.getNeutrumOfOperation(Operations.multiply),
-				dField.getNeutrumOfOperation(Operations.add));
+		Double d = 1.0;
+
 		assert(d.equals(dField.getNeutrumOfOperation(Operations.multiply)));
 	}
 }

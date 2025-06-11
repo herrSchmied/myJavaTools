@@ -1,6 +1,10 @@
 package someMath;
 
+import java.util.ArrayList;
+
 import org.junit.jupiter.api.Test;
+
+import java.util.List;
 
 import someMath.exceptions.MathException;
 
@@ -15,11 +19,17 @@ public class NaturalNumberTest
 		
 		NaturalNumberOps nno = new NaturalNumberOps();
 		
-		NaturalNumber c = nno.add(a, b);
+		List<NaturalNumber> operands = new ArrayList<>();
+		operands.add(a);
+		operands.add(b);
+		NaturalNumber c = nno.add(operands);
 		
 		assert(c.equals(b));
 		
-		NaturalNumber d = nno.add(b, c);
+		operands.clear();
+		operands.add(b);
+		operands.add(c);
+		NaturalNumber d = nno.add(operands);
 		
 		assert(d.isGreaterThen(b));
 	}

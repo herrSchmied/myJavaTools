@@ -1,8 +1,10 @@
 package someMath;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -41,10 +43,14 @@ public class Operations<O>
 	public O execute(String name, O o1, O o2) throws MathException
 	{
 		Operation<O> op = definedOperations.get(name);
-		return op.operate(o1, o2);
+		List<O> list = new ArrayList<>();
+		list.add(o1);
+		list.add(o2);
+		
+		return op.operate(list);
 	}
 
-	public O add(O...oArray) throws MathException
+	public O add(List<O> oArray) throws MathException
 	{
 		
 		if(!definedOperations.containsKey(add))throw new MathException("Addition not defined!");
@@ -52,7 +58,7 @@ public class Operations<O>
 		return op.operate(oArray);
 	}
 
-	public O multiply(O...oArray) throws MathException
+	public O multiply(List<O> oArray) throws MathException
 	{
 		
 		if(!definedOperations.containsKey(multiply))throw new MathException("Multiplication not defined!");
@@ -60,7 +66,7 @@ public class Operations<O>
 		return op.operate(oArray);
 	}
 
-	public O minus(O...oArray) throws MathException
+	public O minus(List<O> oArray) throws MathException
 	{
 		
 		if(!definedOperations.containsKey(minus))throw new MathException("Subtraction not defined!");
@@ -68,7 +74,7 @@ public class Operations<O>
 		return op.operate(oArray);
 	}
 
-	public O dived(O...oArray) throws MathException
+	public O dived(List<O> oArray) throws MathException
 	{
 		
 		if(!definedOperations.containsKey(divide))throw new MathException("Division not defined!");
@@ -76,7 +82,7 @@ public class Operations<O>
 		return op.operate(oArray);
 	}
 
-	public O pow(O...oArray) throws MathException
+	public O pow(List<O> oArray) throws MathException
 	{
 		
 		if(!definedOperations.containsKey(pow))throw new MathException("Exponentiation not defined!");
@@ -84,7 +90,7 @@ public class Operations<O>
 		return op.operate(oArray);
 	}
 
-	public O root(O...oArray) throws MathException
+	public O root(List<O> oArray) throws MathException
 	{
 		
 		if(!definedOperations.containsKey(root))throw new MathException("Root not defined!");
@@ -92,7 +98,7 @@ public class Operations<O>
 		return op.operate(oArray);
 	}
 	
-	public O log(O...oArray) throws MathException
+	public O log(List<O> oArray) throws MathException
 	{
 		
 		if(!definedOperations.containsKey(log))throw new MathException("Logarithim not defined!");
