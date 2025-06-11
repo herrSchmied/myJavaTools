@@ -1,15 +1,13 @@
 package someMath;
 
-import java.awt.Point;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.function.BiConsumer;
 import java.util.function.Function;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import someMath.exceptions.MathException;
@@ -19,41 +17,130 @@ public class MatrixTests
 
 	int minMatrixAddition = 2;
 	int maxMatrixAddition = 50;
+	Matrix<Double>neutrumMatrixAddition;
 	
-	List<Double> neutrals = Arrays.asList(0.0, 0.0, 0.0, 0.0);
-	Matrix<Double> neutrumOfMatrixAddition;
-
 	int minMatrixMultiplication = 2;
 	int maxMatrixMultiplication = 2;
-	
-	List<Double> neutrals2 = Arrays.asList(1.0, 0.0, 0.0, 1.0);
-	Matrix<Double> neutrumOfMatrixMultiplication;
+	Matrix<Double>neutrumMatrixMultiplication;
 
 	Set<Operation<Matrix<Double>>> set = new HashSet<>();
-	MatrixRing field;
+	MatrixRing ring;
 	
 	DoubleField dField;
-
-	@BeforeEach
-	public void setup() throws MathException
+	
+	Function<List<Matrix<Double>>, Matrix<Double>> addition = (list)-> 
 	{
+		
+		Matrix<Double> sum;
 
-		neutrumOfMatrixAddition = new Matrix<>(2, neutrals);
+		int rows = list.get(0).getRows();
+		int cols = list.get(0).getColumns();
+		
+		try
+		{
 
-		neutrumOfMatrixMultiplication = new Matrix<>(2, neutrals2);
+			Double neutrum = DoubleField.neutrumAddition;
+			List<Double>neutrals = new ArrayList<>();
+			for(int n=0;n<(rows*cols);n++)neutrals.add(neutrum);
+			
+			sum = new Matrix<>(rows, neutrals);
+		}
+		catch(MathException e)
+		{
+			e.printStackTrace();
+			throw new RuntimeException();//Remember: Is this optimal?
+		}
+		
+		for(Matrix<Double> summand: list)
+		{			
+			for(int col=0;col<cols;col++)
+			{
+				for(int row=0;row<rows;row++)
+				{
+					Double d = summand.getValue(col, row);
+					Double d2 = sum.getValue(col, row);
+					sum.setValue(col, row, (d+d2));
+				}
+			}
+		};
 
-		Operation<Matrix<Double>> addOpp = new Operation(Operations.add, neutrumOfMatrixAddition,
+		return sum;
+	};		
+
+	Function<List<Matrix<Double>>, Matrix<Double>> multiplication = (list)-> 
+	{
+		
+		
+		Matrix<Double> product;
+
+		int rows = list.get(0).getRows();
+		int cols = list.get(0).getColumns();
+
+		Double valueArr[][]= new Double[cols][rows];
+			
+		for(int c=0;c<cols;c++)
+		{
+			for(int r=0;r<rows;r++)
+			{
+				if(c==r)valueArr[c][r]= DoubleField.neutrumMultiplication;
+				else valueArr[c][r] = DoubleField.neutrumAddition;
+			}
+		}
+			
+		product = new Matrix<>(valueArr);
+
+		Matrix<Double> left = list.get(0);
+		Matrix<Double> right = list.get(1);
+				
+		for(int col=0;col<cols;col++)
+		{
+			for(int row=0;row<rows;row++)
+			{
+				Matrix<Double> leftRow = left.getRow(row);
+				Matrix<Double> rightCol = right.getColumn(col);
+				
+				Double sumProd = 0.0;
+				for(int r=0;r<rows;r++)
+				{
+					Double d = leftRow.getValue(r, 0);
+					Double d2 = rightCol.getValue(0, r);
+					
+					sumProd = sumProd + d*d2;
+				}
+				
+				product.setValue(col, row, sumProd);
+			}
+		}
+
+		return product;
+	};		
+
+
+	public void setup(int n) throws MathException
+	{
+		dField = new DoubleField();
+
+		List<Double> zeros = new ArrayList<>();
+		for(int m=0;m<n*n;m++)zeros.add(DoubleField.neutrumAddition);
+		neutrumMatrixAddition = new Matrix<>(n, zeros);
+		
+		List<Double> diagonalMOne = new ArrayList<>();
+		for(int x=0;x<n;x++)for(int y=0;y<n;y++)
+		{
+			if(x==y)diagonalMOne.add(DoubleField.neutrumMultiplication);
+			else diagonalMOne.add(DoubleField.neutrumAddition);
+		}
+		neutrumMatrixMultiplication = new Matrix<>(n, diagonalMOne);
+		
+		Operation<Matrix<Double>> addOpp = new Operation<>(Operations.add, neutrumMatrixAddition,
 				minMatrixAddition, maxMatrixAddition, addition);
 
-		Operation<Matrix<Double>> multiply = new Operation(Operations.multiply, neutrumOfMatrixMultiplication, minMatrixMultiplication, maxMatrixMultiplication, multiplication);
+		Operation<Matrix<Double>> multiply = new Operation<>(Operations.multiply, neutrumMatrixMultiplication, minMatrixMultiplication, maxMatrixMultiplication, multiplication);
 
 		set.add(addOpp);
 		set.add(multiply);
 		
-		field = new MatrixRing(set);
-		
-		dField = new DoubleField();
-
+		ring = new MatrixRing(set);
 	}
 
 	@Test
@@ -99,118 +186,24 @@ public class MatrixTests
 		System.out.println(matrix.getColumn(0));
 	}
 
-	Function<List<Matrix<Double>>, Matrix<Double>> addition = (list)-> 
-	{
-		
-		Matrix<Double> sum;
 
-		int rows = list.get(0).getRows();
-		int cols = list.get(0).getColumns();
-		
-		try
-		{
-			
-			DoubleField df = new DoubleField();
-
-			Double neutrum = df.neutrumAddition;
-
-			sum = new Matrix<>(rows, neutrals);
-		}
-		catch(MathException e)
-		{
-			e.printStackTrace();
-			throw new RuntimeException();//Remember: Is this optimal?
-		}
-		
-		List<Double> valueList = new ArrayList<>();
-		
-		for(Matrix<Double> summand: list)
-		{			
-			for(int col=0;col<cols;col++)
-			{
-				for(int row=0;row<rows;row++)
-				{
-					Double d = summand.getValue(col, row);
-					Double d2 = sum.getValue(col, row);
-					sum.setValue(col, row, (d+d2));
-				}
-			}
-		};
-
-		return sum;
-	};		
-
-
-	Function<List<Matrix<Double>>, Matrix<Double>> multiplication = (list)-> 
-	{
-		
-		
-		Matrix<Double> product;
-
-		int rows = list.get(0).getRows();
-		int cols = list.get(0).getColumns();
-
-		try
-		{
-			
-			DoubleField df = new DoubleField();
-
-			Double neutrum = df.neutrumAddition;
-
-			product = new Matrix<>(rows, neutrals2);
-		}
-		catch(MathException e)
-		{
-			e.printStackTrace();
-			throw new RuntimeException();//Remember: Is this optimal?
-		}
-		
-		
-		Matrix<Double> left = list.get(0);
-		Matrix<Double> right = list.get(1);
-				
-		for(int col=0;col<cols;col++)
-		{
-			for(int row=0;row<rows;row++)
-			{
-				Matrix<Double> leftRow = left.getRow(row);
-				Matrix<Double> rightCol = right.getColumn(col);
-				
-				Double sumProd = 0.0;
-				for(int r=0;r<rows;r++)
-				{
-					Double d = leftRow.getValue(r, 0);
-					Double d2 = rightCol.getValue(0, r);
-					
-					sumProd = sumProd + d*d2;
-				}
-				
-				product.setValue(col, row, sumProd);
-			}
-		}
-
-		return product;
-	};		
 
 	@Test
 	public void testMatrixAdditionTest() throws MathException
 	{
 
-
-				
-		Matrix<Double> zero = new Matrix<>(2, neutrals);
 		
-		List<Double> listOfValues = Arrays.asList(1.0, 0.0, 1.0, 0.0);
-
-		Matrix<Double> one = new Matrix<>(2, listOfValues);
+		setup(2);//Matrix side length and related stuff.
 		
-		Matrix<Double> s = new Matrix<>(2, neutrals);
-
-		s = field.add(zero, zero);
+		Matrix<Double> zero = neutrumMatrixAddition;
+		
+		Matrix<Double> s = ring.add(zero, zero);
+		
+		Matrix<Double> one = neutrumMatrixMultiplication;
 		
 		assert(s.equals(zero));
 		
-		Matrix<Double> unchanged = field.add(one, zero);
+		Matrix<Double> unchanged = ring.add(one, zero);
 		assert(one.equals(unchanged));
 		
 		List<Double> listOfValues1 = Arrays.asList(1.0, 1.0, 1.0, 1.0);
@@ -225,7 +218,7 @@ public class MatrixTests
 		List<Double> listOfValues34 = Arrays.asList(3.0, 4.0, 3.0, 4.0);
 		Matrix<Double> zeroDet34 = new Matrix<Double>(2, listOfValues34);
 		
-		Matrix<Double> zeroDet = field.add(zeroDetOne, zeroDetTwo, zeroDetThree);
+		Matrix<Double> zeroDet = ring.add(zeroDetOne, zeroDetTwo, zeroDetThree);
 		assert(zeroDet34.equals(zeroDet));
 	}
 	
@@ -233,10 +226,12 @@ public class MatrixTests
 	public void testMatrixMultiplicationTest() throws MathException
 	{
 		
+		setup(2);//Matrix side length and related stuff.
+		
 		List<Double> listOfValues = Arrays.asList(0.0, 2.0, 1.0, 1.0);
 		Matrix<Double> detTwoMinus = new Matrix<Double>(2, listOfValues);
 		
-		Matrix<Double> prod = field.multiply(detTwoMinus, neutrumOfMatrixMultiplication);
+		Matrix<Double> prod = ring.multiply(detTwoMinus, neutrumMatrixMultiplication);
 
 		assert(prod.equals(detTwoMinus));
 	}
@@ -244,7 +239,7 @@ public class MatrixTests
 	@Test
 	public void testMatrixDetTest() throws MathException
 	{
-		
+		setup(3);//Matrix side length and related stuff.
 		List<Double> listOfValues = Arrays.asList(1.0, 0.0, 0.0, 0.0, 1.0, 3.0, 0.0, 1.0, 1.0);
 		Matrix<Double> detTwoMinus = new Matrix<Double>(3, listOfValues);
 		System.out.println(detTwoMinus);
