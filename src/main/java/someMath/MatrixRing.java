@@ -12,13 +12,18 @@ import someMath.exceptions.MathException;
 public class MatrixRing extends Operations<Matrix<Double>>
 {
 
-	private int minMatrixAddition = 2;
-	private int maxMatrixAddition = 50;
-	private Matrix<Double>neutrumMatrixAddition;
+	private final int minMatrixAddition = 2;
+	private final int maxMatrixAddition = 50;
+	private final Matrix<Double>neutrumMatrixAddition;
 	
-	private int minMatrixMultiplication = 2;
-	private int maxMatrixMultiplication = 2;
-	private Matrix<Double>neutrumMatrixMultiplication;
+	private final int minMatrixMultiplication = 2;
+	private final int maxMatrixMultiplication = 2;
+	private final Matrix<Double>neutrumMatrixMultiplication;
+
+	private final int minMatrixTransponing = 1;
+	private final int maxMatrixTransponing = 1;
+	private final Matrix<Double>neutrumMatrixTransponing = null;
+	private final String operationTransponingName = "transponing";
 
 	Function<List<Matrix<Double>>, Matrix<Double>> addition = (list)-> 
 	{
@@ -107,6 +112,42 @@ public class MatrixRing extends Operations<Matrix<Double>>
 		return product;
 	};		
 	
+	Function<List<Matrix<Double>>, Matrix<Double>> transponent = (list)->
+	{
+		
+		if(list.size()!=1)throw new RuntimeException("Exactly one Operand is allowed!");
+		if(list.get(0)==null)throw new RuntimeException("Argument is null.");
+	
+		Matrix<Double> matrix = list.get(0);
+
+		int cols = matrix.getColumns();
+		int rows = matrix.getRows();
+		
+		List<Double> neutrals = new ArrayList<>();
+		for(int n=0;n<cols*rows;n++)neutrals.add(DoubleField.neutrumAddition);
+		Matrix<Double> transponed;
+		try
+		{
+								//Remember columns and rows get switched!!
+			transponed = new Matrix<Double>(cols, neutrals);
+			for(int col=0;col<cols;col++)
+			{
+				for(int row=0;row<rows;row++)
+				{
+					Double d = matrix.getValue(col, row);
+					transponed.setValue(row, col, d);
+				}
+			}
+		}
+		catch(MathException e)
+		{
+			e.printStackTrace();
+			throw new RuntimeException("Couldn't initialize matrix transponend");
+		}
+		
+		return transponed;
+	};
+
 	public MatrixRing(int n) throws MathException
 	{
 		
@@ -129,8 +170,50 @@ public class MatrixRing extends Operations<Matrix<Double>>
 
 		Operation<Matrix<Double>> multiply = new Operation<>(Operations.multiply, neutrumMatrixMultiplication, minMatrixMultiplication, maxMatrixMultiplication, multiplication);
 		
+		Operation<Matrix<Double>> transpone = new Operation<>(operationTransponingName, neutrumMatrixTransponing, minMatrixTransponing, maxMatrixTransponing, transponent);
 		super.setOperation(addOpp);
 		super.setOperation(multiply);
+		super.setOperation(transpone);
+	}
+
+	public int getMinMatrixAddition() {
+		return minMatrixAddition;
+	}
+
+	public int getMaxMatrixAddition() {
+		return maxMatrixAddition;
+	}
+
+	public Matrix<Double> getNeutrumMatrixAddition() {
+		return neutrumMatrixAddition;
+	}
+
+	public int getMinMatrixMultiplication() {
+		return minMatrixMultiplication;
+	}
+
+	public int getMaxMatrixMultiplication() {
+		return maxMatrixMultiplication;
+	}
+
+	public Matrix<Double> getNeutrumMatrixMultiplication() {
+		return neutrumMatrixMultiplication;
+	}
+
+	public int getMinMatrixTransponing() {
+		return minMatrixTransponing;
+	}
+
+	public int getMaxMatrixTransponing() {
+		return maxMatrixTransponing;
+	}
+
+	public Matrix<Double> getNeutrumMatrixTransponing() {
+		return neutrumMatrixTransponing;
+	}
+
+	public String getOperationTransponingName() {
+		return operationTransponingName;
 	}
 	
 }

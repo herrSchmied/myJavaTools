@@ -1,6 +1,8 @@
 package someMath;
 
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -142,6 +144,30 @@ public class MatrixTests
 		Double o = MatrixProperties.determinant(dField, detTwoMinus);
 
 		assert(o.equals(-2.0));
+	}
+	
+	@Test
+	public void testTransponing()throws MathException
+	{
+		int matrixSideLength = 3;
+		setup(matrixSideLength);//Matrix side length and related stuff.
+		List<Double> listOfValues = Arrays.asList(1.0, 0.0, 0.0, 0.0, 1.0, 3.0, 0.0, 1.0, 1.0);
+		Matrix<Double> detTwoMinus = new Matrix<Double>(matrixSideLength, listOfValues);
+		System.out.println(detTwoMinus);
+		
+		Double o = MatrixProperties.determinant(dField, detTwoMinus);
+
+		String opName = ring.getOperationTransponingName();
+		List<Matrix<Double>> operands = new ArrayList<>();
+		operands.add(detTwoMinus);
+		
+		Matrix<Double> t = ring.execute(opName, operands);
+		System.out.println(t);
+		operands.clear();
+		operands.add(t);
+		Matrix<Double> t2 = ring.execute(opName, operands);
+		
+		assert(detTwoMinus.equals(t2));
 	}
 
 }

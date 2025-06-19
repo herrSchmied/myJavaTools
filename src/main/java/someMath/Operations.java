@@ -40,12 +40,9 @@ public class Operations<O>
 		}
 	}
 
-	public O execute(String name, O o1, O o2) throws MathException
+	public O execute(String name, List<O> list) throws MathException
 	{
 		Operation<O> op = definedOperations.get(name);
-		List<O> list = new ArrayList<>();
-		list.add(o1);
-		list.add(o2);
 		
 		return op.operate(list);
 	}
@@ -127,5 +124,11 @@ public class Operations<O>
 	public <E extends Operations<O>> E add(E value) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+	
+	public List<String> getListOfOpNames()
+	{
+		
+		return new ArrayList<>(definedOperations.keySet());
 	}
 }
