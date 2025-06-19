@@ -141,7 +141,7 @@ public class MatrixTests
 		Matrix<Double> detTwoMinus = new Matrix<Double>(matrixSideLength, listOfValues);
 		System.out.println(detTwoMinus);
 		
-		Double o = MatrixProperties.determinant(dField, detTwoMinus);
+		Double o = MatrixStuff.determinant(dField, detTwoMinus);
 
 		assert(o.equals(-2.0));
 	}
@@ -155,19 +155,18 @@ public class MatrixTests
 		Matrix<Double> detTwoMinus = new Matrix<Double>(matrixSideLength, listOfValues);
 		System.out.println(detTwoMinus);
 		
-		Double o = MatrixProperties.determinant(dField, detTwoMinus);
+		Double o = MatrixStuff.determinant(dField, detTwoMinus);
 
 		String opName = ring.getOperationTransponingName();
 		List<Matrix<Double>> operands = new ArrayList<>();
 		operands.add(detTwoMinus);
 		
 		Matrix<Double> t = ring.execute(opName, operands);
-		System.out.println(t);
+		assert(!t.equals(detTwoMinus));
+		
 		operands.clear();
 		operands.add(t);
 		Matrix<Double> t2 = ring.execute(opName, operands);
-		
 		assert(detTwoMinus.equals(t2));
 	}
-
 }

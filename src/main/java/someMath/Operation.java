@@ -1,7 +1,6 @@
 package someMath;
 
-import java.util.ArrayList;
-import java.util.Arrays;
+
 import java.util.List;
 import java.util.function.Function;
 
@@ -28,7 +27,8 @@ public class Operation<O>
 		this.maxOperands = maxOperands;
 		this.op = op;
 	}
-	
+
+
 	public O operate(List<O> operands) throws MathException
 	{		
 		int size = operands.size();

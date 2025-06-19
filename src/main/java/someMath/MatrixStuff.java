@@ -5,7 +5,7 @@ import java.util.List;
 
 import someMath.exceptions.MathException;
 
-public class MatrixProperties
+public class MatrixStuff
 {
 
 	@SuppressWarnings("unchecked")
@@ -107,8 +107,35 @@ public class MatrixProperties
 				}
 			}
 		}
-		
+
 		return new Matrix<O>(rows-1, valueList);
 	}
-
+	
+	public <O, T extends Operations<O> > Matrix<O> scalarMultiplication(T t, O o, Matrix<O> matrix) throws MathException
+	{
+		
+		int cols = matrix.getColumns();
+		int rows = matrix.getRows();
+		
+		Matrix<O> klon = matrix.clone();
+		
+		for(int col=0;col<cols;col++)
+		{
+			for(int row=0;row<rows;row++)
+			{
+				
+				List<O> operands = new ArrayList<>();
+				O op = klon.getValue(col, row);
+				O op2 = o;
+				operands.add(op);
+				operands.add(op2);
+				
+				O product = t.multiply(operands);
+				
+				klon.setValue(col, row, product);
+			}
+		}
+		
+		return klon;
+	}
 }

@@ -11,7 +11,7 @@ import someMath.exceptions.MathException;
 //It is important that the values of Type E have a good overwritten toString Method. 
 //and the Type E must overwrite equals Too.
 //I'm looking for a way to enforce that E is of Type: "Mathematical Field."
-public class Matrix<O>
+public class Matrix<O> implements Cloneable
 {
 
 	private final int rows;
@@ -184,7 +184,37 @@ public class Matrix<O>
 	    return check[0];
 	}
 
-	
+	public Matrix<O> clone()
+	{
+		
+		O o = this.getValue(0, 0);
+		List<O> list = new ArrayList<>();
+		for(int n=0;n<rows*columns;n++)list.add(o);
+		
+		Matrix<O> klon = null;
+		
+		try
+		{
+		
+			klon = new Matrix<O>(rows, list);
+			
+			for(int col=0;col<columns;col++)
+			{
+				for(int row=0;row<rows;row++)
+				{
+					O o2 = this.getValue(col, row);
+					klon.setValue(col, row, o2);
+				}
+			}
+		}
+		catch(MathException e)
+		{
+			e.printStackTrace();
+		}
+		
+		return klon;
+	}
+
 	public void walkThrouMatrix(BiConsumer<Point, O> bic)
 	{
 		
