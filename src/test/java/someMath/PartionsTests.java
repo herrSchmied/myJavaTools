@@ -17,12 +17,6 @@ public class PartionsTests
 	Partitions partitions;
 	final boolean goForMax = true;
 
-	@BeforeEach
-	public void setup()
-	{
-		partitions = new Partitions();
-	}
-
 	@Test
 	public void partitionsTest() throws MathException
 	{
@@ -41,11 +35,10 @@ public class PartionsTests
 
 		System.out.println(BashSigns.bBCPX + "SummandsBiggerSet-Method Test." + BashSigns.bBCSX);
 
-		Partitions partitions = new Partitions();
 		int minSize = 3;
 		int nrOfSummands = 5;
 		int sum = 30;
-		Set<List<Integer>> set =partitions.summandsBiggerSet(minSize, nrOfSummands, sum);
+		Set<List<Integer>> set =Partitions.summandsBiggerSet(minSize, nrOfSummands, sum);
 		int nrPartitions = set.size();
 		printStats(!goForMax, minSize,nrOfSummands, sum, nrPartitions, set);
 		
@@ -57,25 +50,6 @@ public class PartionsTests
 
 		assert(Partitions.sizeFilter(false, minSize, set).size()==set.size());
 		assert(Partitions.sizeFilter(true, minSize-1, set).isEmpty());
-	}
-	
-	@Test
-	public void summandsSmallerTest() throws CollectionException, MathException
-	{
-
-		System.out.println(BashSigns.bBCPX + "SummandsSmallerSet Method Test." + BashSigns.bBCSX);
-
-		Partitions partitions = new Partitions();
-		int maxSize = 4;
-		int nrOfSummands = 4;
-		int sum = 10;
-		Set<List<Integer>> set =partitions.summandsSmallerSet(maxSize, nrOfSummands, sum);
-		int nrPartitions = set.size();
-		
-		printStats(goForMax, maxSize,nrOfSummands, sum, nrPartitions, set);
-		
-		for(List<Integer> list: set)
-			assert(Partitions.sumOfListEntries(list)==sum);
 	}
 
 	public void printStats(boolean maxOrMin, Integer size, Integer nrOfSummands, Integer sum, Integer partitions, 
