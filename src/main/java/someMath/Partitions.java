@@ -10,15 +10,15 @@ import someMath.exceptions.MathException;
 public class Partitions
 {	
 
-	public Set<List<Integer>> summandsBiggerSet(int minSize, int nrOfSummands, int sum) throws MathException
+	public static Set<List<Integer>> summandsBiggerSet(int minSizeElement, int nrOfSummands, int sum) throws MathException
 	{
 		
 		
 		Set<List<Integer>> output = new HashSet<>();
 		
-		if(minSize<=0||nrOfSummands<=0||sum<=0)return output;
+		if(minSizeElement<=0||nrOfSummands<=0||sum<=0)return output;
 		
-		if(minSize*nrOfSummands>sum)return output;
+		if(minSizeElement*nrOfSummands>sum)return output;
 		
 		if(nrOfSummands==1)
 		{
@@ -28,15 +28,15 @@ public class Partitions
 			return output;
 		}
 		
-		for(int size=minSize;size<=sum-nrOfSummands;size++)
+		for(int mse=minSizeElement;mse<=sum;mse++)
 		{
 			
-			Set<List<Integer>> set =summandsBiggerSet(size, nrOfSummands-1, sum-size);
+			Set<List<Integer>> set =summandsBiggerSet(mse, nrOfSummands-1, sum-mse);
 			
 			for(List<Integer> listRight: set)
 			{
 				List<Integer> list = new ArrayList<>();
-				list.add(size);
+				list.add(mse);
 				list.addAll(listRight);
 				output.add(list);
 			}
@@ -45,7 +45,7 @@ public class Partitions
 		return output;
 	}
 
-	public Set<List<Integer>> summandsSmallerSet(int maxSize, int nrOfSummands, int sum) throws MathException
+	public static Set<List<Integer>> summandsSmallerSet(int maxSize, int nrOfSummands, int sum) throws MathException
 	{
 		
 		
@@ -57,21 +57,18 @@ public class Partitions
 		return output;
 	}
 
-	public Set<List<Integer>> partitionsOfNAsLists(int sum) throws MathException
+	public static Set<List<Integer>> partitionsOfNAsLists(int sum) throws MathException
 	{
 		Set<List<Integer>> output = new HashSet<>();
 		
 		if(sum<1)return output;
 		
-		for(int e=1;e<sum;e++)
+		int minSizeElement = 1;
+		for(int nrOfSummands=1;nrOfSummands<=sum;nrOfSummands++)
 		{
-			output.addAll(summandsBiggerSet(1, e, sum));
+			output.addAll(summandsBiggerSet(minSizeElement, nrOfSummands, sum));
 		}
-		
-		List<Integer> bunchOfOnes = new ArrayList<>();
-		for(int n=0;n<sum;n++)bunchOfOnes.add(1);
-		output.add(bunchOfOnes);
-		
+				
 		return output;
 	}
 	
