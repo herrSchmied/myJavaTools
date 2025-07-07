@@ -34,7 +34,7 @@ public class ComplexNrOperations
 	{
 		try
 		{
-			addition = 	new Operation("C-Addition", new ComplexNrDouble(0,0),2, Integer.MAX_VALUE, addComplex);
+			addition = 	new Operation<>("C-Addition", new ComplexNrDouble(0,0),2, Integer.MAX_VALUE, addComplex);
 		}
 		catch (MathException e)
 		{

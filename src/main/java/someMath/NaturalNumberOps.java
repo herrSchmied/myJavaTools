@@ -36,6 +36,7 @@ public class NaturalNumberOps extends Operations<NaturalNumber>
 	Operation<NaturalNumber> add;
 	Operations<NaturalNumber> opsNat;
 	
+	@SuppressWarnings("static-access")
 	private NaturalNumberOps(Set<Operation<NaturalNumber>> set) throws MathException, NaturalNumberException
 	{
 		super(set);

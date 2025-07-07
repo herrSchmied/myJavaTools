@@ -1,8 +1,6 @@
 package someMath;
 
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -155,7 +153,7 @@ public class MatrixTests
 		Matrix<Double> detTwoMinus = new Matrix<Double>(matrixSideLength, listOfValues);
 		System.out.println(detTwoMinus);
 		
-		Double o = MatrixStuff.determinant(dField, detTwoMinus);
+		//Double o = MatrixStuff.determinant(dField, detTwoMinus);
 
 		String opName = ring.getOperationTransponingName();
 		List<Matrix<Double>> operands = new ArrayList<>();

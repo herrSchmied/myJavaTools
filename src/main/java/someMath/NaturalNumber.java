@@ -9,6 +9,8 @@ import static consoleTools.TerminalXDisplay.*;
 public class NaturalNumber extends Number implements Cloneable
 {
 
+	private static final long serialVersionUID = 1L;
+
 	private static boolean toBigWarningOn = false;
 	
 	public final Integer numberCore;

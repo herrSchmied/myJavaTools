@@ -14,13 +14,12 @@ import someMath.exceptions.MathException;
 public class PartionsTests
 {
 
-	Partitions partitions;
 	final boolean goForMax = true;
 
 	@Test
 	public void partitionsTest() throws MathException
 	{
-		
+
 		System.out.println(BashSigns.bBCPX + "Partitions of 6, 7 and 10 Test." + BashSigns.bBCSX);
 
 		runSumPartitionTest(6, 11);
@@ -41,7 +40,7 @@ public class PartionsTests
 		Set<List<Integer>> set =Partitions.summandsBiggerSet(minSize, nrOfSummands, sum);
 		int nrPartitions = set.size();
 		printStats(!goForMax, minSize,nrOfSummands, sum, nrPartitions, set);
-		
+
 		for(List<Integer> list: set)
 		{
 			assert(list.size()==nrOfSummands);
@@ -71,7 +70,7 @@ public class PartionsTests
 	public void runSumPartitionTest(int sum, int expected) throws MathException
 	{
 		
-		Set<List<Integer>> set = partitions.partitionsOfNAsLists(sum);
+		Set<List<Integer>> set = Partitions.partitionsOfNAsLists(sum);
 
 		int nrPartitions = set.size();
 		assert(nrPartitions==expected);

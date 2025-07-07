@@ -165,10 +165,12 @@ public class MatrixRing extends Operations<Matrix<Double>>
 		}
 		neutrumMatrixMultiplication = new Matrix<>(n, diagonalMOne);
 		
-		Operation<Matrix<Double>> addOpp = new Operation<>(Operations.add, neutrumMatrixAddition,
+		@SuppressWarnings("static-access")
+		Operation<Matrix<Double>> addOpp = new Operation<>(super.add, neutrumMatrixAddition,
 				minMatrixAddition, maxMatrixAddition, addition);
 
-		Operation<Matrix<Double>> multiply = new Operation<>(Operations.multiply, neutrumMatrixMultiplication, minMatrixMultiplication, maxMatrixMultiplication, multiplication);
+		@SuppressWarnings("static-access")
+		Operation<Matrix<Double>> multiply = new Operation<>(super.multiply, neutrumMatrixMultiplication, minMatrixMultiplication, maxMatrixMultiplication, multiplication);
 		
 		Operation<Matrix<Double>> transpone = new Operation<>(operationTransponingName, neutrumMatrixTransponing, minMatrixTransponing, maxMatrixTransponing, transponent);
 		super.setOperation(addOpp);

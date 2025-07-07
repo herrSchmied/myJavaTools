@@ -3,7 +3,6 @@ package someMath;
 import java.awt.Point;
 import java.util.*;
 import java.util.function.BiConsumer;
-import java.util.function.Consumer;
 
 import someMath.exceptions.MathException;
 
@@ -30,6 +29,7 @@ public class Matrix<O> implements Cloneable
 		this.valueArr = (O[][]) valueArr;
 	}
 	
+	@SuppressWarnings("unchecked")
 	public Matrix(int rows, List<O> valueList) throws MathException
 	{
 		if(rows<1)throw new MathException("To few rows.");
@@ -68,17 +68,15 @@ public class Matrix<O> implements Cloneable
 		valueArr[column][row] = o;
 	}
 
+	@SuppressWarnings("unchecked")
 	public Matrix<O> getColumn(int column)
 	{
 		
 		Object[][] valueArr = new Object[1][rows];
-		List<O> list = new ArrayList<>();
 		
 		for(int i=0;i<rows;i++)valueArr[0][i]=getValue(column, i);
 		
-		Matrix<O> outputRowMatrix = new Matrix(valueArr);
-		
-		return outputRowMatrix;
+		return (Matrix<O>)new Matrix<>(valueArr);
 	}
 	
 	public void setColumn(List<O> list, int column)
@@ -86,15 +84,14 @@ public class Matrix<O> implements Cloneable
 		for(int i=0;i<rows;i++)valueArr[column][i]= list.get(i);
 	}
 	
+	@SuppressWarnings("unchecked")
 	public Matrix<O> getRow(int row)
 	{
 		Object[][] valueArr = new Object[columns][1];
 		
 		for(int i=0;i<columns;i++)valueArr[i][0]=getValue(i, row);
-		
-		Matrix<O> outputRowMatrix = new Matrix(valueArr);
-		
-		return outputRowMatrix;
+
+		return (Matrix<O>)new Matrix<>(valueArr);
 	}
 	
 	public void setRow(List<O> list, int row)
@@ -140,6 +137,7 @@ public class Matrix<O> implements Cloneable
 		return output;
 	}
 
+	@SuppressWarnings("unchecked")
 	public Class<O> getEnclosedType()
 	{
 		
@@ -150,7 +148,14 @@ public class Matrix<O> implements Cloneable
 	
 	public int hashCode()
 	{
-		return Objects.hash(valueArr);
+		
+		int [] wert = new int[1];
+		
+		BiConsumer<Point, O> bic = (p, o)->wert[0] += o.hashCode() + p.x + p.y;
+		
+		walkThrouMatrix(bic);
+		
+		return Objects.hash(wert[0]);
 	}
 	
 	public boolean equals(Object obj)

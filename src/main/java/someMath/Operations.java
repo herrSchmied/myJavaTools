@@ -13,13 +13,13 @@ import someMath.exceptions.MathException;
 public class Operations<O>
 {	
 	
-	public final static String add = "addition";
-	public final static String multiply = "multiplication";
-	public final static String minus = "subtraction";
-	public final static String divide = "division";
-	public final static String pow = "power";
-	public final static String root = "root";
-	public final static String log = "logarythm";
+	public static final String add = "addition";
+	public static final String multiply = "multiplication";
+	public static final String minus = "subtraction";
+	public static final String divide = "division";
+	public static final String pow = "power";
+	public static final String root = "root";
+	public static final String log = "logarythm";
 
 	public final Set<String> opNames = new HashSet<>(Arrays.asList(add, multiply, minus, divide, pow, root, log));
 

@@ -8,7 +8,6 @@ import someMath.exceptions.MathException;
 public class MatrixStuff
 {
 
-	@SuppressWarnings("unchecked")
 	public static <O, T extends Operations<O>> O determinant(T t,Matrix<O> matrix) throws MathException
 	{
 		if(!matrix.isQuadratic())throw new MathException("Can't compute Determinant of none quadratic Matrix");

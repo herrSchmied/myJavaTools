@@ -57,20 +57,21 @@ public class DoubleField extends Operations<Double>
 
 	static HashSet<Operation<Double>> set = new HashSet<Operation<Double>>();
 	
+	@SuppressWarnings("static-access")
 	public DoubleField() throws MathException
 	{
 		super(set);
 		
-		super.setOperation(new Operation(Operations.add, neutrumAddition, minOperandsAddition,
+		super.setOperation(new Operation<>(super.add, neutrumAddition, minOperandsAddition,
 			maxOperandsAddition, addition));
 		
-		super.setOperation(new Operation(Operations.minus, null, minOperandsSubtraction, 
+		super.setOperation(new Operation<>(super.minus, null, minOperandsSubtraction, 
 				maxOperandsSubtraction, subtraction));
 		
-		super.setOperation(new Operation(Operations.multiply, neutrumMultiplication, minOperandsMultiplication,
+		super.setOperation(new Operation<>(super.multiply, neutrumMultiplication, minOperandsMultiplication,
 						maxOperandsMultiplication, multiplication));
 
-		super.setOperation(new Operation(Operations.divide, null, minOperandsDivision, 
+		super.setOperation(new Operation<>(super.divide, null, minOperandsDivision, 
 				maxOperandsDivision, division));
 	}
 
