@@ -1,33 +1,93 @@
 package someMath;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import someMath.exceptions.MathException;
 
 public class LinearEquationSolver
 {
 
-	private static String [] variableNames;
+	private static List<String> variableNames = new ArrayList<>();
+	private static Set<String> freeVariables = new HashSet<>();
 
-	public static Vektor<Double> solve(Matrix<Double> extendedCoefficientMatrix)
+	public static Vektor<String> solve(Matrix<Double> extendedCoefficientMatrix) throws MathException
 	{
 		int rows = extendedCoefficientMatrix.getRows();
 		int cols = extendedCoefficientMatrix.getColumns();
 
-		variableNames = new String[cols];
+		variableNames = new ArrayList<>();
 		
 		for(int n=0;n<cols;n++)
 		{
-			variableNames[n] = "x"+n;
+			variableNames.add("x"+n);
 		}
-		return null;
+		
+		shortenMatrix(extendedCoefficientMatrix);
+		bubbleSortByLeadingZeros(extendedCoefficientMatrix);
+		
+		if(isRowEchelonForm(extendedCoefficientMatrix))return calculateSolvingVektor(extendedCoefficientMatrix);
+		else transFormEquations(extendedCoefficientMatrix);
+		
+		return calculateSolvingVektor(extendedCoefficientMatrix);
 	}
-	
-	public static Matrix<Double> shortenTheMatrix(Matrix<Double> extendedCoefficientMatrix) throws MathException
+
+	public static void transFormEquations(Matrix<Double> extendedCoefficientMatrix) throws MathException
 	{
 		int rows = extendedCoefficientMatrix.getRows();
 		int cols = extendedCoefficientMatrix.getColumns();
 		
-		boolean [] eraseRow = new boolean[rows];
-		boolean [] eraseColumn = new boolean[rows];
+		if(rows<=1)return;
+		
+		Matrix<Double> rowVektor1 = extendedCoefficientMatrix.getRow(0);
+		int k1 = nrOfLeadingZeros(rowVektor1);
+		if(k1==cols-1)return;
+		
+		Matrix<Double> rowVektor2 = extendedCoefficientMatrix.getRow(1);
+		int k2 = nrOfLeadingZeros(rowVektor2);
+		if(k2==cols-1)return;
+		
+		if(k1==k2)
+		{
+			makeAtLeastOneLeadingZeroExtra(rowVektor1, rowVektor2);
+			extendedCoefficientMatrix.setRow(rowVektor2, 1);
+			bubbleSortByLeadingZeros(extendedCoefficientMatrix);
+		}
+	}
+
+	public static void makeAtLeastOneLeadingZeroExtra(Matrix<Double> source, Matrix<Double> dest) throws MathException
+	{
+
+		int kSource = nrOfLeadingZeros(source);
+		int kDest = nrOfLeadingZeros(dest);
+		
+		if(kDest>kSource)return;
+		if(kDest<kSource)throw new MathException("Destination has less leading Zeros than Source.");
+	
+		double sourceValueAtIndexK = source.getValue(kSource, 0);
+		double destValueAtIndexK = dest.getValue(kSource, 0);
+			
+		double factor = -(destValueAtIndexK/sourceValueAtIndexK);
+			
+		Matrix<Double> addOn = MatrixRing.scaling.apply(factor, source);
+			
+		dest = MatrixRing.addition.apply(dest, addOn);
+	}
+	
+	public static Vektor<String> calculateSolvingVektor(Matrix<Double> extendedCoefficientMatrix)
+	{
+		return null;
+	}
+
+	public static void shortenMatrix(Matrix<Double> extendedCoefficientMatrix) throws MathException
+	{
+		int rows = extendedCoefficientMatrix.getRows();
+		int cols = extendedCoefficientMatrix.getColumns();
+		
+//		boolean [] eraseRow = new boolean[rows];
+//		boolean [] eraseColumn = new boolean[cols];
 		
 		while(true)
 		{
@@ -45,14 +105,14 @@ public class LinearEquationSolver
 				if(columnContainsOnlyZeros(col, extendedCoefficientMatrix))
 				{
 					extendedCoefficientMatrix = eraseColumn(col, extendedCoefficientMatrix);
+					String v = variableNames.remove(col);
+					freeVariables.add(v);
 					break;
 				}
 			}
 			
 			break;
 		}
-		
-		return extendedCoefficientMatrix;
 	}
 
 	public static boolean columnContainsOnlyZeros(int column, Matrix<Double> extendedCoefficientMatrix) throws MathException
@@ -117,10 +177,33 @@ public class LinearEquationSolver
 		return null;
 	}
 	
-	public static Matrix<Double> sortByLeadingZeros(Matrix<Double> extendedCoefficientMatrix)
+	public static void bubbleSortByLeadingZeros(Matrix<Double> extendedCoefficientMatrix) throws MathException
 	{
+		int rows = extendedCoefficientMatrix.getRows();
+		if(rows<=1)return;
+		
+		while(true)
+		{
 
-		return null;
+			boolean sortActionHappend = false;
+			for(int row=0;row<rows-1;row++)
+			{
+				Matrix<Double> above = extendedCoefficientMatrix.getRow(row+1);
+				Matrix<Double> current = extendedCoefficientMatrix.getRow(row);
+			
+				int a = nrOfLeadingZeros(above);
+				int c = nrOfLeadingZeros(current);
+			
+				if(a<c)
+				{
+					extendedCoefficientMatrix.switchRows(row, row+1);
+					sortActionHappend= true;
+				}
+			}
+			
+			if(!sortActionHappend)break;
+		}
+
 	}
 
 	public static boolean isRowEchelonForm(Matrix<Double> extendedCoefficientMatrix) throws MathException
@@ -137,12 +220,10 @@ public class LinearEquationSolver
 			
 			int k = nrOfLeadingZeros(extendedCoefficientMatrix.getRow(row));
 			if((row==0)&&(k==0))return(row==0)&&(k==0);
-			
-			System.out.println("In Row: " + row);
+
 			if(rowContainsOnlyZeros(row, extendedCoefficientMatrix))
 			{
 				
-				System.out.println("Row(" + row +") contains only zeros");
 				if(bottom)continue;
 				else return false;
 			}
@@ -150,7 +231,6 @@ public class LinearEquationSolver
 			{
 				bottom=false;
 				n++;
-				System.out.println("Nr. of leading Zeros in row("+row+"): " + k);
 				if((n==1)&&(k==cols-1))
 				{
 					lastK=k;

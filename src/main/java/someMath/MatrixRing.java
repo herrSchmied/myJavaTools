@@ -20,7 +20,7 @@ public class MatrixRing extends Operations<Matrix<Double>>
 	
 	private final Matrix<Double> neutrumMatrixMultiplication;
 
-	private static final BiFunction<Matrix<Double>, Matrix<Double>, Matrix<Double>> addition = (m1, m2)-> 
+	public static final BiFunction<Matrix<Double>, Matrix<Double>, Matrix<Double>> addition = (m1, m2)-> 
 	{
 		
 		if(!(m1.getRows()==m2.getRows()))throw new RuntimeException("Can't add those Matrizes.");
@@ -52,7 +52,7 @@ public class MatrixRing extends Operations<Matrix<Double>>
 		return sum;
 	};
 	
-	private static final BiFunction<Matrix<Double>, Matrix<Double>, Matrix<Double>> multiplication = (m1, m2)-> 
+	public static final BiFunction<Matrix<Double>, Matrix<Double>, Matrix<Double>> multiplication = (m1, m2)-> 
 	{
 
 		if(!(m1.getColumns()==m2.getRows()))throw new RuntimeException("Can't multiply those Matrizes.");
