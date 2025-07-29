@@ -1,4 +1,4 @@
-package someMath;
+package someMath.pathFinder;
 
 import java.awt.Point;
 
@@ -81,7 +81,7 @@ public class SnakeAndLatticeGrid
 	 */
 	public List<Point> getOptions(Snake snake) throws LTGCException, SnakeException
     {
-
+		System.out.println("Processing Options");
 		Point head = snake.getHead();
    		
 		List<Point> growthOptions = new ArrayList<>();
@@ -111,6 +111,8 @@ public class SnakeAndLatticeGrid
    			Point newHead = addPoints(head, relativePoint);
    			if(checkOption(snake, newHead))growthOptions.add(newHead);
    		}
+   		
+   		System.out.println(growthOptions.size() + " Options");
     	return growthOptions;
     }
 
@@ -257,6 +259,9 @@ public class SnakeAndLatticeGrid
      */
     public Set<Snake> theDivergence(Snake snake) throws SnakeException, LTGCException
     {
+    	
+    	System.out.println("Diverge");
+    	
     	Set<Snake> snakeSet = new HashSet<>();
     	if(snake.getStatus().equals(Snake.deadStatus))
     	{
@@ -400,7 +405,7 @@ public class SnakeAndLatticeGrid
 		catch(LTGCException ltgcException)
 		{
 
-			System.out.println(pointAsString(name, p) + "is out of Bounds!");
+			//System.out.println(pointAsString(name, p) + "is out of Bounds!");
 			return false;
 		}
 

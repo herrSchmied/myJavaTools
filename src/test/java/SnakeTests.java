@@ -7,8 +7,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
-import someMath.Snake;
+
 import someMath.exceptions.SnakeException;
+import someMath.pathFinder.Snake;
 
 
 

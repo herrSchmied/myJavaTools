@@ -1,13 +1,13 @@
 
-import static someMath.LatticeGrid.*;
-
 import java.awt.Point;
 
 import org.junit.jupiter.api.Test;
 
 import static consoleTools.TerminalXDisplay.*;
+import static someMath.pathFinder.LatticeGrid.*;
+
 import someMath.exceptions.LTGCException;
-import someMath.LatticeGrid;
+import someMath.pathFinder.LatticeGrid;
 
 
 public class LatticeGridTest 

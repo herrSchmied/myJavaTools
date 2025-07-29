@@ -1,4 +1,4 @@
-package someMath;
+package someMath.pathFinder;
 
 
 import java.util.List;

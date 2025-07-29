@@ -1,4 +1,4 @@
-package someMath;
+package someMath.pathFinder;
 
 import java.awt.Point;
 import java.util.function.Consumer;
