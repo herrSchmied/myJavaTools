@@ -9,9 +9,9 @@ import java.util.Set;
 
 import someMath.exceptions.CollectionException;
 
+import static CollectionTools.CollectionManipulation.*;
 import static consoleTools.BashSigns.*;
 import static consoleTools.TerminalXDisplay.*;
-import static someMath.CollectionManipulation.*;
 
 public class MathSetClosedUnderUnion
 {

@@ -6,8 +6,8 @@ import java.util.List;
 
 import someMath.exceptions.CollectionException;
 
-import static someMath.CollectionManipulation.*;
 import static someMath.StringManipulation.*;
+import static CollectionTools.CollectionManipulation.*;
 import static consoleTools.BashSigns.*;
 
 public class TerminalXDisplay 

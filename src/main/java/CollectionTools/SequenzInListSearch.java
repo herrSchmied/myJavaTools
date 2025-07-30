@@ -1,4 +1,4 @@
-package someMath;
+package CollectionTools;
 
 import java.util.List;
 

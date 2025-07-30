@@ -1,3 +1,4 @@
+package someMath;
 
 
 
@@ -5,8 +6,8 @@ import java.util.*;
 
 import org.junit.jupiter.api.Test;
 
+import CollectionTools.CollectionManipulation;
 import someMath.exceptions.CollectionException;
-import someMath.CollectionManipulation;
 
 
 public class CartesianProductTest 

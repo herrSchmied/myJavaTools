@@ -16,7 +16,7 @@ public class MakePrimeListFile
 		if(n>200000)throw new MathException("Prime Scope to large.");
 		EratosthenesSieb eSieb = new EratosthenesSieb(n);
 		
-		List<Integer> primeList = EratosthenesSieb.getPrimeList();
+		List<Integer> primeList = eSieb.getPrimeList();
 
 		saveObject(path, primeList);
 	}

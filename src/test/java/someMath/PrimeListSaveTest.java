@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 
 import fileShortCuts.TextAndObjSaveAndLoad;
 import someMath.exceptions.MathException;
+import someMath.simplePrimeTools.EratosthenesSieb;
 import someMath.simplePrimeTools.MakePrimeListFile;
 
 public class PrimeListSaveTest
@@ -20,19 +21,16 @@ public class PrimeListSaveTest
 		new MakePrimeListFile(10, path);
 		
 		List<Integer> primeList = (List<Integer>) TextAndObjSaveAndLoad.loadObject(path);
-
-		System.out.println(primeList);
 		
 		assert(primeList.size()==10);
 		
 		EratosthenesSieb sieb = new EratosthenesSieb(10);
-		List<Integer> primeList2 = EratosthenesSieb.getPrimeList();
+		List<Integer> primeList2 = sieb.getPrimeList();
 		
 		System.out.println(primeList);
 		System.out.println(primeList2);
 		
-		Thread.sleep(5500);
-		//assert(primeList.equals(primeList2));
-		//TODO: they are somehow not equal!!??
+		Thread.sleep(1500);
+		assert(primeList.equals(primeList2));
 	}
 }

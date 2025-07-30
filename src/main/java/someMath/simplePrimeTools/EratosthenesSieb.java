@@ -9,7 +9,7 @@ public class EratosthenesSieb
 {
 
 	int maxPrimNr = 20000;
-	private static List<Integer> primeList = new ArrayList<>();
+	private List<Integer> primeList = new ArrayList<>();
 	private int primeNr=1;
 	
 	public EratosthenesSieb(int maxPrimeNr) throws MathException
@@ -34,14 +34,14 @@ public class EratosthenesSieb
 		}
 	}
 	
-	public static List<Integer> getPrimeList()
+	public List<Integer> getPrimeList()
 	{
 		return primeList;
 	}
 	
-	public static List<Integer> primesSmallerThen(int n)
+	public List<Integer> primesSmallerThen(int n)
 	{
-	
+		//TODO
 		return null;
 	}
 }
