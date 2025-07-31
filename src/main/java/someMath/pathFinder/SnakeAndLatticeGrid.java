@@ -15,7 +15,7 @@ import someMath.exceptions.SnakeException;
 
 /**
  * Put's a Snake, Lattice-Grid and a final-Point together
- * to explore all ways a snake with just one Part(Point) 
+ * to explore all ways a snake with just one Part(Start-Point) 
  * can grow. The Lattices in the Lattice-Grid and the Parts of
  * the Snake narrow the Options. There maybe no Options.
  * In that case the snake will change status to

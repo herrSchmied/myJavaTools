@@ -105,8 +105,8 @@ public class LatticeGrid
 	 */
 	public LatticeGrid(int width, int height) throws LTGCException
 	{
-		if(width<=0)throw new LTGCException("Width must at least be 1.");
-		if(height<=0)throw new LTGCException("Height must be at least be 1.");
+		if(width<2)throw new LTGCException("Width must at least be 2.");
+		if(height<2)throw new LTGCException("Height must be at least be 2.");
 		this.width = width;
 		this.height = height;
 		
