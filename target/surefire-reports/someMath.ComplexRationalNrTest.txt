@@ -1,7 +1,0 @@
--------------------------------------------------------------------------------
-Test set: someMath.ComplexRationalNrTest
--------------------------------------------------------------------------------
-Tests run: 1, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 0.011 s <<< FAILURE! - in someMath.ComplexRationalNrTest
-testConjugate  Time elapsed: 0.011 s  <<< ERROR!
-java.lang.StackOverflowError
-

@@ -1,8 +1,0 @@
--------------------------------------------------------------------------------
-Test set: someMath.RationalNumberTest
--------------------------------------------------------------------------------
-Tests run: 3, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 0.038 s <<< FAILURE! - in someMath.RationalNumberTest
-testRN  Time elapsed: 0.023 s  <<< ERROR!
-java.lang.NumberFormatException: Cannot parse null string
-	at someMath.RationalNumberTest.testRN(RationalNumberTest.java:105)
-
