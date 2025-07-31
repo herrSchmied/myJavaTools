@@ -1,4 +1,4 @@
-package someMath;
+package someMathTest;
 
 import org.junit.jupiter.api.Test;
 

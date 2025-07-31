@@ -1,4 +1,4 @@
-package someMath.pathFinder;
+package someMathTest.pathFinderTest;
 
 import java.awt.Point;
 

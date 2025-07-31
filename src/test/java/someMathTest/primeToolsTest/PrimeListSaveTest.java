@@ -1,4 +1,4 @@
-package someMath;
+package someMathTest.primeToolsTest;
 
 import java.io.IOException;
 import java.util.List;

@@ -1,4 +1,4 @@
-package someMath;
+package someMathTest;
 
 
 import java.util.ArrayList;
@@ -7,6 +7,11 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
+import someMath.DoubleField;
+import someMath.Matrix;
+import someMath.MatrixRing;
+import someMath.MatrixStuff;
+import someMath.Operations;
 import someMath.exceptions.MathException;
 
 public class MatrixTests

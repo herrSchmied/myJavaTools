@@ -1,4 +1,4 @@
-package someMath;
+package someMathTest;
 import java.util.ArrayList;
 import java.util.List;
 

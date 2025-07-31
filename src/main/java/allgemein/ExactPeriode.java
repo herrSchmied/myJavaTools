@@ -6,7 +6,9 @@ import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 
 import javafx.util.Pair;
-import someMath.*;
+import someMath.NaturalNumber;
+import someMath.NaturalNumberException;
+import someMathTest.*;
 
 /**
  * ExactPeriode is relative it depends on two LocalDateTime's (ldt's)

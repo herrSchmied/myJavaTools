@@ -1,4 +1,4 @@
-package someMath;
+package someMathTest;
 
 import java.util.ArrayList;
 
@@ -6,6 +6,9 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
+import someMath.NaturalNumber;
+import someMath.NaturalNumberException;
+import someMath.NaturalNumberOps;
 import someMath.exceptions.MathException;
 
 public class NaturalNumberTest

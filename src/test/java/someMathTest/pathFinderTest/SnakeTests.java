@@ -1,4 +1,4 @@
-package someMath.pathFinder;
+package someMathTest.pathFinderTest;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 

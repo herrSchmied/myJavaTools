@@ -1,10 +1,11 @@
-package someMath;
+package someMathTest;
 
 import java.util.List;
 import java.util.Set;
 
 import org.junit.jupiter.api.Test;
 
+import someMath.Partitions;
 import someMath.exceptions.MathException;
 
 public class AnotherPartitionsTest

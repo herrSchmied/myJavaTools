@@ -1,4 +1,4 @@
-package someMath;
+package someMathTest;
 
 import java.awt.Point;
 import java.util.ArrayList;
