@@ -9,6 +9,7 @@ import static consoleTools.TerminalXDisplay.*;
 import someMath.exceptions.LTGCException;
 import someMath.pathFinder.LatticeGrid;
 
+import static someMath.pathFinder.LatticeGrid.*;
 
 public class LatticeGridTest 
 {
@@ -130,6 +131,19 @@ public class LatticeGridTest
 		});
 	}
 	
+	@Test
+	public void setLatticesOnTileTest() throws LTGCException
+	{
+		
+		Point test = new Point(3, 3);
+		LatticeGrid lg = new LatticeGrid(10, 10);
+		boolean [] latticeCode = new boolean[4];
+	
+		lg.setOneLatticeOnTile(test,indexLatticeBitLeft);
+		
+		assert(lg.hasLatticeOnTheLeft(test));
+	}
+
 	private void plusPlus()
 	{
 		affectedTiles[0] = affectedTiles[0]+1;

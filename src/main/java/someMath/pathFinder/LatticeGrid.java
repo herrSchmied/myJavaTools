@@ -129,7 +129,7 @@ public class LatticeGrid
 	 * @throws LTGCException if p is out of Bounds. If p is null or 
 	 * there is something wrong with the latticeBits.
 	 */
-	public void setLatticesOnTile(Point p, boolean [] latticeBits) throws LTGCException
+	private void setLatticesOnTile(Point p, boolean [] latticeBits) throws LTGCException
 	{
 		throwsExceptionIfOutOfBounds(p.x, p.y);
 		throwsExceptionIfArrayIsNotValid(latticeBits);
@@ -213,7 +213,7 @@ public class LatticeGrid
 	 * @throws LTGCException if p is beyond the width or height
 	 * or when p is null. Also if latticeCode ain't valid.
 	 */
-	public void setLatticesOnTile(Point p, int latticeCode) throws LTGCException
+	private void setLatticesOnTile(Point p, int latticeCode) throws LTGCException
 	{
 		
 		throwsExceptionIfPIsNull(p);
