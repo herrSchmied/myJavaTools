@@ -26,7 +26,7 @@ public class LatticeGrid
 	 * describes on which sides are Lattices
 	 * on the Tile. Also the first index is 
 	 * the x-Coordinate of the Tile. The 
-	 * second one ist the y-Coordinate. If
+	 * second one is the y-Coordinate. If
 	 * a Tile has LatticeCode z, than this 
 	 * means the Tiles surrounding that Tile
 	 * can't Contradict that. Meaning if Tile
@@ -317,7 +317,65 @@ public class LatticeGrid
 		int latticeCode = latticeCodes[x][y];
 		setLatticesOnTile(x, y, latticeCode);
 	}
+	
+	public void clearAllLattices()
+	{
+		boolean [] latticeBits = new boolean[4];
+		latticeBits[0] = false;
+		latticeBits[1] = false;
+		latticeBits[2] = false;
+		latticeBits[3] = false;
+		
+		Consumer<Point> wttConsumer = (p)->
+		{
+			
+			int x = p.x;
+			int y = p.y;
+			
+			try
+			{
+				if((x+y)%2==0)setLatticesOnTile(p, latticeBits);
+			}
+			catch(LTGCException e)
+			{
+				e.printStackTrace();
+			}
+		};
+		
+		walkThruTiles(wttConsumer);
+	}
 
+	public int countAllLattices()
+	{
+
+		int [] cnt = new int[1];
+		
+		
+		Consumer<Point> wttConsumer = (p)->
+		{
+			
+			int x = p.x;
+			int y = p.y;
+			if((x+y)%2==0)
+			{
+				try
+				{
+					boolean[] latticeBits = new boolean[4];
+					latticeBits = translateLatticeCodeToLatticeBits(latticeCodes[p.x][p.y]);
+				
+					for(boolean b: latticeBits)if(b)cnt[0]++;
+				}
+				catch(LTGCException e)
+				{
+					e.printStackTrace();
+				}
+			}
+		};
+		
+		walkThruTiles(wttConsumer);
+		
+		return cnt[0];
+	}
 	/**
 	 * Sets all four Lattices on a Tile.
 	 * @param p x and y Coordinates of the Tile in question.
