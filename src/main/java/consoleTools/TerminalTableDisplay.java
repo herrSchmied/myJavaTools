@@ -62,7 +62,7 @@ public class TerminalTableDisplay
 				}
 				
 				Color c = null;
-				if(highlights!=null)c = getHighlightColor(new Point(n,m));
+				if(highlights!=null)c = getHighlightColor(new Point(m, n));
 				cell[n][m] = new TerminalTableCell(breakupContent(s, c), delimiter, cellWidth);
 			}
 		}
@@ -94,7 +94,7 @@ public class TerminalTableDisplay
 			int r = cellWidth-l;
 			String[] singleLine = new String[1];
 			singleLine[0] = delimiter + s + StringManipulation.customMonoRepeatChar(' ', r);
-			
+
 			if(highlights==null)return singleLine;
 
 			if(c!=null&&c.equals(Color.red))
@@ -138,7 +138,28 @@ public class TerminalTableDisplay
 
 			if(copy.length()>=cellWidth)copy = copy.substring(cellWidth, copy.length());
 
+			
 			lines[n] = delimiter + a;
+			
+			if(highlights==null)return lines;
+
+			if(c!=null&&c.equals(Color.red))
+			{
+				lines[n] = delimiter + formatBashStringBoldAndRed(a);
+			}
+			if(c!=null&&c.equals(Color.yellow))
+			{
+				lines[n] = delimiter + formatBashStringBoldAndYellow(a);
+			}
+			if(c!=null&&c.equals(Color.green))
+			{
+				lines[n] = delimiter + formatBashStringBoldAndGreen(a);
+			}
+
+			if(c!=null&&c.equals(Color.blue))
+			{
+				lines[n] = delimiter + formatBashStringBoldAndBlue(a);
+			}
 		}
 		
 		return lines;

@@ -32,14 +32,11 @@ public class StringMatrixTest
 		
 		List<List<String>> values = Arrays.asList(K, M, L);
 		
-        TerminalTableDisplay show = new TerminalTableDisplay(headers, values, '|',12);
-        System.out.println(show);
-
-        Pair<Color, Point> pair =new Pair(Color.RED, new Point(1,1));
+        Pair<Color, Point> pair =new Pair(Color.RED, new Point(1, 2));
         Set<Pair<Color, Point>> set = new HashSet<>();
         set.add(pair);
         
-        show = new TerminalTableDisplay(headers, values, '|',12, set);
+        TerminalTableDisplay show = new TerminalTableDisplay(headers, values, '|',12, set);
         System.out.println(show);
 
         
