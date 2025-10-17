@@ -1,11 +1,17 @@
 
 
+import java.awt.Color;
+import java.awt.Point;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.junit.jupiter.api.Test;
 
+
 import consoleTools.TerminalTableDisplay;
+import javafx.util.Pair;
 
 
 
@@ -28,6 +34,14 @@ public class StringMatrixTest
 		
         TerminalTableDisplay show = new TerminalTableDisplay(headers, values, '|',12);
         System.out.println(show);
+
+        Pair<Color, Point> pair =new Pair(Color.RED, new Point(1,1));
+        Set<Pair<Color, Point>> set = new HashSet<>();
+        set.add(pair);
+        
+        show = new TerminalTableDisplay(headers, values, '|',12, set);
+        System.out.println(show);
+
         
         assert(true);
 	}
