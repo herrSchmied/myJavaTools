@@ -1,12 +1,16 @@
 package someMath;
 
 
+import java.awt.Point;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.function.BiConsumer;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 
+import javafx.util.Pair;
 import someMath.exceptions.MathException;
 
 public class MatrixRing extends Operations<Matrix<Double>>
@@ -110,7 +114,7 @@ public class MatrixRing extends Operations<Matrix<Double>>
 		}
 
 		return product;
-	};		
+	};
 	
 	Function<List<Matrix<Double>>, Matrix<Double>> transponent = (list)->
 	{
@@ -148,6 +152,20 @@ public class MatrixRing extends Operations<Matrix<Double>>
 		return transponed;
 	};
 
+	public static final BiFunction<Double, Matrix<Double>, Matrix<Double>> scaling = (d, m)->
+	{
+
+		Matrix<Double> m2 = m.clone();
+		
+		BiConsumer<Point, Double> bic = (p, v)->
+		{
+			m2.setValue(p.x, p.y, v*d);
+		};
+
+		m2.walkThrouMatrix(bic);
+		return m2;
+	};
+	
 	public MatrixRing(int n) throws MathException
 	{
 		
