@@ -3,34 +3,23 @@ package someMath;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.function.Function;
+import java.util.function.BiFunction;
 
 import someMath.exceptions.MathException;
 
 public class NaturalNumberOps extends Operations<NaturalNumber>
 {
 
-	Function<List<NaturalNumber>, NaturalNumber> addFunc = (list)->
+	BiFunction<NaturalNumber, NaturalNumber, NaturalNumber> addFunc = (n1, n2)->
 	{
-		
-		int size = list.size();
-		
-		NaturalNumber start = NaturalNumber.zero;
-		for(int n=0;n<size;n++)
+		try
 		{
-			NaturalNumber listItem = list.get(n);
-			
-			try
-			{
-				start = new NaturalNumber(start.numberCore+listItem.numberCore);
-			} 
-			catch (NaturalNumberException e)
-			{
-				e.printStackTrace();
-				return null;
-			}
+			return new NaturalNumber(n1.numberCore+ n2.numberCore);
 		}
-		return start;
+		catch(NaturalNumberException e)
+		{
+			throw new RuntimeException("Can't add those.");
+		}
 	};
 	
 	Operation<NaturalNumber> add;
@@ -40,7 +29,7 @@ public class NaturalNumberOps extends Operations<NaturalNumber>
 	private NaturalNumberOps(Set<Operation<NaturalNumber>> set) throws MathException, NaturalNumberException
 	{
 		super(set);
-		add = new Operation<>(super.add, NaturalNumber.zero, 2, Integer.MAX_VALUE, addFunc);
+		add = new Operation<>(super.add, NaturalNumber.zero, addFunc);
 		setOperation(add);
 	}
 

@@ -1,12 +1,11 @@
 package someMathTest;
-import java.util.ArrayList;
-import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
 import someMath.DoubleField;
-import someMath.Operations;
 import someMath.exceptions.MathException;
+
+import static someMath.Operations.*;
 
 public class DoubleFieldTest
 {
@@ -19,18 +18,15 @@ public class DoubleFieldTest
 		
 		Double d = 1.0;
 
-		assert(d.equals(dField.getNeutrumOfOperation(Operations.multiply)));
+		assert(d.equals(dField.getNeutrumOfOperation(multiply)));
 	
 		Double d2 = 2.0;
 		Double d3 = 3.0;
-		List<Double> operands = new ArrayList<>();
-		operands.add(d2);
-		operands.add(d3);
 		
-		Double product = dField.multiply(operands);
+		Double product = dField.multiply(d2, d3);
 		assert(product.equals(6.0));
 		
-		Double sum = dField.add(operands);
+		Double sum = dField.add(d2, d3);
 		assert(sum.equals(5.0));
 	}
 }

@@ -27,31 +27,25 @@ public class MatrixStuff
 			
 			O o = t.getNeutrumOfOperation(Operations.add);
 			O o2 = t.getNeutrumOfOperation(Operations.multiply);
-			List<O> operands = new ArrayList<>();
-			operands.add(o);
-			operands.add(o2);
 			
-			O minusOne = t.minus(operands);
+			O minusOne = t.minus(o, o2);
 			
 			O o3;
 			
-			operands.clear();
-			operands.add(subDet);
-			operands.add(m);
-			if((row+col)%2==0)o3= t.multiply(operands);
+			if((row+col)%2==0)o3= t.multiply(subDet, m);
 			else
 			{
-				operands.clear();
-				operands.add(minusOne);
-				operands.add(subDet);
-				operands.add(m);
-				o3 = t.multiply(operands);
+				/*
+				 * operands.clear();
+				 * operands.add(minusOne);
+				 * operands.add(subDet);
+				 * operands.add(m);
+				 */				
+				o3 = t.multiply(minusOne, subDet);
+				o3 = t.multiply(o3, m);
 			}
 			
-			operands.clear();
-			operands.add(sum);
-			operands.add(o3);
-			sum = t.add(operands);
+			sum = t.add(sum, o3);
 		}
 		
 		return sum;
@@ -68,21 +62,12 @@ public class MatrixStuff
 		O o21 = matrix.getValue(0, 1);
 		O o22 = matrix.getValue(1, 1);
 		
-		List<O> operands = new ArrayList<>();
-		operands.add(o11);
-		operands.add(o22);
-		O q1 = t.multiply(operands);
+		O q1 = t.multiply(o11, o22);
 		
-		operands.clear();
-		operands.add(o12);
-		operands.add(o21);
-		O q2 = t.multiply(operands);
+		O q2 = t.multiply(o12, o21);
 		
 		
-		operands.clear();
-		operands.add(q1);
-		operands.add(q2);
-		O det = t.minus(operands);
+		O det = t.minus(q1, q2);
 		
 		return det;
 	}
@@ -123,13 +108,10 @@ public class MatrixStuff
 			for(int row=0;row<rows;row++)
 			{
 				
-				List<O> operands = new ArrayList<>();
 				O op = klon.getValue(col, row);
 				O op2 = o;
-				operands.add(op);
-				operands.add(op2);
 				
-				O product = t.multiply(operands);
+				O product = t.multiply(op, op2);
 				
 				klon.setValue(col, row, product);
 			}

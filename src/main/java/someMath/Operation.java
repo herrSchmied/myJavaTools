@@ -1,41 +1,31 @@
 package someMath;
 
 
-import java.util.List;
-import java.util.function.Function;
+import java.util.function.BiFunction;
 
 
 import someMath.exceptions.MathException;
+
 
 public class Operation<O>
 {
 	
 	private final String name;
 	private final O neutrum;
-	private final int minOperands;
-	private final int maxOperands;
-	private final Function<List<O>, O> op;
+	private final BiFunction<O, O, O> op;
 	
-	public Operation(String name, O neutrum, int minOperands, int maxOperands, Function<List<O>, O> op) throws MathException
+	public Operation(String name, O neutrum,  BiFunction<O, O, O> op) throws MathException
 	{
 		this.name = name;
 		this.neutrum = neutrum;
-		if(minOperands<1)throw new MathException("At least one Operand is needed when defining a Operation.");
-		if(maxOperands<minOperands) throw new MathException("max. Operands must be equal or bigger then min. Operands.");
 
-		this.minOperands = minOperands;
-		this.maxOperands = maxOperands;
 		this.op = op;
 	}
 
 
-	public O operate(List<O> operands) throws MathException
+	public O operate(O o1, O o2) throws MathException
 	{		
-		int size = operands.size();
-		if(size>maxOperands||size<minOperands)throw new MathException("Not the right nr of Operands");
-		
-		
-		return op.apply(operands);
+		return op.apply(o1, o2);
 	}
 
 	public Boolean hasNeutralElement()

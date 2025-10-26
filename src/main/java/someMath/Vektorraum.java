@@ -16,41 +16,9 @@ public class Vektorraum extends Operations<Vektor<Double>>
 	private final int minMatrixAddition = 2;
 	private final int maxMatrixAddition = 50;
 	private final Matrix<Double>neutrumMatrixAddition;
+	private final DoubleField df;
 
-	Function<List<Vektor<Double>>, Vektor<Double>> addition = (list)-> 
-	{
-		
-		Vektor<Double> sum;
-
-		int rows = list.get(0).getRows();
-		
-		try
-		{
-
-			Double neutrum = DoubleField.neutrumAddition;
-			List<Double>neutrals = new ArrayList<>();
-			for(int n=0;n<(rows);n++)neutrals.add(neutrum);
-			
-			sum = new Vektor<>(neutrals);
-		}
-		catch(MathException e)
-		{
-			e.printStackTrace();
-			throw new RuntimeException();//Remember: Is this optimal?
-		}
-		
-		for(Vektor<Double> summand: list)
-		{			
-			for(int row=0;row<rows;row++)
-			{
-				Double d = summand.getValue(row);
-				Double d2 = sum.getValue(row);
-				sum.setValue(row, (d+d2));
-			}
-		};
-
-		return sum;
-	};
+	private final Function<List<Vektor<Double>>, Vektor<Double>> addition;
 
 	public static final BiFunction<Double, Vektor<Double>, Vektor<Double>> scaling = (d,s)->
 	{
@@ -70,9 +38,45 @@ public class Vektorraum extends Operations<Vektor<Double>>
 	public Vektorraum(int n) throws MathException
 	{
 		super(new HashSet<Operation<Vektor<Double>>>());
+		df = new DoubleField();
 		List<Double> zeros = new ArrayList<>();
-		for(int m=0;m<n;m++)zeros.add(DoubleField.neutrumAddition);
+		for(int m=0;m<n;m++)zeros.add(df.getNeutrumOfOperation(add));
 		neutrumMatrixAddition = new Vektor<>(zeros);
+		
+		addition = (list)-> 
+		{
+			
+			Vektor<Double> sum;
+
+			int rows = list.get(0).getRows();
+			
+			try
+			{
+
+				Double neutrum = df.getNeutrumOfOperation(add);
+				List<Double>neutrals = new ArrayList<>();
+				for(int m=0;m<(rows);m++)neutrals.add(neutrum);
+				
+				sum = new Vektor<>(neutrals);
+			}
+			catch(MathException e)
+			{
+				e.printStackTrace();
+				throw new RuntimeException();//Remember: Is this optimal?
+			}
+			
+			for(Vektor<Double> summand: list)
+			{			
+				for(int row=0;row<rows;row++)
+				{
+					Double d = summand.getValue(row);
+					Double d2 = sum.getValue(row);
+					sum.setValue(row, (d+d2));
+				}
+			};
+
+			return sum;
+		};
 	}
 
 }

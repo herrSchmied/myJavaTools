@@ -22,17 +22,11 @@ public class NaturalNumberTest
 		
 		NaturalNumberOps nno = new NaturalNumberOps();
 		
-		List<NaturalNumber> operands = new ArrayList<>();
-		operands.add(a);
-		operands.add(b);
-		NaturalNumber c = nno.add(operands);
+		NaturalNumber c = nno.add(a, b);
 		
 		assert(c.equals(b));
 		
-		operands.clear();
-		operands.add(b);
-		operands.add(c);
-		NaturalNumber d = nno.add(operands);
+		NaturalNumber d = nno.add(b, c);
 		
 		assert(d.isGreaterThen(b));
 	}

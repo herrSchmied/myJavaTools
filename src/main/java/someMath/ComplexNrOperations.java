@@ -1,7 +1,7 @@
 package someMath;
 
 import java.util.List;
-import java.util.function.Function;
+import java.util.function.BiFunction;
 
 import someMath.exceptions.MathException;
 
@@ -9,23 +9,18 @@ import someMath.exceptions.MathException;
 public class ComplexNrOperations
 {
 
-	public static Function<List<ComplexNrDouble>, ComplexNrDouble> addComplex = (list)->
+	public static BiFunction<ComplexNrDouble, ComplexNrDouble, ComplexNrDouble> addComplex = (z1, z2)->
 	{
 	
-		ComplexNrDouble current = ComplexNrDouble.getZero();
+		Double r1 = z1.getRealPart();
+		Double r2 = z2.getRealPart();
+		Double sumR = r1+r2;
 		
-		for(ComplexNrDouble z: list)
-		{
-			Double realZ = z.getRealPart();
-			Double imgZ = z.getImaginaryPart();
-			
-			Double realCurrent = current.getRealPart();
-			Double imgCurrent = current.getImaginaryPart();
-
-			current = new ComplexNrDouble(realZ+realCurrent, imgZ+imgCurrent);
-		}
-
-		return current;
+		Double im1 = z1.getImaginaryPart();
+		Double im2 = z2.getImaginaryPart();
+		Double sumIm = im1+im2;
+		
+		return new ComplexNrDouble(sumR, sumIm);
 	};
 	
 	public static Operation<ComplexNrDouble> addition;
@@ -34,7 +29,7 @@ public class ComplexNrOperations
 	{
 		try
 		{
-			addition = 	new Operation<>("C-Addition", new ComplexNrDouble(0,0),2, Integer.MAX_VALUE, addComplex);
+			addition = 	new Operation<>("C-Addition", new ComplexNrDouble(0,0), addComplex);
 		}
 		catch (MathException e)
 		{

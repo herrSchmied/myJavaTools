@@ -81,19 +81,13 @@ public class MatrixTests
 		
 		Matrix<Double> zero = ring.getNeutrumOfOperation(Operations.add);
 		
-		List<Matrix<Double>> operands = new ArrayList<>();
-		operands.add(zero);
-		operands.add(zero);
-		Matrix<Double> s = ring.add(operands);
+		Matrix<Double> s = ring.add(zero, zero);
 		
 		Matrix<Double> one = ring.getNeutrumOfOperation(Operations.multiply);
 		
 		assert(s.equals(zero));
 		
-		operands.clear();
-		operands.add(one);
-		operands.add(zero);
-		Matrix<Double> unchanged = ring.add(operands);
+		Matrix<Double> unchanged = ring.add(zero, one);
 		assert(one.equals(unchanged));
 		
 		List<Double> listOfValues1 = Arrays.asList(1.0, 1.0, 1.0, 1.0);
@@ -108,11 +102,8 @@ public class MatrixTests
 		List<Double> listOfValues34 = Arrays.asList(3.0, 4.0, 3.0, 4.0);
 		Matrix<Double> zeroDet34 = new Matrix<Double>(matrixSideLength, listOfValues34);
 		
-		operands.clear();
-		operands.add(zeroDetOne);
-		operands.add(zeroDetTwo);
-		operands.add(zeroDetThree);
-		Matrix<Double> zeroDet = ring.add(operands);
+		Matrix<Double> holder = ring.add(zeroDetOne, zeroDetTwo);
+		Matrix<Double> zeroDet = ring.add(holder, zeroDetThree);
 		assert(zeroDet34.equals(zeroDet));
 	}
 	
@@ -124,13 +115,14 @@ public class MatrixTests
 		
 		List<Double> listOfValues = Arrays.asList(0.0, 2.0, 1.0, 1.0);
 		Matrix<Double> detTwoMinus = new Matrix<Double>(matrixSideLength, listOfValues);
-		
-		List<Matrix<Double>> operands = new ArrayList<>();
+		System.out.println(detTwoMinus);
 		Matrix<Double> neutrumMatrixMultiplication = ring.getNeutrumOfOperation(Operations.multiply);
-		operands.add(detTwoMinus);
-		operands.add(neutrumMatrixMultiplication);
-		Matrix<Double> prod = ring.multiply(operands);
+		System.out.println(neutrumMatrixMultiplication);
+		Matrix<Double> prod = ring.multiply(neutrumMatrixMultiplication, detTwoMinus);
 
+		assert(prod.equals(detTwoMinus));
+		
+		prod = ring.multiply(detTwoMinus, neutrumMatrixMultiplication);
 		assert(prod.equals(detTwoMinus));
 	}
 
@@ -160,16 +152,11 @@ public class MatrixTests
 		
 		//Double o = MatrixStuff.determinant(dField, detTwoMinus);
 
-		String opName = ring.getOperationTransponingName();
-		List<Matrix<Double>> operands = new ArrayList<>();
-		operands.add(detTwoMinus);
 		
-		Matrix<Double> t = ring.execute(opName, operands);
+		Matrix<Double> t = ring.transponent.apply(detTwoMinus);
 		assert(!t.equals(detTwoMinus));
 		
-		operands.clear();
-		operands.add(t);
-		Matrix<Double> t2 = ring.execute(opName, operands);
+		Matrix<Double> t2 = ring.transponent.apply(t);
 		assert(detTwoMinus.equals(t2));
 	}
 }
