@@ -10,6 +10,10 @@ public class Vektor<O> extends Matrix<O>
 
 	private final int rows;
 
+	/*
+	 * public Vektor(Matrix<O> matrix) throws MathException {
+	 * super(matrix.getRows(),???); this.rows = matrix.getRows(); }
+	 */	
 	public Vektor(List<O> valueList) throws MathException
 	{
 		super(valueList.size(), valueList);

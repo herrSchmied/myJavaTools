@@ -4,21 +4,20 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
-import java.util.function.Function;
+
 
 import someMath.exceptions.MathException;
 
 public class Vektorraum extends Operations<Vektor<Double>>
 {
-	private final int minMatrixAddition = 2;
-	private final int maxMatrixAddition = 50;
-	private final Matrix<Double>neutrumMatrixAddition;
+
+	private final Vektor<Double> neutrumVektorAddition;
 	private final DoubleField df;
 
-	private final Function<List<Vektor<Double>>, Vektor<Double>> addition;
+	private final BiFunction<Vektor<Double>, Vektor<Double>, Vektor<Double>> addition;
+	private final BiFunction<Vektor<Double>, Vektor<Double>, Vektor<Double>> subtraction;
 
 	public static final BiFunction<Double, Vektor<Double>, Vektor<Double>> scaling = (d,s)->
 	{
@@ -34,49 +33,61 @@ public class Vektorraum extends Operations<Vektor<Double>>
 		
 		return v2;
 	};
-	
+
+	public static final BiFunction<Vektor<Double>, Vektor<Double>, Double> scalarProduct = (v1, v2)->
+	{
+
+		int rows = v1.getRows();
+		
+		double sum = 0.0;
+		
+		for(int n=0;n<rows;n++)
+		{
+			sum = sum + v1.getValue(n)*v2.getValue(n);
+		}
+
+		return sum;
+	};
+
 	public Vektorraum(int n) throws MathException
 	{
 		super(new HashSet<Operation<Vektor<Double>>>());
 		df = new DoubleField();
 		List<Double> zeros = new ArrayList<>();
 		for(int m=0;m<n;m++)zeros.add(df.getNeutrumOfOperation(add));
-		neutrumMatrixAddition = new Vektor<>(zeros);
+		neutrumVektorAddition = new Vektor<Double>(zeros);
 		
-		addition = (list)-> 
+		addition = (v1, v2)-> 
 		{
 			
-			Vektor<Double> sum;
+			Vektor<Double> sum = v1.clone();
 
-			int rows = list.get(0).getRows();
+			int rows = v1.getRows();
 			
-			try
-			{
-
-				Double neutrum = df.getNeutrumOfOperation(add);
-				List<Double>neutrals = new ArrayList<>();
-				for(int m=0;m<(rows);m++)neutrals.add(neutrum);
-				
-				sum = new Vektor<>(neutrals);
-			}
-			catch(MathException e)
-			{
-				e.printStackTrace();
-				throw new RuntimeException();//Remember: Is this optimal?
-			}
-			
-			for(Vektor<Double> summand: list)
-			{			
+	
 				for(int row=0;row<rows;row++)
 				{
-					Double d = summand.getValue(row);
-					Double d2 = sum.getValue(row);
+					Double d = v1.getValue(row);
+					Double d2 = v2.getValue(row);
 					sum.setValue(row, (d+d2));
 				}
-			};
+			
 
 			return sum;
 		};
-	}
+		
+		Operation<Vektor<Double>> op = new Operation<>(Operations.add, neutrumVektorAddition, addition);
+		super.setOperation(op);
+		
+		subtraction = (v1, v2)-> 
+		{
 
+			Vektor<Double> mV2 = scaling.apply(-1.0, v2);
+			
+			return addition.apply(v1, mV2);
+		};
+
+		op = new Operation<>(Operations.minus, null, subtraction);
+		super.setOperation(op);
+	}
 }

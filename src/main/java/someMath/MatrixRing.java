@@ -129,7 +129,7 @@ public class MatrixRing extends Operations<Matrix<Double>>
 		m2.walkThrouMatrix(bic);
 		return m2;
 	};
-	
+
 	public MatrixRing(int n) throws MathException
 	{
 		
@@ -159,12 +159,10 @@ public class MatrixRing extends Operations<Matrix<Double>>
 		super.setOperation(multiply);
 	}
 
-
 	public Matrix<Double> getNeutrumMatrixAddition()
 	{
 		return neutrumMatrixAddition;
 	}
-
 
 	public Matrix<Double> getNeutrumMatrixMultiplication()
 	{
