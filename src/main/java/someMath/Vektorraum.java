@@ -23,13 +23,13 @@ public class Vektorraum extends Operations<Vektor<Double>>
 	{
 
 		Vektor<Double> v2 = s.clone();
+		int rows = v2.getRows();
 		
-		BiConsumer<Point, Double> bic = (p, v)->
+		for(int row=0;row<rows;row++)
 		{
-			v2.setValue(p.x, p.y, v*d);
-		};
-
-		v2.walkThrouMatrix(bic);
+			double v = s.getValue(row);
+			v2.setValue(row, v*d);
+		}
 		
 		return v2;
 	};
