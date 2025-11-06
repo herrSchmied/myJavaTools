@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Test;
 
 import consoleTools.TerminalTableDisplay;
 import javafx.util.Pair;
+import someMath.exceptions.ConsoleToolsException;
 
 
 
@@ -19,7 +20,7 @@ public class StringMatrixTest
 {
 
 	@Test
-	public void anotherTest()
+	public void anotherTest() throws ConsoleToolsException
 	{
 		
 		List<String> headers = Arrays.asList("Name", "Status", "Time");
@@ -32,10 +33,15 @@ public class StringMatrixTest
 		
 		List<List<String>> values = Arrays.asList(K, M, L);
 		
-        Pair<Color, Point> pair =new Pair(Color.RED, new Point(1, 2));
+        Pair<Color, Point> pair =new Pair<>(Color.RED, new Point(1, 2));
+        Pair<Color, Point> pair2 =new Pair<>(Color.YELLOW, new Point(2, 2));
+        Pair<Color, Point> pair3 =new Pair<>(Color.GREEN, new Point(1, 3));
+       
         Set<Pair<Color, Point>> set = new HashSet<>();
         set.add(pair);
-        
+        set.add(pair2);
+        set.add(pair3);
+
         TerminalTableDisplay show = new TerminalTableDisplay(headers, values, '|',12, set);
         System.out.println(show);
 

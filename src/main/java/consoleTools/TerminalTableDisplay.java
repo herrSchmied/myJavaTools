@@ -12,7 +12,7 @@ import java.util.ArrayList;
 
 
 import someMath.StringManipulation;
-
+import someMath.exceptions.ConsoleToolsException;
 
 import static consoleTools.TerminalXDisplay.*;
 
@@ -30,7 +30,7 @@ public class TerminalTableDisplay
 	private final int dL = 1; //delimiterLength = 1;
 	private final Set<Pair<Color, Point>> highlights;
 	
-	public TerminalTableDisplay(List<String> headers, List<List<String>> cellValues, char delimiter, int cellWidth, Set<Pair<Color, Point>> highlights)
+	public TerminalTableDisplay(List<String> headers, List<List<String>> cellValues, char delimiter, int cellWidth, Set<Pair<Color, Point>> highlights) throws ConsoleToolsException
 	{
 
 		this.headers = headers;
@@ -68,7 +68,7 @@ public class TerminalTableDisplay
 		}
 	}
 
-	public TerminalTableDisplay(List<String> headers, List<List<String>> cellValues, char delimiter, int cellWidth)
+	public TerminalTableDisplay(List<String> headers, List<List<String>> cellValues, char delimiter, int cellWidth) throws ConsoleToolsException
 	{
 		this(headers, cellValues, delimiter, cellWidth, null);
 	}
@@ -84,7 +84,7 @@ public class TerminalTableDisplay
 		return null;
 	}
 
-	public String[] breakupContent(String s, Color c)
+	public String[] breakupContent(String s, Color c) throws ConsoleToolsException
 	{
 		
 		int l = s.length();
@@ -97,22 +97,9 @@ public class TerminalTableDisplay
 
 			if(highlights==null)return singleLine;
 
-			if(c!=null&&c.equals(Color.red))
+			if(c!=null)
 			{
-				singleLine[0] = delimiter + formatBashStringBoldAndRed(s) + StringManipulation.customMonoRepeatChar(' ', r);
-			}
-			if(c!=null&&c.equals(Color.yellow))
-			{
-				singleLine[0] = delimiter + formatBashStringBoldAndYellow(s) + StringManipulation.customMonoRepeatChar(' ', r);
-			}
-			if(c!=null&&c.equals(Color.green))
-			{
-				singleLine[0] = delimiter + formatBashStringBoldAndGreen(s) + StringManipulation.customMonoRepeatChar(' ', r);
-			}
-
-			if(c!=null&&c.equals(Color.blue))
-			{
-				singleLine[0] = delimiter + formatBashStringBoldAndBlue(s) + StringManipulation.customMonoRepeatChar(' ', r);
+				singleLine[0] = delimiter + formatBashStringBoldInColorX(c, s) + StringManipulation.customMonoRepeatChar(' ', r);
 			}
 
 			return singleLine;
@@ -143,22 +130,9 @@ public class TerminalTableDisplay
 			
 			if(highlights==null)return lines;
 
-			if(c!=null&&c.equals(Color.red))
+			if(c!=null)
 			{
-				lines[n] = delimiter + formatBashStringBoldAndRed(a);
-			}
-			if(c!=null&&c.equals(Color.yellow))
-			{
-				lines[n] = delimiter + formatBashStringBoldAndYellow(a);
-			}
-			if(c!=null&&c.equals(Color.green))
-			{
-				lines[n] = delimiter + formatBashStringBoldAndGreen(a);
-			}
-
-			if(c!=null&&c.equals(Color.blue))
-			{
-				lines[n] = delimiter + formatBashStringBoldAndBlue(a);
+				lines[n] = delimiter + formatBashStringBoldInColorX(c, a);
 			}
 		}
 		

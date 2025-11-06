@@ -1,17 +1,25 @@
 package consoleTools;
 
+import java.awt.Color;
 import java.awt.Point;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import someMath.exceptions.CollectionException;
+import someMath.exceptions.ConsoleToolsException;
 
 import static someMath.StringManipulation.*;
 import static CollectionTools.CollectionManipulation.*;
 import static consoleTools.BashSigns.*;
 
+
 public class TerminalXDisplay 
 {
+
+	private static Set<Color> availableColors = new HashSet<>(Arrays.asList(Color.RED, Color.GREEN, Color.BLUE, Color.YELLOW));
 
 	public static String pointToString(String name, Point p)
 	{
@@ -139,4 +147,29 @@ public class TerminalXDisplay
 		return rBCPX+s+rBCSX;
 	}
 
+	public static String formatBashStringBoldInColorX(Color c, String s) throws ConsoleToolsException
+	{
+
+		if(c==null) throw new ConsoleToolsException("Null is not a Color.");
+
+		if(c.equals(Color.RED))return formatBashStringBoldAndRed(s);
+		if(c.equals(Color.GREEN))return formatBashStringBoldAndGreen(s);
+		if(c.equals(Color.BLUE))return formatBashStringBoldAndBlue(s);
+		if(c.equals(Color.YELLOW))return formatBashStringBoldAndYellow(s);
+		
+		throw new ConsoleToolsException("Color is not intended to be used here.");
+	}
+
+	public static String formatBashStringInColorX(Color c, String s) throws Exception
+	{
+
+		if(c==null) throw new ConsoleToolsException("Null is not a Color.");
+
+		if(c.equals(Color.RED))return formatBashStringRed(s);
+		if(c.equals(Color.GREEN))return formatBashStringGreen(s);
+		if(c.equals(Color.BLUE))return formatBashStringBlue(s);
+		if(c.equals(Color.YELLOW))return formatBashStringYellow(s);
+		
+		throw new ConsoleToolsException("Color is not intended to be used here.");
+	}
 }
