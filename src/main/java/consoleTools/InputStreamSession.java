@@ -253,7 +253,8 @@ public class InputStreamSession
 		LocalDate ld = LocalDate.of(jahr, m, day);
 		LocalTime lt = LocalTime.of(stunde, minuteMinute);
 		ldt = LocalDateTime.of(ld, lt);
-		
+		if(ldt.isBefore(begin)||ldt.isAfter(end))throw new InputArgumentException("This is not in the timeframe.");
+
 		return ldt;
 	}
 	
@@ -317,5 +318,43 @@ public class InputStreamSession
 			System.out.println(iae.getMessage());
 			return forcedDateTimeInOneLine(phrase, begin, end);
 		}
-	}	
+	}
+	
+	public static String translateTimeToAnswerString(LocalDateTime ldt)
+	{
+		int day = ldt.getDayOfMonth();
+		String dayStr = "" + day;
+		if(day<10) dayStr = "0" + day;
+		
+		int month = ldt.getMonthValue();
+		Month m = Month.of(month);
+		String monthStr = "";
+		for(String s: InputStreamSession.monthMap.keySet())
+		{
+			Month d = InputStreamSession.monthMap.get(s);
+			if(m.equals(d))
+			{
+				monthStr = s;
+				break;
+			}
+		}
+
+		int hour = ldt.getHour();
+		String hourStr = ""+hour;
+		if(hour<10) hourStr = "0" + hour;
+		
+		int year = ldt.getYear();
+		String yearStr = year+"";
+		if(yearStr.length()==3)yearStr = "0" + yearStr;
+		if(yearStr.length()==2)yearStr = "00" + yearStr;
+		if(yearStr.length()==1)yearStr = "000" + yearStr;
+
+		int minute = ldt.getMinute();
+		String minStr = "" + minute;
+		if(minute<10) minStr = "0" + minute;
+		
+		return dayStr + monthStr + year + "T" + hourStr + ":" + minStr +"\n";
+
+	}
+
 }
