@@ -1,6 +1,7 @@
 package someMath;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import someMath.exceptions.MathException;
@@ -16,6 +17,11 @@ public class Vektor<O> extends Matrix<O>
 		this.rows = valueList.size();
 	}
 	
+	public Vektor(O[] valueArray) throws MathException
+	{
+		this(Arrays.asList(valueArray));
+	}
+
 	public O getValue(int row)
 	{
 		return super.getValue(0, row);

@@ -17,6 +17,26 @@ public class Matrix<O> implements Cloneable
 	private final int columns;
 	private final boolean isQuadratic;
 	private final O[][] valueArr;
+	
+	public Matrix(int rows, int columns, O monoValue)
+	{
+		
+		this.rows = rows;
+		this.columns = columns;
+		this.isQuadratic = (rows==columns);
+		
+		Object [][] arrayOfValues = new Object[columns][rows];
+		
+		for(int row=0;row<rows;row++)
+		{
+			for(int col=0;col<columns;col++)
+			{
+				arrayOfValues[col][row]= monoValue;
+			}
+		}
+		
+		valueArr = (O[][])arrayOfValues;
+	}
 
 	public Matrix(O[][] valueArr)
 	{
@@ -47,8 +67,7 @@ public class Matrix<O> implements Cloneable
 			
 			arrayOfValues[col][row] = valueList.get(n);
 		}
-		
-	
+
 		valueArr = (O[][])arrayOfValues;
 	}
 
@@ -66,6 +85,11 @@ public class Matrix<O> implements Cloneable
 	public void setValue(int column, int row, O o)
 	{
 		valueArr[column][row] = o;
+	}
+	
+	public O[][] getValueArray()
+	{
+		return valueArr.clone();
 	}
 
 	@SuppressWarnings("unchecked")
