@@ -28,6 +28,37 @@ public class MatrixTests
 	}
 
 	@Test
+	public void setAndGettingRowsAndColumns()
+	{
+
+		Double[][] valueArr = new Double[2][2];
+		valueArr[0][0]= 1.0;
+		valueArr[1][0]= 2.0;
+		valueArr[0][1]= 3.0;
+		valueArr[1][1]= 4.0;
+		
+		Matrix<Double> matrix = new Matrix<>(valueArr);
+		
+		Double[][] valueArrRow = new Double[2][1];
+		valueArrRow[0][0]= 7.0;
+		valueArrRow[1][0]= 7.0;
+
+		Matrix<Double> rowVektor = new Matrix<>(valueArrRow);
+		matrix.setRow(rowVektor, 1);
+		assert(matrix.getRow(1).equals(rowVektor));
+
+
+		Double[][] valueArrCol = new Double[1][2];
+		valueArrCol[0][0]= 10.0;
+		valueArrCol[0][1]= 10.0;
+
+		Matrix<Double> colVektor = new Matrix<>(valueArrCol);
+		matrix.setColumn(colVektor, 0);
+		
+		assert(matrix.getColumn(0).equals(colVektor));
+	}
+	
+	@Test
 	public void ValueTests() throws MathException
 	{
 		Double[][] valueArr = new Double[3][3];

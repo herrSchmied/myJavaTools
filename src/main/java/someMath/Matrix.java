@@ -84,6 +84,12 @@ public class Matrix<O> implements Cloneable
 		for(int i=0;i<rows;i++)valueArr[column][i]= list.get(i);
 	}
 	
+	
+	public void setColumn(Matrix<O> columnVektor, int column)
+	{
+		for(int i=0;i<rows;i++)valueArr[column][i]= columnVektor.getValue(0, i);
+	}
+
 	@SuppressWarnings("unchecked")
 	public Matrix<O> getRow(int row)
 	{
@@ -97,6 +103,12 @@ public class Matrix<O> implements Cloneable
 	public void setRow(List<O> list, int row)
 	{
 		for(int i=0;i<columns;i++)valueArr[i][row]=list.get(i);
+	}
+
+	public void setRow(Matrix<O> rowVektor, int row)
+	{
+		for(int i=0;i<columns;i++)valueArr[i][row]=rowVektor.getValue(i, 0);
+
 	}
 
 	public boolean isQuadratic() {return isQuadratic;}	
