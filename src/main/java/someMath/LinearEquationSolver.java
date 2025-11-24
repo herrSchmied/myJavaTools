@@ -61,7 +61,7 @@ public class LinearEquationSolver
 
 		for(int row=0;row<rows;row++)
 		{
-			double value = columnVektor.getValue(column, row);
+			double value = columnVektor.getValue(0, row);
 			if(value!=0.0)return false;
 		}
 		
@@ -76,7 +76,7 @@ public class LinearEquationSolver
 		
 		for(int col=0;col<cols;col++)
 		{
-			double value = rowVektor.getValue(col, row);
+			double value = rowVektor.getValue(col, 0);
 			if(value!=0.0)return false;
 		}
 		
@@ -114,5 +114,58 @@ public class LinearEquationSolver
 	{
 		return null;
 	}
+	
+	public static boolean isRowEchelonForm(Matrix<Double> extendedCoefficientMatrix)
+	{
+		
+		int rows = extendedCoefficientMatrix.getRows();
+		System.out.println("Rows: " + rows);
+		int cols = extendedCoefficientMatrix.getColumns();
+		boolean bottom = true;
+		int n = 0;
+		int lastK = 0;
+		for(int row=rows-1;row>-1;row--)//From The Bottom up!!
+		{
+		
+			System.out.println("In Row: " + row);
+			if(rowContainsOnlyZeros(row, extendedCoefficientMatrix))
+			{
+				
+				System.out.println("Row(" + row +") contains only zeros");
+				if(bottom)continue;
+				else return false;
+			}
+			else
+			{
+				bottom=false;
+				n++;
+				int k = nrOfLeadingZeros(extendedCoefficientMatrix.getRow(row));
+				System.out.println("Nr. of leading Zeros in row("+row+"): " + k);
+				if((n==1)&&(k==cols-1))
+				{
+					lastK=k;
+					continue;
+				}
+				if(k<lastK)lastK=k;
+				else return false;
+			}
+		}
 
+		return true;
+	}
+	
+	public static int nrOfLeadingZeros(Matrix<Double> rowVektor)
+	{
+
+		int cols = rowVektor.getColumns();
+		int n=0;
+		for(int col=0;col<cols;col++)
+		{
+			double value = rowVektor.getValue(col, 0);
+			if(value==0.0)n++;
+			else return n;
+		}
+		
+		return n;
+	}
 }
