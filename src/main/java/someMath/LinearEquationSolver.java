@@ -126,7 +126,10 @@ public class LinearEquationSolver
 		int lastK = 0;
 		for(int row=rows-1;row>-1;row--)//From The Bottom up!!
 		{
-		
+			
+			int k = nrOfLeadingZeros(extendedCoefficientMatrix.getRow(row));
+			if((row==0)&&(k==0))return(row==0)&&(k==0);
+			
 			System.out.println("In Row: " + row);
 			if(rowContainsOnlyZeros(row, extendedCoefficientMatrix))
 			{
@@ -139,7 +142,6 @@ public class LinearEquationSolver
 			{
 				bottom=false;
 				n++;
-				int k = nrOfLeadingZeros(extendedCoefficientMatrix.getRow(row));
 				System.out.println("Nr. of leading Zeros in row("+row+"): " + k);
 				if((n==1)&&(k==cols-1))
 				{
