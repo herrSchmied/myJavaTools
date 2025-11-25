@@ -115,6 +115,12 @@ public class LinearEquationSolver
 		return null;
 	}
 	
+	public static Matrix<Double> sortByLeadingZeros(Matrix<Double> extendedCoefficientMatrix)
+	{
+
+		return null;
+	}
+
 	public static boolean isRowEchelonForm(Matrix<Double> extendedCoefficientMatrix)
 	{
 		

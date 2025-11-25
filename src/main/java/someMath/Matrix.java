@@ -4,12 +4,17 @@ import java.awt.Point;
 import java.util.*;
 import java.util.function.BiConsumer;
 
+import static CollectionTools.CollectionManipulation.*;
+
+
 import someMath.exceptions.MathException;
 
-//TODO: exclude operations try tests(Old&&New) and later transfer operations to matrixOps.
-//It is important that the values of Type E have a good overwritten toString Method. 
-//and the Type E must overwrite equals Too.
-//I'm looking for a way to enforce that E is of Type: "Mathematical Field."
+
+
+//TODO: It is important that the values of Type O have a good overwritten 
+//toString Method and the Type O must overwrite equals Too. I'm looking 
+//for a way to enforce that O is of Type: "Mathematical Field."
+
 public class Matrix<O> implements Cloneable
 {
 
@@ -17,7 +22,8 @@ public class Matrix<O> implements Cloneable
 	private final int columns;
 	private final boolean isQuadratic;
 	private final O[][] valueArr;
-	
+
+	@SuppressWarnings("unchecked")
 	public Matrix(int rows, int columns, O monoValue)
 	{
 		
@@ -38,10 +44,10 @@ public class Matrix<O> implements Cloneable
 		valueArr = (O[][])arrayOfValues;
 	}
 
-	public Matrix(O[][] valueArr)
+	public Matrix(O[][] valueArr) throws MathException
 	{
-			
-	    
+		
+		if(containsNull(valueArr)) throw new MathException("Can't Except array with null values in it!");
 		this.rows = valueArr[0].length;
 		this.columns = valueArr.length;
 
@@ -53,7 +59,8 @@ public class Matrix<O> implements Cloneable
 	public Matrix(int rows, List<O> valueList) throws MathException
 	{
 		if(rows<1)throw new MathException("To few rows.");
-		if(valueList.size()%rows!=0)throw new MathException("Matrix can not be initiated due to nr. of Values they don't fit");
+		if(valueList.size()%rows!=0)throw new MathException("Matrix can not be initiated due to nr. of Values they don't fit.");
+		if(valueList.contains(null))throw new MathException("Matrix can not contain null values!");
 		this.rows = rows;
 		this.columns = valueList.size()/rows;
 		isQuadratic = (rows==columns);
@@ -77,13 +84,20 @@ public class Matrix<O> implements Cloneable
 	public int getColumns()
 	{ return columns;}
 	
-	public O getValue(int column, int row)
+	public O getValue(int column, int row) throws MathException
 	{
+		if(column>columns-1||column<0)throw new MathException("Column out of Bounds.");
+		if(row>rows-1||row<0)throw new MathException("Row out of Bounds.");
+
 		return valueArr[column][row];
 	}
 
-	public void setValue(int column, int row, O o)
+	public void setValue(int column, int row, O o) throws MathException
 	{
+		if(column>columns-1||column<0)throw new MathException("Column out of Bounds.");
+		if(row>rows-1||row<0)throw new MathException("Row out of Bounds.");
+		if(o==null)throw new MathException("Can't accept Null-Value.");
+		
 		valueArr[column][row] = o;
 	}
 	
@@ -93,9 +107,10 @@ public class Matrix<O> implements Cloneable
 	}
 
 	@SuppressWarnings("unchecked")
-	public Matrix<O> getColumn(int column)
+	public Matrix<O> getColumn(int column) throws MathException
 	{
 		
+		if(column>columns-1||column<0)throw new MathException("Column out of Bounds.");
 		Object[][] valueArr = new Object[1][rows];
 		
 		for(int i=0;i<rows;i++)valueArr[0][i]=getValue(column, i);
@@ -103,20 +118,38 @@ public class Matrix<O> implements Cloneable
 		return (Matrix<O>)new Matrix<>(valueArr);
 	}
 	
-	public void setColumn(List<O> list, int column)
+	public void setColumn(List<O> list, int column) throws MathException
 	{
+		if(column>columns-1||column<0)throw new MathException("Column out of Bounds.");
 		for(int i=0;i<rows;i++)valueArr[column][i]= list.get(i);
 	}
 	
 	
-	public void setColumn(Matrix<O> columnVektor, int column)
+	public void setColumn(Matrix<O> columnVektor, int column) throws MathException
 	{
+
+		if(column>columns-1||column<0)throw new MathException("Column out of Bounds.");
 		for(int i=0;i<rows;i++)valueArr[column][i]= columnVektor.getValue(0, i);
 	}
+	
+	public void switchColumns(int colA, int colB) throws MathException
+	{
+
+		if(colA>columns-1||colA<0)throw new MathException("Column (A) out of Bounds.");
+		if(colB>columns-1||colB<0)throw new MathException("Column (B) out of Bounds.");
+
+		Matrix<O> colVektorA = this.getRow(colA);
+		Matrix<O> colVektorB = this.getRow(colB);
+		
+		this.setColumn(colVektorA, colB);
+		this.setColumn(colVektorB, colA);
+	}
+
 
 	@SuppressWarnings("unchecked")
-	public Matrix<O> getRow(int row)
+	public Matrix<O> getRow(int row) throws MathException
 	{
+		if(row>rows-1||row<0)throw new MathException("Row out of Bounds.");
 		Object[][] valueArr = new Object[columns][1];
 		
 		for(int i=0;i<columns;i++)valueArr[i][0]=getValue(i, row);
@@ -124,15 +157,29 @@ public class Matrix<O> implements Cloneable
 		return (Matrix<O>)new Matrix<>(valueArr);
 	}
 	
-	public void setRow(List<O> list, int row)
+	public void setRow(List<O> list, int row) throws MathException
 	{
+		if(row>rows-1||row<0)throw new MathException("Row out of Bounds.");
 		for(int i=0;i<columns;i++)valueArr[i][row]=list.get(i);
 	}
 
-	public void setRow(Matrix<O> rowVektor, int row)
+	public void setRow(Matrix<O> rowVektor, int row) throws MathException
 	{
+		if(row>rows-1||row<0)throw new MathException("Row out of Bounds.");
 		for(int i=0;i<columns;i++)valueArr[i][row]=rowVektor.getValue(i, 0);
+	}
 
+	public void switchRows(int rowA, int rowB) throws MathException
+	{
+
+		if(rowA>rows-1||rowA<0)throw new MathException("Row (A) out of Bounds.");
+		if(rowB>rows-1||rowB<0)throw new MathException("Row (B) out of Bounds.");
+
+		Matrix<O> rowVektorA = this.getRow(rowA);
+		Matrix<O> rowVektorB = this.getRow(rowB);
+		
+		this.setRow(rowVektorA, rowB);
+		this.setRow(rowVektorB, rowA);
 	}
 
 	public boolean isQuadratic() {return isQuadratic;}	
@@ -150,22 +197,45 @@ public class Matrix<O> implements Cloneable
 			int x = p.x;
 			int y = p.y;
 			
-			int valueLength = getValue(x, y).toString().length();
+			int valueLength;
+			try
+			{
+				valueLength = getValue(x, y).toString().length();
+			} catch (MathException e)
+			{
+			
+				e.printStackTrace();
+				throw new RuntimeException("For some Reason the BiConsumer won't work. Should not happen. At all.");
+			}
 			if(valueLength>longestValue[0])longestValue[0]=valueLength; 
 		};
 
-		walkThrouMatrix(bic);
+		try
+		{
+			walkThrouMatrix(bic);
+		}
+		catch (MathException e)
+		{
+			e.printStackTrace();
+			throw new RuntimeException("Couldn't generate String Representation.");
+		}
 		
 		for(int n=0;n<rows;n++)
 		{
 			for(int m=0;m<columns;m++)
 			{
-				
-				int l = getValue(m, n).toString().length();
-				int d = longestValue[0]-l+1;
-				String whiteSpace = StringManipulation.customMonoRepeatChar(' ',d);
-				
-				output = output.concat(whiteSpace+getValue(m, n).toString());
+	
+				try
+				{
+					int l = getValue(m, n).toString().length();
+					int d = longestValue[0]-l+1;
+					String whiteSpace = StringManipulation.customMonoRepeatChar(' ',d);
+					output = output.concat(whiteSpace+getValue(m, n).toString());
+				}
+				catch (MathException e)
+				{
+					e.printStackTrace();
+				}
 			}
 			output = output.concat("\n");
 		}
@@ -174,7 +244,7 @@ public class Matrix<O> implements Cloneable
 	}
 
 	@SuppressWarnings("unchecked")
-	public Class<O> getEnclosedType()
+	public Class<O> getEnclosedType() throws MathException
 	{
 		
 		O o = this.getValue(0, 0);
@@ -189,7 +259,15 @@ public class Matrix<O> implements Cloneable
 		
 		BiConsumer<Point, O> bic = (p, o)->wert[0] += o.hashCode() + p.x + p.y;
 		
-		walkThrouMatrix(bic);
+		try
+		{
+			walkThrouMatrix(bic);
+		}
+		catch(MathException e)
+		{
+			e.printStackTrace();
+			throw new RuntimeException("Couldn't clone");
+		}
 		
 		return Objects.hash(wert[0]);
 	}
@@ -202,12 +280,19 @@ public class Matrix<O> implements Cloneable
 	    
 	    @SuppressWarnings("rawtypes")
 		Matrix other = (Matrix)obj;//TODO: Must be raw?
-	    if(!(other.getEnclosedType()== this.getEnclosedType()))
+	    try
 	    {
-	    	
-	    	System.out.println("Matrixes aren't Enclosing same Type.");
-	    	return false;
-	    }
+			if(!(other.getEnclosedType()== this.getEnclosedType()))
+			{
+				
+				System.out.println("Matrixes aren't Enclosing same Type.");
+				return false;
+			}
+		}
+	    catch (MathException e)
+	    {
+			e.printStackTrace();
+		}
 	    
 	    
 	    if(other.getRows()!=this.getRows())return false;
@@ -217,10 +302,25 @@ public class Matrix<O> implements Cloneable
 	    check[0]= true;
 	    BiConsumer<Point, O> bic=(p, v)->
 	    {
-	    	if(!other.getValue(p.x, p.y).equals(this.getValue(p.x, p.y)))check[0] = false;
+	    	try
+	    	{
+				if(!other.getValue(p.x, p.y).equals(this.getValue(p.x, p.y)))check[0] = false;
+			}
+	    	catch (MathException e)
+	    	{
+				e.printStackTrace();
+			}
 	    };
 	    
-	    walkThrouMatrix(bic);
+	    try
+	    {
+			walkThrouMatrix(bic);
+		}
+	    catch (MathException e)
+	    {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	    
 	    return check[0];
 	}
@@ -228,7 +328,15 @@ public class Matrix<O> implements Cloneable
 	public Matrix<O> clone()
 	{
 		
-		O o = this.getValue(0, 0);
+		O o = null;
+		try
+		{
+			o = this.getValue(0, 0);
+		}
+		catch (MathException e)
+		{
+			e.printStackTrace();
+		}
 		List<O> list = new ArrayList<>();
 		for(int n=0;n<rows*columns;n++)list.add(o);
 		
@@ -256,7 +364,7 @@ public class Matrix<O> implements Cloneable
 		return klon;
 	}
 
-	public void walkThrouMatrix(BiConsumer<Point, O> bic)
+	public void walkThrouMatrix(BiConsumer<Point, O> bic) throws MathException
 	{
 		
 		for(int column=0;column<columns;column++)

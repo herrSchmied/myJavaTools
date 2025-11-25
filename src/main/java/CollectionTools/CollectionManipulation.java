@@ -13,10 +13,48 @@ import java.util.stream.IntStream;
 
 import javafx.util.Pair;
 import someMath.exceptions.CollectionException;
+import someMath.exceptions.MathException;
 
 
 public class CollectionManipulation 
 {
+
+	public static int getArrayDimension(Object array)
+	{
+	    int dim = 0;
+
+	    Class<?> cls = array.getClass();
+
+	    while (cls.isArray())
+	    {
+	        dim++;
+	        cls = cls.getComponentType();
+	    }
+	    
+	    return dim;
+	}
+
+	public static boolean containsNull(Object array) throws MathException
+	{
+	    if(array == null) throw new MathException("Can't test null.");
+	    if(!array.getClass().isArray()) throw new MathException("Can't test somethin that is not an array.");
+
+	    int length = java.lang.reflect.Array.getLength(array);
+
+	    for (int i = 0; i < length; i++)
+	    {
+	        Object element = java.lang.reflect.Array.get(array, i);
+
+	        if (element == null) return true;
+
+	        if (element.getClass().isArray())
+	        {
+	            if (containsNull(element)) return true;
+	        }
+	    }
+	    
+	    return false;
+	}
 
 	public static List<Double> sumUpToIndex(List<Double> layers)
 	{
