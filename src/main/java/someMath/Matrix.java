@@ -11,7 +11,7 @@ import someMath.exceptions.MathException;
 
 
 
-//TODO: It is important that the values of Type O have a good overwritten 
+//TODO: It is important that the values of Type O have overwritten 
 //toString Method and the Type O must overwrite equals Too. I'm looking 
 //for a way to enforce that O is of Type: "Mathematical Field."
 
@@ -46,8 +46,8 @@ public class Matrix<O> implements Cloneable
 
 	public Matrix(O[][] valueArr) throws MathException
 	{
-		
 		if(containsNull(valueArr)) throw new MathException("Can't Except array with null values in it!");
+		if(!isRegularArray(valueArr))throw new MathException("Array is not Regular meaning some Elements differ in Dimension despite having the same Position!");
 		this.rows = valueArr[0].length;
 		this.columns = valueArr.length;
 

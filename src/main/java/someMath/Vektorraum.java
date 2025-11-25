@@ -27,8 +27,15 @@ public class Vektorraum extends Operations<Vektor<Double>>
 		
 		for(int row=0;row<rows;row++)
 		{
-			double v = s.getValue(row);
-			v2.setValue(row, v*d);
+			try
+			{
+				double v = s.getValue(row);
+				v2.setValue(row, v*d);
+			}
+			catch(MathException me)
+			{
+				me.printStackTrace();
+			}
 		}
 		
 		return v2;
@@ -41,9 +48,16 @@ public class Vektorraum extends Operations<Vektor<Double>>
 		
 		double sum = 0.0;
 		
-		for(int n=0;n<rows;n++)
+		try
 		{
-			sum = sum + v1.getValue(n)*v2.getValue(n);
+			for(int n=0;n<rows;n++)
+			{
+				sum = sum + v1.getValue(n)*v2.getValue(n);
+			}
+		}
+		catch(MathException me)
+		{
+			me.printStackTrace();
 		}
 
 		return sum;
@@ -67,9 +81,16 @@ public class Vektorraum extends Operations<Vektor<Double>>
 	
 				for(int row=0;row<rows;row++)
 				{
-					Double d = v1.getValue(row);
-					Double d2 = v2.getValue(row);
-					sum.setValue(row, (d+d2));
+					try
+					{
+						Double d = v1.getValue(row);
+						Double d2 = v2.getValue(row);
+						sum.setValue(row, (d+d2));
+					}
+					catch(MathException me)
+					{
+						me.printStackTrace();
+					}
 				}
 			
 

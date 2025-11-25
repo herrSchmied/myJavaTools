@@ -19,6 +19,41 @@ import someMath.exceptions.MathException;
 public class CollectionManipulation 
 {
 
+	public static boolean isRegularArray(Object array)
+	{
+		
+	    if (array == null || !array.getClass().isArray())
+	        return false;
+
+	    int length = java.lang.reflect.Array.getLength(array);
+	    if (length == 0)
+	        return true; // empty arrays count as regular
+
+	    // Determine expected structure from first element
+	    Object first = java.lang.reflect.Array.get(array, 0);
+	    int expectedDim = getArrayDimension(first);
+
+	    // Check every element matches the structure
+	    for (int i = 1; i < length; i++) {
+	        Object elem = java.lang.reflect.Array.get(array, i);
+	        int dim = getArrayDimension(elem);
+
+	        // Elements must have same dimensionality
+	        if (dim != expectedDim)
+	            return false;
+	    }
+
+	    // If elements are themselves arrays, recurse
+	    if (expectedDim > 0) {
+	        for (int i = 0; i < length; i++) {
+	            Object elem = java.lang.reflect.Array.get(array, i);
+	            if (!isRegularArray(elem))
+	                return false;
+	        }
+	    }
+
+	    return true;
+	}
 	public static int getArrayDimension(Object array)
 	{
 	    int dim = 0;

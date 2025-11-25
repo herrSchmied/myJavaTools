@@ -28,7 +28,7 @@ public class MatrixTests
 	}
 
 	@Test
-	public void setAndGettingRowsAndColumns() throws MathException
+	public void setAndGettingRowsAndColumnsTest() throws MathException
 	{
 
 		Double[][] valueArr = new Double[2][2];

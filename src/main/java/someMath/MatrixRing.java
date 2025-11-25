@@ -35,9 +35,17 @@ public class MatrixRing extends Operations<Matrix<Double>>
 		{
 			for(int row=0;row<rows;row++)
 			{
-				Double d = m1.getValue(col, row);
-				Double d2 = m2.getValue(col, row);
-				sum.setValue(col, row, (d+d2));
+				try
+				{
+
+					Double d = m1.getValue(col, row);
+					Double d2 = m2.getValue(col, row);
+					sum.setValue(col, row, (d+d2));
+				}
+				catch(MathException me)
+				{
+					me.printStackTrace();
+				}
 			}
 		}
 
@@ -71,13 +79,21 @@ public class MatrixRing extends Operations<Matrix<Double>>
 		{
 			for(int row=0;row<rows;row++)
 			{
-				double sum = 0.0;
-				for(int n=0;n<s;n++)
-				{
-					sum = sum + m1.getValue(n, row)*m2.getValue(col, n);
-				}
 				
-				product.setValue(col, row, sum);
+				try
+				{
+					double sum = 0.0;
+					for(int n=0;n<s;n++)
+					{
+						sum = sum + m1.getValue(n, row)*m2.getValue(col, n);
+					}
+				
+					product.setValue(col, row, sum);
+				}
+				catch(MathException me)
+				{
+					me.printStackTrace();
+				}
 			}
 		}
 		
@@ -123,11 +139,25 @@ public class MatrixRing extends Operations<Matrix<Double>>
 		
 		BiConsumer<Point, Double> bic = (p, v)->
 		{
-			m2.setValue(p.x, p.y, v*d);
+			try
+			{
+				m2.setValue(p.x, p.y, v*d);
+			}
+			catch (MathException e)
+			{
+				e.printStackTrace();
+			}
 		};
 
-		m2.walkThrouMatrix(bic);
-		return m2;
+		try
+		{
+			m2.walkThrouMatrix(bic);
+			return m2;
+		}
+		catch(MathException me)
+		{
+			throw new RuntimeException("Couldn't scale.");
+		}
 	};
 
 	public MatrixRing(int n) throws MathException

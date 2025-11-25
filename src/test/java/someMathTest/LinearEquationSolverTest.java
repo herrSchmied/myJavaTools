@@ -4,12 +4,13 @@ import org.junit.jupiter.api.Test;
 
 import someMath.LinearEquationSolver;
 import someMath.Matrix;
+import someMath.exceptions.MathException;
 
 public class LinearEquationSolverTest
 {
 
 	@Test
-	public void isRowEchelonTest()
+	public void isRowEchelonTest() throws MathException
 	{
 		Double[][] valueArr = new Double[3][3];
 		valueArr[0][0]= 1.0;

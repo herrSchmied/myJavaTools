@@ -22,7 +22,7 @@ public class Vektor<O> extends Matrix<O>
 		this(Arrays.asList(valueArray));
 	}
 
-	public O getValue(int row)
+	public O getValue(int row) throws MathException
 	{
 		return super.getValue(0, row);
 	}
@@ -32,14 +32,23 @@ public class Vektor<O> extends Matrix<O>
 		return rows;
 	}
 	
-	public void setValue(int row, O value)
+	public void setValue(int row, O value) throws MathException
 	{
 		super.setValue(0, row, value);
 	}
 	public Vektor<O> clone()
 	{
 		
-		O o = this.getValue(0, 0);
+		O o = null;
+		try
+		{
+			o = this.getValue(0, 0);
+		}
+		catch(MathException me)
+		{
+			me.printStackTrace();
+		}
+		
 		List<O> list = new ArrayList<>();
 		for(int n=0;n<rows;n++)list.add(o);
 		

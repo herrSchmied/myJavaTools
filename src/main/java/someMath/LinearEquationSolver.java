@@ -1,5 +1,7 @@
 package someMath;
 
+import someMath.exceptions.MathException;
+
 public class LinearEquationSolver
 {
 
@@ -19,7 +21,7 @@ public class LinearEquationSolver
 		return null;
 	}
 	
-	public static Matrix<Double> shortenTheMatrix(Matrix<Double> extendedCoefficientMatrix)
+	public static Matrix<Double> shortenTheMatrix(Matrix<Double> extendedCoefficientMatrix) throws MathException
 	{
 		int rows = extendedCoefficientMatrix.getRows();
 		int cols = extendedCoefficientMatrix.getColumns();
@@ -53,7 +55,7 @@ public class LinearEquationSolver
 		return extendedCoefficientMatrix;
 	}
 
-	public static boolean columnContainsOnlyZeros(int column, Matrix<Double> extendedCoefficientMatrix)
+	public static boolean columnContainsOnlyZeros(int column, Matrix<Double> extendedCoefficientMatrix) throws MathException
 	{
 
 		Matrix<Double> columnVektor = extendedCoefficientMatrix.getColumn(column);
@@ -68,7 +70,7 @@ public class LinearEquationSolver
 		return true;
 	}
 
-	public static boolean rowContainsOnlyZeros(int row, Matrix<Double> extendedCoefficientMatrix)
+	public static boolean rowContainsOnlyZeros(int row, Matrix<Double> extendedCoefficientMatrix) throws MathException
 	{
 
 		Matrix<Double> rowVektor = extendedCoefficientMatrix.getRow(row);
@@ -83,7 +85,7 @@ public class LinearEquationSolver
 		return true;
 	}
 	
-	public static Matrix<Double> eraseRow(int eraseRow, Matrix<Double> extendedCoefficientMatrix)
+	public static Matrix<Double> eraseRow(int eraseRow, Matrix<Double> extendedCoefficientMatrix) throws MathException
 	{
 		int rows = extendedCoefficientMatrix.getRows();
 		int cols = extendedCoefficientMatrix.getColumns();
@@ -121,7 +123,7 @@ public class LinearEquationSolver
 		return null;
 	}
 
-	public static boolean isRowEchelonForm(Matrix<Double> extendedCoefficientMatrix)
+	public static boolean isRowEchelonForm(Matrix<Double> extendedCoefficientMatrix) throws MathException
 	{
 		
 		int rows = extendedCoefficientMatrix.getRows();
@@ -162,7 +164,7 @@ public class LinearEquationSolver
 		return true;
 	}
 	
-	public static int nrOfLeadingZeros(Matrix<Double> rowVektor)
+	public static int nrOfLeadingZeros(Matrix<Double> rowVektor) throws MathException
 	{
 
 		int cols = rowVektor.getColumns();
