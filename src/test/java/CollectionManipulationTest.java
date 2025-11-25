@@ -27,17 +27,17 @@ public class CollectionManipulationTest
 		valueArr[0][1]= 3.0;
 		valueArr[1][1]= 4.0;
 
-		//assert(isRegularArray(valueArr));
+		//assert(isRegularArray(valueArr));//TODO: make it more Robust!
 		assert(containsNull(valueArr));
-		//assert(getArrayDimension(valueArr)==2);
+		//assert(getArrayDimension(valueArr)==2);//TODO: make it more Robust!
 		
 		valueArr = new Double[2][2];
 		valueArr[0][1]= 3.0;
 		valueArr[1][1]= 4.0;
 
-		//assert(isRegularArray(valueArr));
+		//assert(isRegularArray(valueArr));//TODO: make it more Robust!
 		assert(containsNull(valueArr));
-		//assert(getArrayDimension(valueArr)==2);
+		//assert(getArrayDimension(valueArr)==2);//TODO: make it more Robust!
 
 	}
 }
