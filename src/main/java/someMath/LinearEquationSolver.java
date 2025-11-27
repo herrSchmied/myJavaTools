@@ -12,12 +12,14 @@ public class LinearEquationSolver
 
 	private static List<String> variableNames = new ArrayList<>();
 	private static Set<String> freeVariables = new HashSet<>();
-
+	
 	public static Vektor<String> solve(Matrix<Double> extendedCoefficientMatrix) throws MathException
 	{
+		
 		int rows = extendedCoefficientMatrix.getRows();
 		int cols = extendedCoefficientMatrix.getColumns();
 
+	
 		variableNames = new ArrayList<>();
 		
 		for(int n=0;n<cols;n++)
@@ -34,6 +36,14 @@ public class LinearEquationSolver
 		return calculateSolvingVektor(extendedCoefficientMatrix);
 	}
 
+	public static boolean isOverDeterministic(Matrix<Double> extendedCoefficientMatrix)
+	{
+		
+		int rows = extendedCoefficientMatrix.getRows();
+		int cols = extendedCoefficientMatrix.getColumns();
+		
+		return (rows>cols);
+	}
 	public static void transFormEquations(Matrix<Double> extendedCoefficientMatrix) throws MathException
 	{
 		int rows = extendedCoefficientMatrix.getRows();
@@ -165,16 +175,36 @@ public class LinearEquationSolver
 				Matrix<Double> rowVektor = extendedCoefficientMatrix.getRow(row);
 				output.setRow(rowVektor, row-1);
 			}
-
-			
 		}
 
 		return output;
 	}
 	
-	public static Matrix<Double> eraseColumn(int col, Matrix<Double> extendedCoefficientMatrix)
+	public static Matrix<Double> eraseColumn(int eraseCol, Matrix<Double> extendedCoefficientMatrix) throws MathException
 	{
-		return null;
+
+		int rows = extendedCoefficientMatrix.getRows();
+		int cols = extendedCoefficientMatrix.getColumns();
+
+		Matrix<Double> output = new Matrix<>(rows, cols-1, 0.0);
+
+		for(int col=0;col<cols;col++)
+		{
+
+			if(col<eraseCol)
+			{
+				Matrix<Double> colVektor = extendedCoefficientMatrix.getColumn(col);
+				output.setColumn(colVektor, col);
+			}
+			
+			if(col>eraseCol)
+			{
+				Matrix<Double> colVektor = extendedCoefficientMatrix.getColumn(col);
+				output.setColumn(colVektor, col-1);
+			}
+		}
+
+		return output;
 	}
 	
 	public static void bubbleSortByLeadingZeros(Matrix<Double> extendedCoefficientMatrix) throws MathException
