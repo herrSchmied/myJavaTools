@@ -12,6 +12,7 @@ public class LinearEquationSolver
 
 	private static List<String> variableNames = new ArrayList<>();
 	private static Set<String> freeVariables = new HashSet<>();
+	private static Matrix<Double> offTheTop;
 	
 	public static Vektor<String> solve(Matrix<Double> extendedCoefficientMatrix) throws MathException
 	{
@@ -29,11 +30,31 @@ public class LinearEquationSolver
 		
 		shortenMatrix(extendedCoefficientMatrix);
 		bubbleSortByLeadingZeros(extendedCoefficientMatrix);
+		scrapeOffTheTop(extendedCoefficientMatrix);
 		
 		if(isRowEchelonForm(extendedCoefficientMatrix))return calculateSolvingVektor(extendedCoefficientMatrix);
 		else transFormEquations(extendedCoefficientMatrix);
 		
 		return calculateSolvingVektor(extendedCoefficientMatrix);
+	}
+
+	public static void scrapeOffTheTop(Matrix<Double> extendedCoefficientMatrix) throws MathException
+	{
+		
+		if(!isOverDeterministic(extendedCoefficientMatrix))return;
+		
+		int rows = extendedCoefficientMatrix.getRows();
+		int cols = extendedCoefficientMatrix.getColumns();
+		int diff = rows-cols;
+		
+		offTheTop = new Matrix<>(cols, cols, 0.0);
+		
+		for(int row=0;row<diff;row++)
+		{
+			Matrix<Double> rowVektor = extendedCoefficientMatrix.getRow(row);
+			eraseRow(row, extendedCoefficientMatrix);
+			offTheTop = offTheTop.setRow(rowVektor, row);
+		}
 	}
 
 	public static boolean isOverDeterministic(Matrix<Double> extendedCoefficientMatrix)
@@ -44,6 +65,7 @@ public class LinearEquationSolver
 		
 		return (rows>cols);
 	}
+
 	public static void transFormEquations(Matrix<Double> extendedCoefficientMatrix) throws MathException
 	{
 		int rows = extendedCoefficientMatrix.getRows();
