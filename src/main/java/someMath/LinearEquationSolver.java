@@ -283,8 +283,10 @@ public class LinearEquationSolver
 			{
 				bottom=false;
 				n++;
-				if((n==1)&&(k==cols-1))
+				if(n==1)
 				{
+					if(!(k==cols-1))return false;
+					
 					lastK=k;
 					continue;
 				}
