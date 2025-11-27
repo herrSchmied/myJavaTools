@@ -148,8 +148,8 @@ public class Matrix<O> implements Cloneable
 		if(colA>columns-1||colA<0)throw new MathException("Column (A) out of Bounds.");
 		if(colB>columns-1||colB<0)throw new MathException("Column (B) out of Bounds.");
 
-		Matrix<O> colVektorA = this.getRow(colA);
-		Matrix<O> colVektorB = this.getRow(colB);
+		Matrix<O> colVektorA = this.getColumn(colA);
+		Matrix<O> colVektorB = this.getColumn(colB);
 		Matrix<O> clone = this.clone();
 		
 		clone = clone.setColumn(colVektorA, colB);

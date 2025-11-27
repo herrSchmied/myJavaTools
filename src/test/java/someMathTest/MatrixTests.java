@@ -1,9 +1,10 @@
 package someMathTest;
 
 
-import java.util.ArrayList;
+
 import java.util.Arrays;
 import java.util.List;
+
 
 import org.junit.jupiter.api.Test;
 
@@ -13,6 +14,8 @@ import someMath.MatrixRing;
 import someMath.MatrixStuff;
 import someMath.Operations;
 import someMath.exceptions.MathException;
+
+
 
 public class MatrixTests
 {
@@ -27,6 +30,41 @@ public class MatrixTests
 		ring = new MatrixRing(n);
 	}
 
+	@Test
+	public void switchRowsAndColumnTest() throws MathException
+	{
+		
+		dField = new DoubleField();
+
+		Double[][] valueArr = new Double[3][3];
+		valueArr[0][0]= 1.0;
+		valueArr[1][0]= 0.0;
+		valueArr[2][0]= 0.0;
+		valueArr[0][1]= 0.0;
+		valueArr[1][1]= 1.0;
+		valueArr[2][1]= 0.0;
+		valueArr[0][2]= 0.0;
+		valueArr[1][2]= 0.0;
+		valueArr[2][2]= 1.0;
+
+		Matrix<Double> matrix = new Matrix<>(valueArr);
+		
+		Double det1 = MatrixStuff.determinant(dField, matrix);
+		
+		Matrix<Double> matrix2 = matrix.switchRows(0, 1);
+		
+		assert(matrix.getRow(0).equals(matrix2.getRow(1)));
+		assert(det1.equals(-MatrixStuff.determinant(dField, matrix2)));
+		
+		
+		Matrix<Double> matrix3 = matrix2.switchColumns(0, 1);
+		
+		assert(matrix2.getColumn(0).equals(matrix3.getColumn(1)));
+		Double det2=MatrixStuff.determinant(dField, matrix3);
+
+		assert(det1.equals(MatrixStuff.determinant(dField, matrix3)));
+	}
+	
 	@Test
 	public void setAndGettingRowsAndColumnsTest() throws MathException
 	{
