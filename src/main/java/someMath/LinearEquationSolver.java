@@ -12,13 +12,14 @@ public class LinearEquationSolver
 
 	private static List<String> variableNames = new ArrayList<>();
 	private static Set<String> freeVariables = new HashSet<>();
-	private static Matrix<Double> offTheTop;
+	private static Set<Matrix<Double>> offTheTop = new HashSet<>();
 	
 	public static Vektor<String> solve(Matrix<Double> extendedCoefficientMatrix) throws MathException
 	{
 		
-		int rows = extendedCoefficientMatrix.getRows();
-		int cols = extendedCoefficientMatrix.getColumns();
+		Matrix<Double> customizable = extendedCoefficientMatrix.clone();
+		int rows = customizable.getRows();
+		int cols = customizable.getColumns();
 
 	
 		variableNames = new ArrayList<>();
@@ -28,21 +29,22 @@ public class LinearEquationSolver
 			variableNames.add("x"+n);
 		}
 		
-		shortenMatrix(extendedCoefficientMatrix);
-		bubbleSortByLeadingZeros(extendedCoefficientMatrix);
-		scrapeOffTheTop(extendedCoefficientMatrix);
-		if(extendedCoefficientMatrix.isQuadratic())
+		customizable = bubbleSortByLeadingZeros(customizable);
+		customizable = scrapeOffTheTop(customizable);
+		customizable = shortenMatrix(customizable);
+
+		if(customizable.isQuadratic())
 		{
 			
 			DoubleField dField = new DoubleField();
-			Double determinant = MatrixStuff.determinant(dField, extendedCoefficientMatrix);
+			Double determinant = MatrixStuff.determinant(dField, customizable);
 			if(determinant.equals(0.0))
 			{
 				int n=0;
-				cols = extendedCoefficientMatrix.getColumns();
+				cols = customizable.getColumns();
 				for(int col=0;col<cols-1;col++)
 				{
-					Matrix<Double> switchMatrix = extendedCoefficientMatrix.switchColumns(col, cols-1);
+					Matrix<Double> switchMatrix = customizable.switchColumns(col, cols-1);
 					if(MatrixStuff.determinant(dField, switchMatrix).equals(0.0))
 						n++;
 				}
@@ -55,36 +57,37 @@ public class LinearEquationSolver
 			}
 		}
 
-		if(isRowEchelonForm(extendedCoefficientMatrix))return calculateSolvingVektor(extendedCoefficientMatrix);
-		else transFormEquations(extendedCoefficientMatrix);
+		if(isRowEchelonForm(customizable))return calculateSolvingVektor(customizable);
+		else transFormEquations(customizable);
 		
 		return calculateSolvingVektor(extendedCoefficientMatrix);
 	}
 
-	public static void scrapeOffTheTop(Matrix<Double> extendedCoefficientMatrix) throws MathException
+	public static Matrix<Double> scrapeOffTheTop(Matrix<Double> extendedCoefficientMatrix) throws MathException
 	{
 		
-		if(!isOverDeterministic(extendedCoefficientMatrix))return;
+		Matrix<Double> output = extendedCoefficientMatrix.clone();
 		
-		int rows = extendedCoefficientMatrix.getRows();
-		int cols = extendedCoefficientMatrix.getColumns();
+		int rows = output.getRows();
+		int cols = output.getColumns();
 		int diff = rows-cols;
 		
-		offTheTop = new Matrix<>(cols, cols, 0.0);
 		
 		for(int row=0;row<diff;row++)
 		{
-			Matrix<Double> rowVektor = extendedCoefficientMatrix.getRow(row);
-			eraseRow(row, extendedCoefficientMatrix);
-			offTheTop = offTheTop.setRow(rowVektor, row);
+			Matrix<Double> rowVektor = output.getRow(row);
+			output = eraseRow(row, output);
+			offTheTop.add(rowVektor);
 		}
+		
+		return output;
 	}
 
-	public static boolean isOverDeterministic(Matrix<Double> extendedCoefficientMatrix)
+	public static boolean isOverDeterministic(Matrix<Double> matrix)
 	{
 		
-		int rows = extendedCoefficientMatrix.getRows();
-		int cols = extendedCoefficientMatrix.getColumns();
+		int rows = matrix.getRows();
+		int cols = matrix.getColumns();
 		
 		return (rows>cols);
 	}
@@ -174,7 +177,7 @@ public class LinearEquationSolver
 				}
 			}
 			
-			if((!rowAction)&&(!colAction))break;
+			if(!(rowAction||colAction))break;
 		}
 		
 		return output;
@@ -277,7 +280,6 @@ public class LinearEquationSolver
 			for(int row=0;row<rows-1;row++)
 			{
 
-				System.out.println("Sorting Row " +row +" and Row " + (row+1));
 				Matrix<Double> current = output.getRow(row);
 				Matrix<Double> beneath = output.getRow(row+1);
 			
@@ -286,12 +288,11 @@ public class LinearEquationSolver
 			
 				if(a>b)
 				{
-					System.out.println("Switched Rows: " + row +", " + (row+1));
 					output = output.switchRows(row, row+1);
 					n++;
 				}
 			}
-			System.out.println("n==" + n);
+
 			noSortingHappend=(n==0);
 		}
 		
@@ -302,7 +303,6 @@ public class LinearEquationSolver
 	{
 		
 		int rows = extendedCoefficientMatrix.getRows();
-		System.out.println("Rows: " + rows);
 		int cols = extendedCoefficientMatrix.getColumns();
 		boolean bottom = true;
 		int n = 0;
