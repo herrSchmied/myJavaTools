@@ -143,43 +143,50 @@ public class LinearEquationSolver
 	public static Matrix<Double> shortenMatrix(Matrix<Double> extendedCoefficientMatrix) throws MathException
 	{
 		Matrix<Double> output = extendedCoefficientMatrix.clone();
+
+		output = eraseZeroRows(output);
+		output = eraseZeroColumns(output);
+
+		return output;
+	}
+	
+	public static Matrix<Double> eraseZeroRows(Matrix<Double> matrix) throws MathException
+	{
+
+		Matrix<Double> output = matrix.clone();
+		int rows = output.getRows();
 		
-//		boolean [] eraseRow = new boolean[rows];
-//		boolean [] eraseColumn = new boolean[cols];
-		
-		while(true)
+		for(int row=0;row<rows;row++)
 		{
 			
-			int rows = output.getRows();
-			int cols = output.getColumns();
-			boolean rowAction = false;
-			boolean colAction = false;
-			
-			for(int row=0;row<rows;row++)
+			if(rowContainsOnlyZeros(row, output))
 			{
-				if(rowContainsOnlyZeros(row, output))
-				{
-					output =eraseRow(row, output);
-					rowAction= true;
-					break;
-				}
+				output = eraseRow(row, output);
+				output = eraseZeroRows(output);
+				break;
 			}
-		
-			for(int col=0;col<cols;col++)
-			{
-				if(columnContainsOnlyZeros(col, output))
-				{
-					output = eraseColumn(col, output);
-					String v = variableNames.remove(col);
-					freeVariables.add(v);
-					colAction=true;
-					break;
-				}
-			}
-			
-			if(!(rowAction||colAction))break;
 		}
+
+		return output;
+	}
+
+	public static Matrix<Double> eraseZeroColumns(Matrix<Double> matrix) throws MathException
+	{
+
+		Matrix<Double> output = matrix.clone();
+		int cols = output.getColumns();
 		
+		for(int col=0;col<cols;col++)
+		{
+			
+			if(columnContainsOnlyZeros(col, output))
+			{
+				output = eraseColumn(col, output);
+				output = eraseZeroColumns(output);
+				break;
+			}
+		}
+
 		return output;
 	}
 
