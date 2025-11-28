@@ -31,7 +31,30 @@ public class LinearEquationSolver
 		shortenMatrix(extendedCoefficientMatrix);
 		bubbleSortByLeadingZeros(extendedCoefficientMatrix);
 		scrapeOffTheTop(extendedCoefficientMatrix);
-		
+		if(extendedCoefficientMatrix.isQuadratic())
+		{
+			
+			DoubleField dField = new DoubleField();
+			Double determinant = MatrixStuff.determinant(dField, extendedCoefficientMatrix);
+			if(determinant.equals(0.0))
+			{
+				int n=0;
+				cols = extendedCoefficientMatrix.getColumns();
+				for(int col=0;col<cols-1;col++)
+				{
+					Matrix<Double> switchMatrix = extendedCoefficientMatrix.switchColumns(col, cols-1);
+					if(MatrixStuff.determinant(dField, switchMatrix).equals(0.0))
+						n++;
+				}
+				
+				if(n<cols-1)
+				{
+					System.out.println("No Solution for this Linear Equation System");
+					return null;
+				}
+			}
+		}
+
 		if(isRowEchelonForm(extendedCoefficientMatrix))return calculateSolvingVektor(extendedCoefficientMatrix);
 		else transFormEquations(extendedCoefficientMatrix);
 		
@@ -86,6 +109,7 @@ public class LinearEquationSolver
 			makeAtLeastOneLeadingZeroExtra(rowVektor1, rowVektor2);
 			extendedCoefficientMatrix.setRow(rowVektor2, 1);
 			bubbleSortByLeadingZeros(extendedCoefficientMatrix);
+			shortenMatrix(extendedCoefficientMatrix);
 		}
 	}
 
@@ -113,38 +137,47 @@ public class LinearEquationSolver
 		return null;
 	}
 
-	public static void shortenMatrix(Matrix<Double> extendedCoefficientMatrix) throws MathException
+	public static Matrix<Double> shortenMatrix(Matrix<Double> extendedCoefficientMatrix) throws MathException
 	{
-		int rows = extendedCoefficientMatrix.getRows();
-		int cols = extendedCoefficientMatrix.getColumns();
+		Matrix<Double> output = extendedCoefficientMatrix.clone();
 		
 //		boolean [] eraseRow = new boolean[rows];
 //		boolean [] eraseColumn = new boolean[cols];
 		
 		while(true)
 		{
+			
+			int rows = output.getRows();
+			int cols = output.getColumns();
+			boolean rowAction = false;
+			boolean colAction = false;
+			
 			for(int row=0;row<rows;row++)
 			{
-				if(rowContainsOnlyZeros(row, extendedCoefficientMatrix))
+				if(rowContainsOnlyZeros(row, output))
 				{
-					extendedCoefficientMatrix =eraseRow(row, extendedCoefficientMatrix);
+					output =eraseRow(row, output);
+					rowAction= true;
 					break;
 				}
 			}
 		
 			for(int col=0;col<cols;col++)
 			{
-				if(columnContainsOnlyZeros(col, extendedCoefficientMatrix))
+				if(columnContainsOnlyZeros(col, output))
 				{
-					extendedCoefficientMatrix = eraseColumn(col, extendedCoefficientMatrix);
+					output = eraseColumn(col, output);
 					String v = variableNames.remove(col);
 					freeVariables.add(v);
+					colAction=true;
 					break;
 				}
 			}
 			
-			break;
+			if((!rowAction)&&(!colAction))break;
 		}
+		
+		return output;
 	}
 
 	public static boolean columnContainsOnlyZeros(int column, Matrix<Double> extendedCoefficientMatrix) throws MathException
@@ -229,33 +262,40 @@ public class LinearEquationSolver
 		return output;
 	}
 	
-	public static void bubbleSortByLeadingZeros(Matrix<Double> extendedCoefficientMatrix) throws MathException
+	public static Matrix<Double> bubbleSortByLeadingZeros(Matrix<Double> extendedCoefficientMatrix) throws MathException
 	{
 		int rows = extendedCoefficientMatrix.getRows();
-		if(rows<=1)return;
+		Matrix<Double> output = extendedCoefficientMatrix.clone();
+		if(rows<=1)return output;
 		
-		while(true)
+		boolean noSortingHappend = false;
+		
+		while(!noSortingHappend)
 		{
-
-			boolean sortActionHappend = false;
+			
+			int n=0;
 			for(int row=0;row<rows-1;row++)
 			{
-				Matrix<Double> above = extendedCoefficientMatrix.getRow(row+1);
-				Matrix<Double> current = extendedCoefficientMatrix.getRow(row);
+
+				System.out.println("Sorting Row " +row +" and Row " + (row+1));
+				Matrix<Double> current = output.getRow(row);
+				Matrix<Double> beneath = output.getRow(row+1);
 			
-				int a = nrOfLeadingZeros(above);
-				int c = nrOfLeadingZeros(current);
+				int a = nrOfLeadingZeros(current);
+				int b = nrOfLeadingZeros(beneath);
 			
-				if(a<c)
+				if(a>b)
 				{
-					extendedCoefficientMatrix.switchRows(row, row+1);
-					sortActionHappend= true;
+					System.out.println("Switched Rows: " + row +", " + (row+1));
+					output = output.switchRows(row, row+1);
+					n++;
 				}
 			}
-			
-			if(!sortActionHappend)break;
+			System.out.println("n==" + n);
+			noSortingHappend=(n==0);
 		}
-
+		
+		return output;
 	}
 
 	public static boolean isRowEchelonForm(Matrix<Double> extendedCoefficientMatrix) throws MathException
