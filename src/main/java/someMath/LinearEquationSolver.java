@@ -92,27 +92,45 @@ public class LinearEquationSolver
 		return (rows>cols);
 	}
 
-	public static void transFormEquations(Matrix<Double> extendedCoefficientMatrix) throws MathException
+	public static Matrix<Double> transFormEquations(Matrix<Double> extendedCoefficientMatrix) throws MathException
 	{
-		int rows = extendedCoefficientMatrix.getRows();
-		int cols = extendedCoefficientMatrix.getColumns();
 		
-		if(rows<=1)return;
+		Matrix<Double> output = extendedCoefficientMatrix.clone();
 		
-		Matrix<Double> rowVektor1 = extendedCoefficientMatrix.getRow(0);
-		int k1 = nrOfLeadingZeros(rowVektor1);
-		if(k1==cols-1)return;
+		int rows = output.getRows();
+		int cols = output.getColumns();
 		
-		Matrix<Double> rowVektor2 = extendedCoefficientMatrix.getRow(1);
-		int k2 = nrOfLeadingZeros(rowVektor2);
-		if(k2==cols-1)return;
+		if(rows<=1)return output;
 		
-		if(k1==k2)
+		while(true)
 		{
-			makeAtLeastOneExtraLeadingZero(rowVektor1, rowVektor2);
-			extendedCoefficientMatrix.setRow(rowVektor2, 1);
-			bubbleSortByLeadingZeros(extendedCoefficientMatrix);
-			shortenMatrix(extendedCoefficientMatrix);
+			int a = 0;
+			int b = 1;
+			Matrix<Double> rowVektor1 = output.getRow(a);
+			int k1 = nrOfLeadingZeros(rowVektor1);
+			if(k1==cols-1)return output;
+		
+			Matrix<Double> rowVektor2 = output.getRow(b);
+			int k2 = nrOfLeadingZeros(rowVektor2);
+			if(k2==cols-1)return output;
+		
+			if(k1==k2)
+			{
+				Matrix<Double> newRow = makeAtLeastOneExtraLeadingZero(rowVektor1, rowVektor2);
+				output = output.setRow(newRow, b);
+				output = bubbleSortByLeadingZeros(output);
+				output = shortenMatrix(output);
+				if(isRowEchelonForm(output))return output;
+			}
+			else
+			{
+				if(b<cols-1)
+				{
+					a++;
+					b++;
+				}
+				else return output;
+			}
 		}
 	}
 
@@ -135,7 +153,7 @@ public class LinearEquationSolver
 			
 		return MatrixRing.addition.apply(output, addOn);
 	}
-	
+
 	public static Vektor<String> calculateSolvingVektor(Matrix<Double> extendedCoefficientMatrix)
 	{
 		return null;
@@ -143,6 +161,7 @@ public class LinearEquationSolver
 
 	public static Matrix<Double> shortenMatrix(Matrix<Double> extendedCoefficientMatrix) throws MathException
 	{
+
 		Matrix<Double> output = extendedCoefficientMatrix.clone();
 
 		output = eraseZeroRows(output);
@@ -150,7 +169,7 @@ public class LinearEquationSolver
 
 		return output;
 	}
-	
+
 	public static Matrix<Double> eraseZeroRows(Matrix<Double> matrix) throws MathException
 	{
 
