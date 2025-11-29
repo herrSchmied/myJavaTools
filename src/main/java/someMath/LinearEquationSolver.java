@@ -104,6 +104,8 @@ public class LinearEquationSolver
 		
 		while(true)
 		{
+			if(output.getRows()==1)return output;
+
 			int a = 0;
 			int b = 1;
 			Matrix<Double> rowVektor1 = output.getRow(a);
@@ -114,6 +116,8 @@ public class LinearEquationSolver
 			int k2 = nrOfLeadingZeros(rowVektor2);
 			if(k2==cols-1)return output;
 			
+			if(k2<k1)output = bubbleSortByLeadingZeros(output);
+
 			if(k2>k1)
 			{
 				if(b<cols-1)
@@ -273,6 +277,8 @@ public class LinearEquationSolver
 		int cols = extendedCoefficientMatrix.getColumns();
 
 		Matrix<Double> output = new Matrix<>(rows, cols-1, 0.0);
+		String name = variableNames.remove(eraseCol);
+		freeVariables.add(name);
 
 		for(int col=0;col<cols;col++)
 		{
