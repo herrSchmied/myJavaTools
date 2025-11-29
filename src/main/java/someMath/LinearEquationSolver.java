@@ -45,8 +45,8 @@ public class LinearEquationSolver
 				for(int col=0;col<cols-1;col++)
 				{
 					Matrix<Double> switchMatrix = customizable.switchColumns(col, cols-1);
-					if(MatrixStuff.determinant(dField, switchMatrix).equals(0.0))
-						n++;
+					Double sideDeterminant = MatrixStuff.determinant(dField, switchMatrix);
+					if(sideDeterminant.equals(0.0))n++;
 				}
 				
 				if(n<cols-1)
@@ -109,30 +109,31 @@ public class LinearEquationSolver
 		
 		if(k1==k2)
 		{
-			makeAtLeastOneLeadingZeroExtra(rowVektor1, rowVektor2);
+			makeAtLeastOneExtraLeadingZero(rowVektor1, rowVektor2);
 			extendedCoefficientMatrix.setRow(rowVektor2, 1);
 			bubbleSortByLeadingZeros(extendedCoefficientMatrix);
 			shortenMatrix(extendedCoefficientMatrix);
 		}
 	}
 
-	public static void makeAtLeastOneLeadingZeroExtra(Matrix<Double> source, Matrix<Double> dest) throws MathException
+	public static Matrix<Double> makeAtLeastOneExtraLeadingZero(Matrix<Double> rowVektorSource, Matrix<Double> rowVektorDest) throws MathException
 	{
 
-		int kSource = nrOfLeadingZeros(source);
-		int kDest = nrOfLeadingZeros(dest);
-		
-		if(kDest>kSource)return;
+		Matrix<Double> output = rowVektorDest.clone();
+
+		int kSource = nrOfLeadingZeros(rowVektorSource);
+		int kDest = nrOfLeadingZeros(output);
 		if(kDest<kSource)throw new MathException("Destination has less leading Zeros than Source.");
-	
-		double sourceValueAtIndexK = source.getValue(kSource, 0);
-		double destValueAtIndexK = dest.getValue(kSource, 0);
+		if(kDest>kSource)return output;
+
+		double sourceValueAtIndexK = rowVektorSource.getValue(kSource, 0);
+		double destValueAtIndexK = output.getValue(kSource, 0);
 			
 		double factor = -(destValueAtIndexK/sourceValueAtIndexK);
 			
-		Matrix<Double> addOn = MatrixRing.scaling.apply(factor, source);
+		Matrix<Double> addOn = MatrixRing.scaling.apply(factor, rowVektorSource);
 			
-		dest = MatrixRing.addition.apply(dest, addOn);
+		return MatrixRing.addition.apply(output, addOn);
 	}
 	
 	public static Vektor<String> calculateSolvingVektor(Matrix<Double> extendedCoefficientMatrix)
