@@ -94,7 +94,7 @@ public class LinearEquationSolver
 
 	public static Matrix<Double> transFormEquations(Matrix<Double> extendedCoefficientMatrix) throws MathException
 	{
-		
+
 		Matrix<Double> output = extendedCoefficientMatrix.clone();
 		
 		int rows = output.getRows();
@@ -113,16 +113,8 @@ public class LinearEquationSolver
 			Matrix<Double> rowVektor2 = output.getRow(b);
 			int k2 = nrOfLeadingZeros(rowVektor2);
 			if(k2==cols-1)return output;
-		
-			if(k1==k2)
-			{
-				Matrix<Double> newRow = makeAtLeastOneExtraLeadingZero(rowVektor1, rowVektor2);
-				output = output.setRow(newRow, b);
-				output = bubbleSortByLeadingZeros(output);
-				output = shortenMatrix(output);
-				if(isRowEchelonForm(output))return output;
-			}
-			else
+			
+			if(k2>k1)
 			{
 				if(b<cols-1)
 				{
@@ -131,6 +123,15 @@ public class LinearEquationSolver
 				}
 				else return output;
 			}
+		
+			if(k1==k2)
+			{
+				Matrix<Double> newRow = makeAtLeastOneExtraLeadingZero(rowVektor1, rowVektor2);
+				output = output.setRow(newRow, b);
+				output = bubbleSortByLeadingZeros(output);
+				output = shortenMatrix(output);
+				if(isRowEchelonForm(output))return output;
+			}			
 		}
 	}
 
