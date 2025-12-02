@@ -33,18 +33,31 @@ public class LinearEquationSolver
 		customizable = scrapeOffTheTop(customizable);
 		customizable = shortenMatrix(customizable);
 
-		if(customizable.isQuadratic())
+		rows = customizable.getRows();
+		cols = customizable.getColumns();
+		
+		if(rows==cols-1)
 		{
 			
 			DoubleField dField = new DoubleField();
-			Double determinant = MatrixStuff.determinant(dField, customizable);
+			Matrix<Double> coefficientMatrix = new Matrix<>(cols-1, cols-1, 0.0);
+			
+			for(int col=0;col<cols-1;col++)
+			{
+				Matrix<Double> columnVektor = customizable.getColumn(col);
+				coefficientMatrix = coefficientMatrix.setColumn(columnVektor, col);
+			}
+			
+			Double determinant = MatrixStuff.determinant(dField, coefficientMatrix);
+			Matrix<Double> columnVektor = customizable.getColumn(cols-1);
+			
 			if(determinant.equals(0.0))
 			{
 				int n=0;
 				cols = customizable.getColumns();
 				for(int col=0;col<cols-1;col++)
 				{
-					Matrix<Double> switchMatrix = customizable.switchColumns(col, cols-1);
+					Matrix<Double> switchMatrix = coefficientMatrix.setColumn(columnVektor, col);
 					Double sideDeterminant = MatrixStuff.determinant(dField, switchMatrix);
 					if(sideDeterminant.equals(0.0))n++;
 				}
@@ -58,7 +71,9 @@ public class LinearEquationSolver
 		}
 
 		if(isRowEchelonForm(customizable))return calculateSolvingVektor(customizable);
-		else transFormEquations(customizable);
+		if(isInStaggeredForm(customizable)&&isUnderDeterministic(customizable))return calculateSolvingVektor(customizable);
+		
+		transFormEquations(customizable);
 		
 		return calculateSolvingVektor(extendedCoefficientMatrix);
 	}
