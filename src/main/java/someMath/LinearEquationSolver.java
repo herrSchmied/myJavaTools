@@ -91,6 +91,15 @@ public class LinearEquationSolver
 		
 		return (rows>cols);
 	}
+	
+	public static boolean isUnderDeterministic(Matrix<Double> matrix)
+	{
+		int rows = matrix.getRows();
+		int cols = matrix.getColumns();
+		
+		return (rows<cols);
+
+	}
 
 	public static Matrix<Double> transFormEquations(Matrix<Double> extendedCoefficientMatrix) throws MathException
 	{
@@ -134,7 +143,8 @@ public class LinearEquationSolver
 				output = output.setRow(newRow, b);
 				output = bubbleSortByLeadingZeros(output);
 				output = shortenMatrix(output);
-				if(isRowEchelonForm(output))return output;
+				if(isRowEchelonForm(output)&&output.isQuadratic())return output;
+				if(isInStaggeredForm(output)&&isUnderDeterministic(output))return output;
 			}			
 		}
 	}
@@ -333,43 +343,43 @@ public class LinearEquationSolver
 		return output;
 	}
 
+	public static boolean isInStaggeredForm(Matrix<Double> extendedCoefficientMatrix) throws MathException
+	{
+		int rows =extendedCoefficientMatrix.getRows();
+		
+		//Starts at 1!
+		for(int row=1;row<rows;row++)
+		{
+			Matrix<Double> rowVektor1 = extendedCoefficientMatrix
+										.getRow(row-1);
+			int k1 = nrOfLeadingZeros(rowVektor1);
+			
+			Matrix<Double> rowVektor2 = extendedCoefficientMatrix
+										.getRow(row);
+			int k2 = nrOfLeadingZeros(rowVektor2);
+			
+			if(k1>=k2)return false;
+
+		}
+		
+		return true;
+	}
+	
 	public static boolean isRowEchelonForm(Matrix<Double> extendedCoefficientMatrix) throws MathException
 	{
 		
 		int rows = extendedCoefficientMatrix.getRows();
 		int cols = extendedCoefficientMatrix.getColumns();
-		boolean bottom = true;
-		int n = 0;
-		int lastK = 0;
-		for(int row=rows-1;row>-1;row--)//From The Bottom up!!
-		{
-			
-			int k = nrOfLeadingZeros(extendedCoefficientMatrix.getRow(row));
-			if((row==0)&&(k==0))return(row==0)&&(k==0);
-
-			if(rowContainsOnlyZeros(row, extendedCoefficientMatrix))
-			{
-				
-				if(bottom)continue;
-				else return false;
-			}
-			else
-			{
-				bottom=false;
-				n++;
-				if(n==1)
-				{
-					if(!(k==cols-1))return false;
-					
-					lastK=k;
-					continue;
-				}
-				if(k<lastK)lastK=k;
-				else return false;
-			}
-		}
-
-		return true;
+		boolean staggered = isInStaggeredForm(extendedCoefficientMatrix);
+		
+		Matrix<Double> topRow = extendedCoefficientMatrix.getRow(0);
+		int topLeadingZeros = nrOfLeadingZeros(topRow);
+		
+		Matrix<Double> bottomRow = extendedCoefficientMatrix.getRow(rows-1);
+		int bottomLeadingZeros = nrOfLeadingZeros(bottomRow);
+		
+		
+		return staggered&&(topLeadingZeros==0)&&(bottomLeadingZeros==cols-1);
 	}
 	
 	public static int nrOfLeadingZeros(Matrix<Double> rowVektor) throws MathException
