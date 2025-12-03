@@ -26,5 +26,17 @@ public class VectorTests
 		assert(scaled.equals(scaleCheck));
 		assert(backToTheOriginal.equals(original));
 	}
+	
+	@Test
+	public void cloneTest() throws MathException
+	{
+		List<Double> list = Arrays.asList(1.0, 2.0, 3.0);
+		Vektor<Double> original = new Vektor<>(list);
+		
+		Vektor<Double> clone = original.clone();
+		
+		assert(!(clone==original));
+		assert(clone.equals(original));
+	}
 
 }

@@ -9,12 +9,9 @@ import someMath.exceptions.MathException;
 public class Vektor<O> extends Matrix<O>
 {
 
-	private final int rows;
-
 	public Vektor(List<O> valueList) throws MathException
 	{
 		super(1, valueList);
-		this.rows = valueList.size();
 	}
 	
 	public Vektor(O[] valueArray) throws MathException
@@ -29,7 +26,7 @@ public class Vektor<O> extends Matrix<O>
 
 	public int getRows()
 	{
-		return rows;
+		return super.getRows();
 	}
 	
 	public void setValue(int row, O value) throws MathException
@@ -50,7 +47,7 @@ public class Vektor<O> extends Matrix<O>
 		}
 		
 		List<O> list = new ArrayList<>();
-		for(int n=0;n<rows;n++)list.add(o);
+		for(int n=0;n<super.getRows();n++)list.add(o);
 		
 		Vektor<O> klon = null;
 		
@@ -59,7 +56,7 @@ public class Vektor<O> extends Matrix<O>
 		
 			klon = new Vektor<O>(list);
 			
-			for(int row=0;row<rows;row++)
+			for(int row=0;row<super.getRows();row++)
 			{
 				O o2 = this.getValue(row);
 				klon.setValue(row, o2);
