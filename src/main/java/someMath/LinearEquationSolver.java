@@ -12,7 +12,7 @@ import someMath.exceptions.MathException;
 public class LinearEquationSolver
 {
 
-	private static VariableIndizies variableTrackRecord;
+	private static VariableIndizies variablesTrackRecord;
 	private static Set<Matrix<Double>> offTheTop = new HashSet<>();
 
 	public static Vektor<String> solve(Matrix<Double> extendedCoefficientMatrix) throws MathException
@@ -22,7 +22,7 @@ public class LinearEquationSolver
 		int rows = customizable.getRows();
 		int cols = customizable.getColumns();
 
-		variableTrackRecord = new VariableIndizies(cols);
+		variablesTrackRecord = new VariableIndizies(cols);
 	
 		customizable = bubbleSortByLeadingZeros(customizable);
 		customizable = scrapeOffTheTop(customizable);
@@ -185,15 +185,6 @@ public class LinearEquationSolver
 
 		int rows = extendedCoefficientMatrix.getRows();
 		int cols = extendedCoefficientMatrix.getColumns();
-		
-		List<String> nonFreeVariables = new ArrayList<>();
-		
-		for(int n=0;n<variableNames.size();n++)
-		{
-			String variableName = variableNames.get(n);
-			if(!freeVariables.contains(variableName))
-				nonFreeVariables.add(variableName);
-		}
 
 		Map<String, Double> solvedVariables = new HashMap<>();
 
@@ -207,58 +198,56 @@ public class LinearEquationSolver
 			if(nonZeroList.size()==1)
 			{
 
-				int nrOfSolvedVariables = solvedVariables.size();
-				
-				String resultVariableName = nonFreeVariables.get(nrOfSolvedVariables);
-
 				int pos = nonZeroList.get(0);
-				Double rowResult = rowVektor.getValue(0, rows-1);
-				Double coefficient = rowVektor.getValue(0, pos);
+				int oldIndex = variablesTrackRecord.getOldIndexOf(pos);
+				String resultVariableName = variablesTrackRecord.indexToName(oldIndex);
+				Double rowResult = rowVektor.getValue(cols-1, 0);
+				Double coefficient = rowVektor.getValue(pos, 0);
 				
 				Double result = rowResult/coefficient;
 				solvedVariables.put(resultVariableName, result);
 			}
-			
+
 			if(nonZeroList.size()+1==solvedVariables.size())
 			{
-				
-				int  nrOfSolvedVariables= solvedVariables.size();
 
-				String resultVariableName = nonFreeVariables.get(nrOfSolvedVariables);
-				Double rowResult = rowVektor.getValue(0, rows-1);
-				
+				int pos = nonZeroList.get(0);
+				int oldIndex = variablesTrackRecord.getOldIndexOf(pos);
+				String resultVariableName = variablesTrackRecord.indexToName(oldIndex);
+				Double rowResult = rowVektor.getValue(cols-1, 0);
+
 				Double sumOfProducts = 0.0;
 				for(int n=1;n<nonZeroList.size();n++)
 				{
-					int pos = nonZeroList.get(n);
-					Double coefficient = rowVektor.getValue(0, pos);
+
+					pos = nonZeroList.get(n);
+					Double coefficient = rowVektor.getValue(pos, 0);
 					Double solvedVariable = solvedVariables.get(resultVariableName);
 					sumOfProducts = sumOfProducts + coefficient*solvedVariable;
 				}
-				
+
 				Double result = rowResult/sumOfProducts;
 				solvedVariables.put(resultVariableName, result);
 			}
 
 		}
-	
+
 		Vektor<String> solutionVektor;
 		List<String> values = new ArrayList<>();
-		for(int n=0;n<variableNames.size();n++)
+		int s = solvedVariables.size();
+		for(int n=1;n<s;n++)
 		{
-			String variableName = variableNames.get(n);
-			if(freeVariables.contains(variableName))
-				values.add(variableName);
-			else
+
+			String name = variablesTrackRecord.indexToName(n);
+			if(solvedVariables.containsKey(name))
 			{
-				Double result = solvedVariables.get(variableName);
-				values.add(result.toString());
+				Double d = solvedVariables.get(name);
+				values.add(name+": "+d.toString());
 			}
-			
 		}
-		
+
 		solutionVektor = new Vektor<>(values);
-	
+
 		return solutionVektor;
 	}
 
@@ -395,8 +384,8 @@ public class LinearEquationSolver
 
 		for(int n=eraseIndex+1;n<indiziesSize;n++)
 		{
-			int oldIndex = variableTrackRecord.getOldIndexOf(n);
-			variableTrackRecord.setNewIndexOf(oldIndex, n-1);
+			int oldIndex = variablesTrackRecord.getOldIndexOf(n);
+			variablesTrackRecord.setNewIndexOf(oldIndex, n-1);
 		}
 	}
 
