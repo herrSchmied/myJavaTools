@@ -373,7 +373,7 @@ public class LinearEquationSolver
 		int rows = extendedCoefficientMatrix.getRows();
 		int cols = extendedCoefficientMatrix.getColumns();
 		
-		Matrix<Double> output = new Matrix<>(rows-1, cols, 0.0);
+		Matrix<Double> output = new Matrix<>(cols, rows-1, 0.0);
 		
 		for(int row=0;row<rows;row++)
 		{
@@ -399,7 +399,7 @@ public class LinearEquationSolver
 		int rows = extendedCoefficientMatrix.getRows();
 		int cols = extendedCoefficientMatrix.getColumns();
 
-		Matrix<Double> output = new Matrix<>(rows, cols-1, 0.0);
+		Matrix<Double> output = new Matrix<>(cols-1, rows, 0.0);
 		String name = variableNames.remove(eraseCol);
 		freeVariables.add(name);
 

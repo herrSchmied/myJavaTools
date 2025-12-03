@@ -13,14 +13,14 @@ public class LinearEquationSolverTest
 	public void makeAtLeastOneExtraLeadingZeroTest() throws MathException
 	{
 
-		Matrix<Double> sourceRow = new Matrix<>(1, 3, 1.0);
+		Matrix<Double> sourceRow = new Matrix<>(3, 1, 1.0);
 		
-		Matrix<Double> destRow = new Matrix<>(1, 3, 2.54);
+		Matrix<Double> destRow = new Matrix<>(3, 1, 2.54);
 		destRow = destRow.setValue(0, 0, 2.0);
 		
 		Matrix<Double> result = makeAtLeastOneExtraLeadingZero(sourceRow, destRow);
 	
-		Matrix<Double> checkRow = new Matrix<>(1, 3, 0.54);
+		Matrix<Double> checkRow = new Matrix<>(3, 1, 0.54);
 		checkRow = checkRow.setValue(0, 0, 0.0);
 		
 		assert(checkRow.equals(result));
@@ -109,7 +109,7 @@ public class LinearEquationSolverTest
 		assert(!isUnderDeterministic(matrix));
 		assert(isOverDeterministic(matrix));
 		
-		Matrix<Double> synthetic = new Matrix<>(rows, cols, 0.0);
+		Matrix<Double> synthetic = new Matrix<>(cols, rows, 0.0);
 		
 		synthetic = synthetic.setRow(matrix.getRow(0), 0);
 		synthetic = synthetic.setRow(m2.getRow(0), 1);

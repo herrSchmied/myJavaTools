@@ -24,7 +24,7 @@ public class Matrix<O> implements Cloneable
 	private final O[][] valueArr;
 
 	@SuppressWarnings("unchecked")
-	public Matrix(int rows, int columns, O monoValue)
+	public Matrix(int columns, int rows, O monoValue)
 	{
 		
 		this.rows = rows;
