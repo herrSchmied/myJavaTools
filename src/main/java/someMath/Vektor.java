@@ -13,7 +13,7 @@ public class Vektor<O> extends Matrix<O>
 
 	public Vektor(List<O> valueList) throws MathException
 	{
-		super(valueList.size(), valueList);
+		super(1, valueList);
 		this.rows = valueList.size();
 	}
 	
