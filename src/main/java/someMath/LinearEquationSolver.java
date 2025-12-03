@@ -12,10 +12,9 @@ import someMath.exceptions.MathException;
 public class LinearEquationSolver
 {
 
-	private static List<String> variableNames = new ArrayList<>();
-	private static Set<String> freeVariables = new HashSet<>();
+	private static VariableIndizies variableTrackRecord;
 	private static Set<Matrix<Double>> offTheTop = new HashSet<>();
-	
+
 	public static Vektor<String> solve(Matrix<Double> extendedCoefficientMatrix) throws MathException
 	{
 		
@@ -23,14 +22,8 @@ public class LinearEquationSolver
 		int rows = customizable.getRows();
 		int cols = customizable.getColumns();
 
+		variableTrackRecord = new VariableIndizies(cols);
 	
-		variableNames = new ArrayList<>();
-		
-		for(int n=0;n<cols;n++)
-		{
-			variableNames.add("x"+n);
-		}
-		
 		customizable = bubbleSortByLeadingZeros(customizable);
 		customizable = scrapeOffTheTop(customizable);
 		customizable = shortenMatrix(customizable);
@@ -318,13 +311,15 @@ public class LinearEquationSolver
 		return output;
 	}
 
-	public static Matrix<Double> eraseZeroColumns(Matrix<Double> matrix) throws MathException
+	public static Matrix<Double> eraseZeroColumns(Matrix<Double> extendedCoefficientMatrix) throws MathException
 	{
 
-		Matrix<Double> output = matrix.clone();
+		Matrix<Double> output = extendedCoefficientMatrix.clone();
 		int cols = output.getColumns();
 		
-		for(int col=0;col<cols;col++)
+		//column to erase can not be the Right side of
+		//a extendedCoefficientMatrix.
+		for(int col=0;col<cols-1;col++)
 		{
 			
 			if(columnContainsOnlyZeros(col, output))
@@ -380,28 +375,40 @@ public class LinearEquationSolver
 			if(row<eraseRow)
 			{
 				Matrix<Double> rowVektor = extendedCoefficientMatrix.getRow(row);
-				output.setRow(rowVektor, row);
+				output = output.setRow(rowVektor, row);
 			}
 			
 			if(row>eraseRow)
 			{
 				Matrix<Double> rowVektor = extendedCoefficientMatrix.getRow(row);
-				output.setRow(rowVektor, row-1);
+				output = output.setRow(rowVektor, row-1);
 			}
 		}
 
 		return output;
 	}
-	
+
+	public static void upDateVariableIndizies(int eraseIndex, Matrix<Double> extendedCoefficientMatrix) throws MathException
+	{
+
+		int indiziesSize = extendedCoefficientMatrix.getColumns();
+
+		for(int n=eraseIndex+1;n<indiziesSize;n++)
+		{
+			int oldIndex = variableTrackRecord.getOldIndexOf(n);
+			variableTrackRecord.setNewIndexOf(oldIndex, n-1);
+		}
+	}
+
 	public static Matrix<Double> eraseColumn(int eraseCol, Matrix<Double> extendedCoefficientMatrix) throws MathException
 	{
 
+		
 		int rows = extendedCoefficientMatrix.getRows();
 		int cols = extendedCoefficientMatrix.getColumns();
-
+		if(eraseCol == cols-1)throw new MathException("Can't erase the Right side of extendedCoefficientMatrix.");
+	
 		Matrix<Double> output = new Matrix<>(cols-1, rows, 0.0);
-		String name = variableNames.remove(eraseCol);
-		freeVariables.add(name);
 
 		for(int col=0;col<cols;col++)
 		{
@@ -409,17 +416,20 @@ public class LinearEquationSolver
 			if(col<eraseCol)
 			{
 				Matrix<Double> colVektor = extendedCoefficientMatrix.getColumn(col);
-				output.setColumn(colVektor, col);
+				output = output.setColumn(colVektor, col);
 			}
 			
 			if(col>eraseCol)
 			{
 				Matrix<Double> colVektor = extendedCoefficientMatrix.getColumn(col);
-				output.setColumn(colVektor, col-1);
+				output = output.setColumn(colVektor, col-1);
 			}
 		}
 
+		upDateVariableIndizies(eraseCol, extendedCoefficientMatrix);
+
 		return output;
+		
 	}
 	
 	public static Matrix<Double> bubbleSortByLeadingZeros(Matrix<Double> extendedCoefficientMatrix) throws MathException
