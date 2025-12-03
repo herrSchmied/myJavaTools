@@ -126,15 +126,15 @@ public class MatrixTests
 
 		matrix = new Matrix<>(valueArr);
 		valueList = Arrays.asList(1.0, 1.0, 0.0, 0.0, 1.0, 0.0);
-		m2 = new Matrix<>(3, valueList);		
+		m2 = new Matrix<>(2, valueList);		
 		assert(matrix.equals(m2));
 		
 		valueList = Arrays.asList(1.0, 1.0);
-		m2 = new Matrix<>(1, valueList);
+		m2 = new Matrix<>(2, valueList);
 		assert(matrix.getRow(0).equals(m2));
 		
 		valueList = Arrays.asList(1.0, 0.0, 1.0);
-		m2 = new Matrix<>(3, valueList);
+		m2 = new Matrix<>(1, valueList);
 		assert(matrix.getColumn(0).equals(m2));
 		System.out.println(matrix.getColumn(0));
 	}

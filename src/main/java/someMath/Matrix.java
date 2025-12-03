@@ -23,12 +23,13 @@ public class Matrix<O> implements Cloneable
 	private final boolean isQuadratic;
 	private final O[][] valueArr;
 
+	//In All Related Code first Columns than Rows!!!
 	@SuppressWarnings("unchecked")
 	public Matrix(int columns, int rows, O monoValue)
 	{
 		
-		this.rows = rows;
 		this.columns = columns;
+		this.rows = rows;
 		this.isQuadratic = (rows==columns);
 		
 		Object [][] arrayOfValues = new Object[columns][rows];
@@ -48,21 +49,21 @@ public class Matrix<O> implements Cloneable
 	{
 		if(containsNull(valueArr)) throw new MathException("Can't Except array with null values in it!");
 		if(!isRegularArray(valueArr))throw new MathException("Array is not Regular meaning some Elements differ in Dimension despite having the same Position!");
-		this.rows = valueArr[0].length;
 		this.columns = valueArr.length;
+		this.rows = valueArr[0].length;
 
 		isQuadratic = (rows==columns);
 		this.valueArr = (O[][]) valueArr;
 	}
 	
 	@SuppressWarnings("unchecked")
-	public Matrix(int rows, List<O> valueList) throws MathException
+	public Matrix(int columns, List<O> valueList) throws MathException
 	{
-		if(rows<1)throw new MathException("To few rows.");
-		if(valueList.size()%rows!=0)throw new MathException("Matrix can not be initiated due to nr. of Values they don't fit.");
+		if(columns<1)throw new MathException("To few rows.");
+		if(valueList.size()%columns!=0)throw new MathException("Matrix can not be initiated due to nr. of Values they don't fit.");
 		if(valueList.contains(null))throw new MathException("Matrix can not contain null values!");
-		this.rows = rows;
-		this.columns = valueList.size()/rows;
+		this.columns = columns;
+		this.rows = valueList.size()/columns;
 		isQuadratic = (rows==columns);
 		
 		Object [][] arrayOfValues = new Object[columns][rows];
@@ -367,7 +368,7 @@ public class Matrix<O> implements Cloneable
 		try
 		{
 		
-			klon = new Matrix<O>(rows, list);
+			klon = new Matrix<O>(columns, list);
 			
 			for(int col=0;col<columns;col++)
 			{
