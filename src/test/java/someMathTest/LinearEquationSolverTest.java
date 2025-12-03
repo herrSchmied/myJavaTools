@@ -10,6 +10,25 @@ public class LinearEquationSolverTest
 {
 
 	@Test
+	public void makeAtLeastOneExtraLeadingZeroTest() throws MathException
+	{
+
+		Matrix<Double> sourceRow = new Matrix<>(1, 3, 1.0);
+		
+		Matrix<Double> destRow = new Matrix<>(1, 3, 2.54);
+		destRow = destRow.setValue(0, 0, 2.0);
+		
+		Matrix<Double> result = makeAtLeastOneExtraLeadingZero(sourceRow, destRow);
+	
+		Matrix<Double> checkRow = new Matrix<>(1, 3, 0.54);
+		checkRow = checkRow.setValue(0, 0, 0.0);
+		
+		assert(checkRow.equals(result));
+		
+		assert(result.getValue(0, 0).equals(0.0));
+	}
+	
+	@Test
 	public void staggeredTest() throws MathException
 	{
 		
@@ -27,7 +46,7 @@ public class LinearEquationSolverTest
 		Matrix<Double> matrix = new Matrix<>(valueArr);
 		
 		assert(isInStaggeredForm(matrix));
-		assert(isRowEchelonForm(matrix));
+		assert(!isRowEchelonForm(matrix));
 	}
 	
 	@Test
@@ -51,7 +70,7 @@ public class LinearEquationSolverTest
 		assert(matrix.equals(m2));
 		
 		
-		//It' under deterministic now.
+		//Left part is quadratic now!!!
 		valueArr = new Double[3][2];
 		valueArr[0][0]= 1.0;
 		valueArr[1][0]= 0.0;
@@ -68,9 +87,9 @@ public class LinearEquationSolverTest
 
 		assert(matrix.equals(m2));
 		assert(!isOverDeterministic(matrix));
-		assert(isUnderDeterministic(matrix));
+		assert(!isUnderDeterministic(matrix));
 
-		//It' over deterministic now.
+		//Left side is quadratic now.
 		valueArr = new Double[2][3];
 		valueArr[0][0]= 1.0;
 		valueArr[1][0]= 0.0;
@@ -86,6 +105,8 @@ public class LinearEquationSolverTest
 		m2 = scrapeOffTheTop(matrix);
 
 		assert(!matrix.equals(m2));
+
+		assert(!isUnderDeterministic(matrix));
 		assert(isOverDeterministic(matrix));
 		
 		Matrix<Double> synthetic = new Matrix<>(rows, cols, 0.0);
@@ -100,19 +121,22 @@ public class LinearEquationSolverTest
 	@Test
 	public void isRowEchelonTest() throws MathException
 	{
-		Double[][] valueArr = new Double[3][3];
+		Double[][] valueArr = new Double[4][3];
 		valueArr[0][0]= 1.0;
 		valueArr[1][0]= 0.0;
 		valueArr[2][0]= 0.0;
+		valueArr[3][0]= 0.0;
 		valueArr[0][1]= 0.0;
 		valueArr[1][1]= 1.0;
 		valueArr[2][1]= 0.0;
+		valueArr[3][1]= 0.0;
 		valueArr[0][2]= 0.0;
 		valueArr[1][2]= 0.0;
 		valueArr[2][2]= 1.0;
+		valueArr[3][2]= 1.0;
 		
 		Matrix<Double> matrix = new Matrix<>(valueArr);
-		
+
 		assert(isRowEchelonForm(matrix));
 		
 		matrix = matrix.switchRows(1, 0);

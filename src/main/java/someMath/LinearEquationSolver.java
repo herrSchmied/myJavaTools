@@ -1,8 +1,10 @@
 package someMath;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import someMath.exceptions.MathException;
@@ -104,7 +106,7 @@ public class LinearEquationSolver
 		int rows = matrix.getRows();
 		int cols = matrix.getColumns();
 		
-		return (rows>cols);
+		return (rows>cols-1);
 	}
 	
 	public static boolean isUnderDeterministic(Matrix<Double> matrix)
@@ -112,7 +114,7 @@ public class LinearEquationSolver
 		int rows = matrix.getRows();
 		int cols = matrix.getColumns();
 		
-		return (rows<cols);
+		return (rows<cols-1);
 
 	}
 
@@ -157,7 +159,7 @@ public class LinearEquationSolver
 				Matrix<Double> newRow = makeAtLeastOneExtraLeadingZero(rowVektor1, rowVektor2);
 				output = output.setRow(newRow, b);
 				output = bubbleSortByLeadingZeros(output);
-				output = shortenMatrix(output);
+				output = eraseZeroRows(output);
 				if(isRowEchelonForm(output)&&output.isQuadratic())return output;
 				if(isInStaggeredForm(output)&&isUnderDeterministic(output))return output;
 			}			
@@ -184,11 +186,107 @@ public class LinearEquationSolver
 		return MatrixRing.addition.apply(output, addOn);
 	}
 
-	public static Vektor<String> calculateSolvingVektor(Matrix<Double> extendedCoefficientMatrix)
+
+	public static Vektor<String> calculateSolvingVektor(Matrix<Double> extendedCoefficientMatrix) throws MathException
 	{
-		return null;
+
+		int rows = extendedCoefficientMatrix.getRows();
+		int cols = extendedCoefficientMatrix.getColumns();
+		
+		List<String> nonFreeVariables = new ArrayList<>();
+		
+		for(int n=0;n<variableNames.size();n++)
+		{
+			String variableName = variableNames.get(n);
+			if(!freeVariables.contains(variableName))
+				nonFreeVariables.add(variableName);
+		}
+
+		Map<String, Double> solvedVariables = new HashMap<>();
+
+		//Backwards!!
+		for(int row=rows-1;row>-1;row--)
+		{
+			Matrix<Double> rowVektor = extendedCoefficientMatrix.getRow(row);
+
+			List<Integer> nonZeroList = nonZeros(rowVektor);
+			
+			if(nonZeroList.size()==1)
+			{
+
+				int nrOfSolvedVariables = solvedVariables.size();
+				
+				String resultVariableName = nonFreeVariables.get(nrOfSolvedVariables);
+
+				int pos = nonZeroList.get(0);
+				Double rowResult = rowVektor.getValue(0, rows-1);
+				Double coefficient = rowVektor.getValue(0, pos);
+				
+				Double result = rowResult/coefficient;
+				solvedVariables.put(resultVariableName, result);
+			}
+			
+			if(nonZeroList.size()+1==solvedVariables.size())
+			{
+				
+				int  nrOfSolvedVariables= solvedVariables.size();
+
+				String resultVariableName = nonFreeVariables.get(nrOfSolvedVariables);
+				Double rowResult = rowVektor.getValue(0, rows-1);
+				
+				Double sumOfProducts = 0.0;
+				for(int n=1;n<nonZeroList.size();n++)
+				{
+					int pos = nonZeroList.get(n);
+					Double coefficient = rowVektor.getValue(0, pos);
+					Double solvedVariable = solvedVariables.get(resultVariableName);
+					sumOfProducts = sumOfProducts + coefficient*solvedVariable;
+				}
+				
+				Double result = rowResult/sumOfProducts;
+				solvedVariables.put(resultVariableName, result);
+			}
+
+		}
+	
+		Vektor<String> solutionVektor;
+		List<String> values = new ArrayList<>();
+		for(int n=0;n<variableNames.size();n++)
+		{
+			String variableName = variableNames.get(n);
+			if(freeVariables.contains(variableName))
+				values.add(variableName);
+			else
+			{
+				Double result = solvedVariables.get(variableName);
+				values.add(result.toString());
+			}
+			
+		}
+		
+		solutionVektor = new Vektor<>(values);
+	
+		return solutionVektor;
 	}
 
+	public static List<Integer> nonZeros(Matrix<Double> rowVektor) throws MathException
+	{
+		
+		List<Integer> positions = new ArrayList<>();
+		int rows = rowVektor.getRows();
+		
+		//One the Right side is the value is not coefficient!!
+		//So it goes only up too rows-1!!!
+		for(int row=0;row<rows-1;row++)
+		{
+			Double coefficient = rowVektor.getValue(0, row);
+			if(!coefficient.equals(0.0))positions.add(row);
+
+		}
+		
+		return positions;
+	}
+	
 	public static Matrix<Double> shortenMatrix(Matrix<Double> extendedCoefficientMatrix) throws MathException
 	{
 
@@ -394,7 +492,7 @@ public class LinearEquationSolver
 		int bottomLeadingZeros = nrOfLeadingZeros(bottomRow);
 		
 		
-		return staggered&&(topLeadingZeros==0)&&(bottomLeadingZeros==cols-1);
+		return staggered&&(topLeadingZeros==0)&&(bottomLeadingZeros==cols-2);
 	}
 	
 	public static int nrOfLeadingZeros(Matrix<Double> rowVektor) throws MathException
