@@ -44,23 +44,25 @@ public class Vektorraum extends Operations<Vektor<Double>>
 	public static final BiFunction<Vektor<Double>, Vektor<Double>, Double> scalarProduct = (v1, v2)->
 	{
 
-		int rows = v1.getRows();
-		
-		double sum = 0.0;
+		if(v1.getColumns()!=1)
+			throw new RuntimeException("Factor 1 has not the Right nr. of Columns");
+		if(v2.getColumns()!=1)
+			throw new RuntimeException("Factor 2 has not the Right nr. of Columns");
+		if(v1.getRows()!=v2.getRows())
+			throw new RuntimeException("These two Vektors have different number of Rows(Dimension).");
 		
 		try
 		{
-			for(int n=0;n<rows;n++)
-			{
-				sum = sum + v1.getValue(n)*v2.getValue(n);
-			}
+			Matrix<Double> t = MatrixRing.transponent.apply(v1);
+			Matrix<Double> erg = MatrixRing.multiplication.apply(t, v2);
+		
+			return erg.getValue(0, 0);
 		}
-		catch(MathException me)
+		catch(MathException e)
 		{
-			me.printStackTrace();
+			e.printStackTrace();
+			throw new RuntimeException("Couldn't multiply those 'Vektors'");
 		}
-
-		return sum;
 	};
 
 	public Vektorraum(int n) throws MathException

@@ -12,6 +12,18 @@ import someMath.exceptions.MathException;
 public class VectorTests
 {
 	
+	
+	@Test
+	public void scalarProduct() throws MathException
+	{
+		
+		List<Double> list = Arrays.asList(1.0, 1.0, 1.0);
+		Vektor<Double> vektor = new Vektor<>(list);
+		Double product = Vektorraum.scalarProduct.apply(vektor, vektor);
+
+		assert(product.equals(3.0));
+	}
+
 	@Test
 	public void scaleTest() throws MathException
 	{

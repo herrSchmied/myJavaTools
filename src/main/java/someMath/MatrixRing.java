@@ -106,14 +106,12 @@ public class MatrixRing extends Operations<Matrix<Double>>
 
 		int cols = matrix.getColumns();
 		int rows = matrix.getRows();
-		
-		List<Double> neutrals = new ArrayList<>();
-		for(int n=0;n<cols*rows;n++)neutrals.add(0.0);
+	
 		Matrix<Double> transponed;
 		try
 		{
-								//Remember columns and rows get switched!!
-			transponed = new Matrix<Double>(cols, neutrals);
+			//Remember columns and rows get switched!!
+			transponed = new Matrix<Double>(rows, cols, 0.0);
 			for(int col=0;col<cols;col++)
 			{
 				for(int row=0;row<rows;row++)
