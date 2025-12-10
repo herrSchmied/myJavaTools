@@ -3,7 +3,12 @@ package someMathTest;
 import org.junit.jupiter.api.Test;
 
 import static someMath.LinearEquationSolver.*;
+
+import java.util.Arrays;
+import java.util.List;
+
 import someMath.Matrix;
+import someMath.SmallTools;
 import someMath.exceptions.MathException;
 
 public class LinearEquationSolverTest
@@ -13,19 +18,27 @@ public class LinearEquationSolverTest
 	public void makeAtLeastOneExtraLeadingZeroTest() throws MathException
 	{
 
-		Matrix<Double> sourceRow = new Matrix<>(3, 1, 1.0);
+		for(int n=0;n<4;n++)
+		{
+			
+			double z= (double)SmallTools.randomInt(100, 1);
+			List<Double> listS = Arrays.asList(z,(z+1),(z+2));
+			List<Double> listD = Arrays.asList((z*2),(z+1),(z+2));
+
+			Matrix<Double> sourceRow = new Matrix<>(3, listS);
 		
-		Matrix<Double> destRow = new Matrix<>(3, 1, 2.54);
-		destRow = destRow.setValue(0, 0, 2.0);
+			Matrix<Double> destRow = new Matrix<>(3, listD);
 		
-		Matrix<Double> result = makeAtLeastOneExtraLeadingZero(sourceRow, destRow);
-	
-		Matrix<Double> checkRow = new Matrix<>(3, 1, 0.54);
-		checkRow = checkRow.setValue(0, 0, 0.0);
+			Matrix<Double> result = makeAtLeastOneExtraLeadingZero(sourceRow, destRow);
+
+			List<Double> listC = Arrays.asList(0.0, -(z+1), -(z+2));
+			
+			Matrix<Double> checkRow = new Matrix<>(3, listC);
 		
-		assert(checkRow.equals(result));
-		
-		assert(result.getValue(0, 0).equals(0.0));
+			assert(checkRow.equals(result));
+
+			assert(result.getValue(0, 0).equals(0.0));
+		}
 	}
 	
 	@Test
@@ -47,6 +60,25 @@ public class LinearEquationSolverTest
 		
 		assert(isInStaggeredForm(matrix));
 		assert(!isRowEchelonForm(matrix));
+		
+		matrix = new Matrix<>(5, 3, 0.0);
+		
+		assert(!isInStaggeredForm(matrix));
+		assert(!isRowEchelonForm(matrix));
+		
+		matrix = matrix.setValue(4, 2, 1.0);
+		matrix = matrix.setValue(3, 2, 1.0);
+		matrix = matrix.setValue(4, 1, 1.0);
+		matrix = matrix.setValue(3, 1, 1.0);
+		matrix = matrix.setValue(2, 1, 1.0);
+		matrix = matrix.setValue(4, 0, 1.0);
+		matrix = matrix.setValue(3, 0, 1.0);
+		matrix = matrix.setValue(2, 0, 1.0);
+		matrix = matrix.setValue(1, 0, 1.0);
+		matrix = matrix.setValue(0, 0, 1.0);
+		
+		assert(isInStaggeredForm(matrix));
+		assert(isRowEchelonForm(matrix));
 	}
 	
 	@Test
