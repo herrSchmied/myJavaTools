@@ -28,14 +28,14 @@ public class VariableIndizies
 	public int getNewIndexOf(int oldIndex) throws MathException
 	{
 
-		if(oldIndex>size)throw new MathException("No such old index.");
+		if(oldIndex>size||oldIndex<0)throw new MathException("No such old index.");
 		return map.get(oldIndex);
 	}
 
 	public void setNewIndexOf(int oldIndex, int newIndex) throws MathException
 	{
-		if(oldIndex>size)throw new MathException("No such old index.");
-		if(newIndex>size)throw new MathException("No such new index.");
+		if(oldIndex>size||oldIndex<0)throw new MathException("No such old index.");
+		if(newIndex>size||newIndex<0)throw new MathException("No such new index.");
 	
 		map.put(oldIndex, newIndex);
 	}
@@ -43,7 +43,7 @@ public class VariableIndizies
 	public int getOldIndexOf(Integer newIndex) throws MathException
 	{
 
-		if(newIndex>size)throw new MathException("No such new index.");
+		if(newIndex>size||newIndex<0)throw new MathException("No such new index.");
 
 		for(Integer oldIndex: map.keySet())
 		{
