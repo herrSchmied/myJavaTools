@@ -195,26 +195,30 @@ public class LinearEquationSolver
 
 			List<Integer> nonZeroList = nonZeros(rowVektor);
 			
+			Double rowResult = rowVektor.getValue(cols-1, 0);
+
 			if(nonZeroList.size()==1)
 			{
 
 				int pos = nonZeroList.get(0);
-				int oldIndex = variablesTrackRecord.getOldIndexOf(pos);
+				int oldIndex = variablesTrackRecord.getOldIndexOf(pos+1);
 				String resultVariableName = variablesTrackRecord.indexToName(oldIndex);
-				Double rowResult = rowVektor.getValue(cols-1, 0);
 				Double coefficient = rowVektor.getValue(pos, 0);
 				
 				Double result = rowResult/coefficient;
 				solvedVariables.put(resultVariableName, result);
+				continue;
 			}
 
+			//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+			//TODO:This is a block im not sure about!!!!!
+			//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 			if(nonZeroList.size()+1==solvedVariables.size())
 			{
 
 				int pos = nonZeroList.get(0);
 				int oldIndex = variablesTrackRecord.getOldIndexOf(pos);
 				String resultVariableName = variablesTrackRecord.indexToName(oldIndex);
-				Double rowResult = rowVektor.getValue(cols-1, 0);
 
 				Double sumOfProducts = 0.0;
 				for(int n=1;n<nonZeroList.size();n++)
@@ -232,9 +236,8 @@ public class LinearEquationSolver
 
 		}
 
-		Vektor<String> solutionVektor;
 		List<String> values = new ArrayList<>();
-		int s = solvedVariables.size();
+		int s = cols;
 		for(int n=1;n<s;n++)
 		{
 
@@ -244,10 +247,11 @@ public class LinearEquationSolver
 				Double d = solvedVariables.get(name);
 				values.add(name+": "+d.toString());
 			}
+			else values.add(name);
 		}
 
-		solutionVektor = new Vektor<>(values);
-
+		Vektor<String> solutionVektor = new Vektor<>(values);
+		System.out.println(solutionVektor);
 		return solutionVektor;
 	}
 
@@ -255,14 +259,14 @@ public class LinearEquationSolver
 	{
 		
 		List<Integer> positions = new ArrayList<>();
-		int rows = rowVektor.getRows();
+		int cols = rowVektor.getColumns();
 		
 		//One the Right side is the value is not coefficient!!
-		//So it goes only up too rows-1!!!
-		for(int row=0;row<rows-1;row++)
+		//So it goes only up too cols-1!!!
+		for(int col=0;col<cols-1;col++)
 		{
-			Double coefficient = rowVektor.getValue(0, row);
-			if(!coefficient.equals(0.0))positions.add(row);
+			Double coefficient = rowVektor.getValue(col, 0);
+			if(!coefficient.equals(0.0))positions.add(col);
 
 		}
 		

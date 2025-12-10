@@ -7,12 +7,38 @@ import static someMath.LinearEquationSolver.*;
 import java.util.Arrays;
 import java.util.List;
 
+import someMath.LinearEquationSolver;
 import someMath.Matrix;
 import someMath.SmallTools;
+import someMath.Vektor;
 import someMath.exceptions.MathException;
 
 public class LinearEquationSolverTest
 {
+
+	@Test
+	public void solvingTest() throws MathException, InterruptedException
+	{
+
+		Matrix<Double> matrix = new Matrix<>(3,2, 0.0);
+		matrix = matrix.setValue(0, 0, 3.0);
+		matrix = matrix.setValue(2, 0, 1.0);
+		matrix = matrix.setValue(1, 1, 3.0);
+		matrix = matrix.setValue(2, 1, 1.0);
+
+		Vektor<String> v =LinearEquationSolver.solve(matrix);
+		System.out.println(v);
+		
+		matrix = matrix.setValue(0, 0, 3.0);
+		matrix = matrix.setValue(1, 0, 1.0);
+		matrix = matrix.setValue(2, 0, 1.0);
+		matrix = matrix.setValue(1, 1, 3.0);
+		matrix = matrix.setValue(2, 1, 1.0);
+
+		v =LinearEquationSolver.solve(matrix);
+		System.out.println(v);
+
+	}
 
 	@Test
 	public void makeAtLeastOneExtraLeadingZeroTest() throws MathException
