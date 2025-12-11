@@ -42,15 +42,10 @@ public class LinearEquationSolverTest
 		
 		Vektor<Double> solution = convertSolutionVektorToExampleVektor(solve(matrix));
 		System.out.println(solution);
+		
+		Matrix<Double> result = MatrixRing.multiplication.apply(m1, solution);
 
-		//TODO: I need to extract v1 and expectedValue from v!!!!!!!!!!!!
-		double frac = (2.0/9.0);
-		double thrd = (1.0/3.0);
-		Vektor<Double> expectedResult = new Vektor<>(Arrays.asList(frac, thrd));
-		Matrix result = MatrixRing.multiplication.apply(m1, expectedResult);
-		System.out.println(result);
-
-		assert(result.getValue(0, 0).equals(1.0));
+		assert(result.getValue(0, 0).equals(matrix.getValue(2, 0)));
 	}
 
 	@Test
