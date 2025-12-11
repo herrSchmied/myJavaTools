@@ -13,9 +13,10 @@ public class LinearEquationSolver
 {
 
 	private static VariableIndizies variablesTrackRecord;
+	private static Set<String> freeVariables = new HashSet<>();
 	private static Set<Matrix<Double>> offTheTop = new HashSet<>();
 
-	public static Vektor<String> solve(Matrix<Double> extendedCoefficientMatrix) throws MathException
+	public static Vektor<Object> solve(Matrix<Double> extendedCoefficientMatrix) throws MathException
 	{
 		
 		Matrix<Double> customizable = extendedCoefficientMatrix.clone();
@@ -180,7 +181,7 @@ public class LinearEquationSolver
 	}
 
 
-	public static Vektor<String> calculateSolvingVektor(Matrix<Double> extendedCoefficientMatrix) throws MathException
+	public static Vektor<Object> calculateSolvingVektor(Matrix<Double> extendedCoefficientMatrix) throws MathException
 	{
 
 		int rows = extendedCoefficientMatrix.getRows();
@@ -239,7 +240,7 @@ public class LinearEquationSolver
 
 		}
 
-		List<String> values = new ArrayList<>();
+		List<Object> values = new ArrayList<>();
 		int s = cols;
 		for(int n=1;n<s;n++)
 		{
@@ -248,14 +249,32 @@ public class LinearEquationSolver
 			if(solvedVariables.containsKey(name))
 			{
 				Double d = solvedVariables.get(name);
-				values.add(name+": "+d.toString());
+				values.add(d);
 			}
 			else values.add(name);
 		}
 
-		Vektor<String> solutionVektor = new Vektor<>(values);
+		Vektor<Object> solutionVektor = new Vektor<>(values);
 		System.out.println(solutionVektor);
 		return solutionVektor;
+	}
+	
+	public static Vektor<Double> convertSolutionVektorToExampleVektor(Vektor<Object> solution) throws MathException
+	{
+		
+		int rows = solution.getRows();
+		Vektor<Double> example = new Vektor<>(rows, 0.0);
+		
+		for(int row=0;row<rows;row++)
+		{
+			
+			Object value = solution.getValue(row);
+			if(!(value instanceof Double))throw new MathException("Not Yet supported");
+			Double dValue = (Double)value;
+			example = example.setValue(row, dValue);
+		}
+		
+		return example;
 	}
 
 	public static List<Integer> nonZeros(Matrix<Double> rowVektor) throws MathException
@@ -402,7 +421,7 @@ public class LinearEquationSolver
 		
 		int rows = extendedCoefficientMatrix.getRows();
 		int cols = extendedCoefficientMatrix.getColumns();
-		if(eraseCol == cols-1)throw new MathException("Can't erase the Right side of extendedCoefficientMatrix.");
+		if(eraseCol == cols-1)System.out.println("Warning erasing the Right side of extendedCoefficientMatrix.");
 	
 		Matrix<Double> output = new Matrix<>(cols-1, rows, 0.0);
 

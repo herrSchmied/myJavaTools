@@ -9,6 +9,17 @@ import someMath.exceptions.MathException;
 public class Vektor<O> extends Matrix<O>
 {
 
+	public static <O> List<O> getDefaultValueList(int n, O defaultValue)
+	{
+		List<O> list = new ArrayList<>();
+		for(int m=0;m<n;m++)
+		{
+			list.add(defaultValue);
+		}
+		
+		return list;
+	}
+
 	public Vektor(List<O> valueList) throws MathException
 	{
 		super(1, valueList);
@@ -17,6 +28,11 @@ public class Vektor<O> extends Matrix<O>
 	public Vektor(O[] valueArray) throws MathException
 	{
 		this(Arrays.asList(valueArray));
+	}
+	
+	public Vektor(int rows, O defaultValue) throws MathException
+	{
+		super(1, getDefaultValueList(rows, defaultValue));
 	}
 
 	public O getValue(int row) throws MathException
@@ -29,10 +45,25 @@ public class Vektor<O> extends Matrix<O>
 		return super.getRows();
 	}
 	
-	public void setValue(int row, O value) throws MathException
+	public Vektor<O> setValue(int row, O value) throws MathException
 	{
-		super.setValue(0, row, value);
+		
+		if(row>super.getRows()-1||row<0)throw new MathException("Row out of Bounds.");
+		if(value==null)throw new MathException("Can't accept Null-Value.");
+		
+		List<O> list = new ArrayList<>();
+		
+		for(int n=0;n<super.getRows();n++)
+		{
+			O o;
+			if(n==row)o = value;
+			else o = this.getValue(n);
+			list.add(o);
+		}
+
+		return new Vektor<O>(list);
 	}
+
 	public Vektor<O> clone()
 	{
 		

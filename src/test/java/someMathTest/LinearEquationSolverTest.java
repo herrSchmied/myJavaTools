@@ -9,6 +9,8 @@ import java.util.List;
 
 import someMath.LinearEquationSolver;
 import someMath.Matrix;
+import someMath.MatrixRing;
+import someMath.MatrixStuff;
 import someMath.SmallTools;
 import someMath.Vektor;
 import someMath.Vektorraum;
@@ -27,7 +29,7 @@ public class LinearEquationSolverTest
 		matrix = matrix.setValue(1, 1, 3.0);
 		matrix = matrix.setValue(2, 1, 1.0);
 
-		Vektor<String> v =LinearEquationSolver.solve(matrix);
+		Vektor<Object> v =LinearEquationSolver.solve(matrix);
 		System.out.println(v);
 		
 		matrix = matrix.setValue(0, 0, 3.0);
@@ -35,20 +37,20 @@ public class LinearEquationSolverTest
 		matrix = matrix.setValue(2, 0, 1.0);
 		matrix = matrix.setValue(1, 1, 3.0);
 		matrix = matrix.setValue(2, 1, 1.0);
-		Vektor<Double> v1 = new Vektor<>(Arrays.asList(3.0, 1.0));
-		System.out.println(matrix);
-
-		v =LinearEquationSolver.solve(matrix);
-		System.out.println(v);
+		Matrix<Double> m1 = matrix.getRow(0);
+		m1 = eraseColumn(2, m1);
+		
+		Vektor<Double> solution = convertSolutionVektorToExampleVektor(solve(matrix));
+		System.out.println(solution);
 
 		//TODO: I need to extract v1 and expectedValue from v!!!!!!!!!!!!
 		double frac = (2.0/9.0);
 		double thrd = (1.0/3.0);
 		Vektor<Double> expectedResult = new Vektor<>(Arrays.asList(frac, thrd));
-		Double result = Vektorraum.scalarProduct.apply(v1, expectedResult);
+		Matrix result = MatrixRing.multiplication.apply(m1, expectedResult);
 		System.out.println(result);
 
-		assert(result.equals(1.0));
+		assert(result.getValue(0, 0).equals(1.0));
 	}
 
 	@Test
