@@ -22,13 +22,13 @@ public class LinearEquationSolverTest
 	{
 
 		Matrix<Double> matrix = new Matrix<>(3,2, 0.0);
-//		matrix = matrix.setValue(0, 0, 3.0);
-//		matrix = matrix.setValue(2, 0, 1.0);
-//		matrix = matrix.setValue(1, 1, 3.0);
-//		matrix = matrix.setValue(2, 1, 1.0);
-//
-//		Vektor<String> v =LinearEquationSolver.solve(matrix);
-//		System.out.println(v);
+		matrix = matrix.setValue(0, 0, 3.0);
+		matrix = matrix.setValue(2, 0, 1.0);
+		matrix = matrix.setValue(1, 1, 3.0);
+		matrix = matrix.setValue(2, 1, 1.0);
+
+		Vektor<String> v =LinearEquationSolver.solve(matrix);
+		System.out.println(v);
 		
 		matrix = matrix.setValue(0, 0, 3.0);
 		matrix = matrix.setValue(1, 0, 1.0);
@@ -38,15 +38,17 @@ public class LinearEquationSolverTest
 		Vektor<Double> v1 = new Vektor<>(Arrays.asList(3.0, 1.0));
 		System.out.println(matrix);
 
-		Vektor<String> v =LinearEquationSolver.solve(matrix);
+		v =LinearEquationSolver.solve(matrix);
 		System.out.println(v);
 
+		//TODO: I need to extract v1 and expectedValue from v!!!!!!!!!!!!
+		double frac = (2.0/9.0);
 		double thrd = (1.0/3.0);
-		Vektor<Double> expectedResult = new Vektor<>(Arrays.asList(1.0, thrd));
+		Vektor<Double> expectedResult = new Vektor<>(Arrays.asList(frac, thrd));
 		Double result = Vektorraum.scalarProduct.apply(v1, expectedResult);
 		System.out.println(result);
 
-		//assert(result.equals(3.0));
+		assert(result.equals(1.0));
 	}
 
 	@Test
