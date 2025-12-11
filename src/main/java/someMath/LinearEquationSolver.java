@@ -197,41 +197,44 @@ public class LinearEquationSolver
 			
 			Double rowResult = rowVektor.getValue(cols-1, 0);
 
+
+			//Far Left Index is the variable which is
+			//unsolved
+			int positionToBeSolved = nonZeroList.get(0);
+			int oldIndex = variablesTrackRecord.getOldIndexOf(positionToBeSolved+1);
+			String toBeSolvedVariableName = variablesTrackRecord.indexToName(oldIndex);
+			Double toBeSolvedVariableCoefficient = rowVektor.getValue(positionToBeSolved, 0);
+
 			if(nonZeroList.size()==1)
 			{
 
-				int pos = nonZeroList.get(0);
-				int oldIndex = variablesTrackRecord.getOldIndexOf(pos+1);
-				String resultVariableName = variablesTrackRecord.indexToName(oldIndex);
-				Double coefficient = rowVektor.getValue(pos, 0);
-				
-				Double result = rowResult/coefficient;
-				solvedVariables.put(resultVariableName, result);
+				Double result = rowResult/toBeSolvedVariableCoefficient;
+				solvedVariables.put(toBeSolvedVariableName, result);
+
 				continue;
 			}
 
 			//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 			//TODO:This is a block im not sure about!!!!!
 			//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-			if(nonZeroList.size()+1==solvedVariables.size())
+			if(nonZeroList.size()==solvedVariables.size()+1)
 			{
 
-				int pos = nonZeroList.get(0);
-				int oldIndex = variablesTrackRecord.getOldIndexOf(pos);
-				String resultVariableName = variablesTrackRecord.indexToName(oldIndex);
 
 				Double sumOfProducts = 0.0;
-				for(int n=1;n<nonZeroList.size();n++)
+				for(int place: nonZeroList)
 				{
 
-					pos = nonZeroList.get(n);
-					Double coefficient = rowVektor.getValue(pos, 0);
-					Double solvedVariable = solvedVariables.get(resultVariableName);
+					if(place==positionToBeSolved)continue;
+					int oldIndex2 = variablesTrackRecord.getOldIndexOf(place+1);
+					String variableName = variablesTrackRecord.indexToName(oldIndex2);
+					Double coefficient = rowVektor.getValue(place, 0);
+					Double solvedVariable = solvedVariables.get(variableName);
 					sumOfProducts = sumOfProducts + coefficient*solvedVariable;
 				}
 
-				Double result = rowResult/sumOfProducts;
-				solvedVariables.put(resultVariableName, result);
+				Double result = (rowResult-sumOfProducts)/toBeSolvedVariableCoefficient;
+				solvedVariables.put(toBeSolvedVariableName, result);
 			}
 
 		}
