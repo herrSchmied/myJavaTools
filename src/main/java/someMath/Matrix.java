@@ -168,6 +168,36 @@ public class Matrix<O> implements Cloneable
 		return new Matrix<O>(valueArrClone);
 	}
 	
+	public Matrix<O> glueColumnToThisOnTheLeft(Vektor<O> columnVektor) throws MathException
+	{
+		
+		O o = this.getValue(0, 0);
+		Matrix<O> output = new Matrix<>(columns+1, rows, o);
+		for(int col=1;col<columns+1;col++)
+		{
+			Vektor<O> v = this.getColumnAsVektor(col);
+			output.setColumn(v, col);
+		}
+		output.setColumn(columnVektor, 0);
+		
+		return output;
+	}
+
+	public Matrix<O> glueColumnToThisOnTheRight(Vektor<O> columnVektor) throws MathException
+	{
+		
+		O o = this.getValue(0, 0);
+		Matrix<O> output = new Matrix<>(columns+1, rows, o);
+		for(int col=0;col<columns;col++)
+		{
+			Vektor<O> v = this.getColumnAsVektor(col);
+			output.setColumn(v, col);
+		}
+		output.setColumn(columnVektor, columns);
+		
+		return output;
+	}
+
 	public Matrix<O> switchColumns(int colA, int colB) throws MathException
 	{
 
@@ -228,6 +258,36 @@ public class Matrix<O> implements Cloneable
 		for(int i=0;i<columns;i++)valueArrClone[i][row]=rowVektor.getValue(i);
 		
 		return new Matrix<O>(valueArrClone);
+	}
+
+	public Matrix<O> glueRowToThisOnTheBottom(Vektor<O> rowVektor) throws MathException
+	{
+		
+		O o = this.getValue(0, 0);
+		Matrix<O> output = new Matrix<>(columns, rows+1, o);
+		for(int row=0;row<rows;row++)
+		{
+			Vektor<O> v = this.getRowAsVektor(row);
+			output.setRow(v, row);
+		}
+		output.setRow(rowVektor, rows);
+		
+		return output;
+	}
+	
+	public Matrix<O> glueRowToThisOnTheTop(Vektor<O> rowVektor) throws MathException
+	{
+		
+		O o = this.getValue(0, 0);
+		Matrix<O> output = new Matrix<>(columns, rows+1, o);
+		for(int row=1;row<rows+1;row++)
+		{
+			Vektor<O> v = this.getRowAsVektor(row);
+			output.setRow(v, row);
+		}
+		output.setRow(rowVektor, 0);
+		
+		return output;
 	}
 
 	public Matrix<O> setRow(Matrix<O> rowVektor, int row) throws MathException

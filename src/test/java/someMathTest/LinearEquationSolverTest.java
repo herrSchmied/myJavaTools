@@ -23,29 +23,26 @@ public class LinearEquationSolverTest
 	public void solvingTest() throws MathException, InterruptedException
 	{
 
-		Matrix<Double> matrix = new Matrix<>(3,2, 0.0);
-		matrix = matrix.setValue(0, 0, 3.0);
-		matrix = matrix.setValue(2, 0, 1.0);
-		matrix = matrix.setValue(1, 1, 3.0);
-		matrix = matrix.setValue(2, 1, 1.0);
+		Matrix<Double> coefficientmatrix = new Matrix<>(2,2, 0.0);
+		coefficientmatrix = coefficientmatrix.setValue(0, 0, 3.0);
+		coefficientmatrix = coefficientmatrix.setValue(1, 1, 3.0);
 
-		Vektor<Object> v =LinearEquationSolver.solve(matrix);
+		Vektor<Double> rowResults = new Vektor<>(2, 1.0);
+
+		Matrix<Double> extendedCoefficientMatrix = coefficientmatrix.glueColumnToThisOnTheRight(rowResults);
+
+		Vektor<Object> v = solve(extendedCoefficientMatrix);
 		System.out.println(v);
-		
-		matrix = matrix.setValue(0, 0, 3.0);
-		matrix = matrix.setValue(1, 0, 1.0);
-		matrix = matrix.setValue(2, 0, 1.0);
-		matrix = matrix.setValue(1, 1, 3.0);
-		matrix = matrix.setValue(2, 1, 1.0);
-		Matrix<Double> m1 = matrix.getRow(0);
-		m1 = eraseColumn(2, m1);
-		
-		Vektor<Double> solution = convertSolutionVektorToExampleVektor(solve(matrix));
-		System.out.println(solution);
-		
-		Matrix<Double> result = MatrixRing.multiplication.apply(m1, solution);
 
-		assert(result.getValue(0, 0).equals(matrix.getValue(2, 0)));
+		coefficientmatrix = coefficientmatrix.setValue(1, 0, 1.0);
+		extendedCoefficientMatrix = coefficientmatrix.glueColumnToThisOnTheRight(rowResults);
+		Vektor<Double> v1 = coefficientmatrix.getRowAsVektor(0);
+		Vektor<Double> solution = convertSolutionVektorToExampleVektor(solve(extendedCoefficientMatrix));
+		System.out.println(solution);
+
+		Double r = Vektorraum.scalarProduct.apply(v1, solution);
+
+		assert(r.equals(rowResults.getValue(1)));
 	}
 
 	@Test
