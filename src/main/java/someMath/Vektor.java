@@ -1,8 +1,11 @@
 package someMath;
 
+import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
+import java.util.function.BiConsumer;
 
 import someMath.exceptions.MathException;
 
@@ -100,5 +103,58 @@ public class Vektor<O> extends Matrix<O>
 		}
 		
 		return klon;
+	}
+	
+	public int hashCode()
+	{
+			
+		int wert = 0;
+
+		int rows = this.getRows();
+
+		for(int row=0;row<rows;row++)
+		{
+		
+			try
+			{
+				O o = this.getValue(row);
+				wert += o.hashCode()+row;
+			}
+			catch(MathException mex)
+			{
+				mex.printStackTrace();
+			}
+		}
+
+		return Objects.hash(wert);
+	}
+
+	public boolean equals(Object other)
+	{
+
+		if(!(other instanceof Vektor))return false;
+		Vektor v = (Vektor)other;
+		if(!(this.getRows()==v.getRows()))return false;
+		int rows = this.getRows();
+		
+		try
+		{
+			boolean sameType = this.getValue(0).getClass().equals(v.getValue(0).getClass());
+			if(!sameType)return false;
+			
+			for(int row=0;row<rows;row++)
+			{
+				Object a = this.getValue(row);
+				Object b = this.getValue(row);
+				
+				if(!a.equals(b))return false;
+			}
+		}
+		catch(MathException e)
+		{
+			e.printStackTrace();
+		}
+
+		return true;
 	}
 }

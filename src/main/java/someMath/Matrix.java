@@ -117,7 +117,7 @@ public class Matrix<O> implements Cloneable
 
 		O o = this.getValue(0, 0);
 		int rows = this.getRows();
-		Vektor<O> output = new Vektor(rows, o);
+		Vektor<O> output = new Vektor<>(rows, o);
 		for(int row=0;row<rows;row++)
 		{
 			O value = this.getValue(col, row);
@@ -221,7 +221,7 @@ public class Matrix<O> implements Cloneable
 
 		O o = this.getValue(0, 0);
 		int cols = this.getColumns();
-		Vektor<O> output = new Vektor(cols, o);
+		Vektor<O> output = new Vektor<>(cols, o);
 		for(int r=0;r<cols;r++)
 		{
 			O value = this.getValue(r, row);
@@ -399,7 +399,7 @@ public class Matrix<O> implements Cloneable
 		catch(MathException e)
 		{
 			e.printStackTrace();
-			throw new RuntimeException("Couldn't clone");
+			throw new RuntimeException("Couldn't walkThru Matrix.");
 		}
 		
 		return Objects.hash(wert[0]);

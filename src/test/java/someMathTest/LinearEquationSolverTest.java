@@ -1,20 +1,28 @@
 package someMathTest;
 
+
+
 import org.junit.jupiter.api.Test;
 
+
 import static someMath.LinearEquationSolver.*;
+
 
 import java.util.Arrays;
 import java.util.List;
 
-import someMath.LinearEquationSolver;
-import someMath.Matrix;
-import someMath.MatrixRing;
-import someMath.MatrixStuff;
+
 import someMath.SmallTools;
+
+import someMath.Matrix;
+
 import someMath.Vektor;
+
 import someMath.Vektorraum;
+
 import someMath.exceptions.MathException;
+
+
 
 public class LinearEquationSolverTest
 {
@@ -248,7 +256,7 @@ public class LinearEquationSolverTest
 		valueArr[0][2]= 0.0;
 		valueArr[1][2]= 0.0;
 		valueArr[2][2]= 1.0;
-		
+
 		Matrix<Double> matrix = new Matrix<>(valueArr);
 		Matrix<Double> row0 = matrix.getRow(0);
 		Matrix<Double> row1 = matrix.getRow(1);
@@ -256,9 +264,9 @@ public class LinearEquationSolverTest
 		assert(nrOfLeadingZeros(row0)==0);
 		assert(nrOfLeadingZeros(row1)==1);
 		assert(nrOfLeadingZeros(row2)==2);
-		
+
 		Matrix<Double> unOrderedOne = matrix.switchRows(1, 0);
-		
+
 		row0 = unOrderedOne.getRow(0);
 		row1 = unOrderedOne.getRow(1);
 		row2 = unOrderedOne.getRow(2);
