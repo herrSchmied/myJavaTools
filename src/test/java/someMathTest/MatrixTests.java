@@ -228,4 +228,10 @@ public class MatrixTests
 		Matrix<Double> t2 = ring.transponent.apply(t);
 		assert(detTwoMinus.equals(t2));
 	}
+	
+	@Test
+	public void testingGetColumnAsVektor()
+	{
+		
+	}
 }
