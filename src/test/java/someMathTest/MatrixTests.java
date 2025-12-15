@@ -33,7 +33,7 @@ public class MatrixTests
 	@Test
 	public void switchRowsAndColumnTest() throws MathException
 	{
-		
+
 		dField = new DoubleField();
 
 		Double[][] valueArr = new Double[3][3];
@@ -48,23 +48,23 @@ public class MatrixTests
 		valueArr[2][2]= 1.0;
 
 		Matrix<Double> matrix = new Matrix<>(valueArr);
-		
+
 		Double det1 = MatrixStuff.determinant(dField, matrix);
-		
+
 		Matrix<Double> matrix2 = matrix.switchRows(0, 1);
-		
+
 		assert(matrix.getRow(0).equals(matrix2.getRow(1)));
 		assert(det1.equals(-MatrixStuff.determinant(dField, matrix2)));
-		
-		
+
+
 		Matrix<Double> matrix3 = matrix2.switchColumns(0, 1);
-		
+
 		assert(matrix2.getColumn(0).equals(matrix3.getColumn(1)));
 		Double det2=MatrixStuff.determinant(dField, matrix3);
 
 		assert(det1.equals(MatrixStuff.determinant(dField, matrix3)));
 	}
-	
+
 	@Test
 	public void setAndGettingRowsAndColumnsTest() throws MathException
 	{
@@ -74,9 +74,9 @@ public class MatrixTests
 		valueArr[1][0]= 2.0;
 		valueArr[0][1]= 3.0;
 		valueArr[1][1]= 4.0;
-		
+
 		Matrix<Double> matrix = new Matrix<>(valueArr);
-		
+
 		Double[][] valueArrRow = new Double[2][1];
 		valueArrRow[0][0]= 7.0;
 		valueArrRow[1][0]= 7.0;
@@ -92,7 +92,7 @@ public class MatrixTests
 
 		Matrix<Double> colVektor = new Matrix<>(valueArrCol);
 		matrix.setColumn(colVektor, 0);
-		
+
 		assert(matrix.getColumn(0).equals(colVektor));
 	}
 	

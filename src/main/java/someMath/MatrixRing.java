@@ -158,6 +158,35 @@ public class MatrixRing extends Operations<Matrix<Double>>
 		}
 	};
 
+	public static final Matrix<Double> invert(Matrix<Double> matrix) throws MathException
+	{
+		
+		if(!matrix.isQuadratic())throw new MathException("Matrix is not quadratic so not invertable.");
+		Double determinant = MatrixStuff.determinant(new DoubleField(), matrix);
+		if(determinant.equals(0.0))throw new MathException("Matrix determinant is Zero so not invertable.");
+		
+		int columns = matrix.getColumns();
+		int rows = columns;
+		
+		Matrix<Double> output = new Matrix<>(columns, rows, 0.0);
+		for(int n=0;n<rows;n++)
+		{
+
+			Matrix<Double> coefficientMatrix = matrix.clone();
+			Vektor<Double> rowResults = new Vektor<>(rows, 0.0);
+			rowResults = rowResults.setValue(n, 1.0);
+
+			Matrix<Double> extendedCoefficientMatrix = 
+					coefficientMatrix.glueColumnToThisOnTheLeft(rowResults);
+
+			Vektor<Object> result = LinearEquationSolver.calculateSolvingVektor(extendedCoefficientMatrix);
+			Vektor<Double> doubleResult = LinearEquationSolver.convertSolutionVektorToExampleVektor(result);
+			output = output.setRow(doubleResult, n);
+		}
+
+		return output;
+	}
+
 	public MatrixRing(int n) throws MathException
 	{
 		
