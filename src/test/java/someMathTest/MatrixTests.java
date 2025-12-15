@@ -211,7 +211,7 @@ public class MatrixTests
 	}
 	
 	@Test
-	public void InvertTest() throws MathException
+	public void invertTest() throws MathException
 	{
 		
 		int matrixSideLength = 3;
