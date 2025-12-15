@@ -179,7 +179,7 @@ public class Matrix<O> implements Cloneable
 			output.setColumn(v, col);
 		}
 		output.setColumn(columnVektor, 0);
-		
+
 		return output;
 	}
 
