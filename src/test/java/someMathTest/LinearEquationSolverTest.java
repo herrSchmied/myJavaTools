@@ -15,7 +15,7 @@ import java.util.List;
 import someMath.SmallTools;
 
 import someMath.Matrix;
-
+import someMath.MatrixRing;
 import someMath.Vektor;
 
 import someMath.Vektorraum;
@@ -34,6 +34,7 @@ public class LinearEquationSolverTest
 		Matrix<Double> coefficientmatrix = new Matrix<>(2,2, 0.0);
 		coefficientmatrix = coefficientmatrix.setValue(0, 0, 3.0);
 		coefficientmatrix = coefficientmatrix.setValue(1, 1, 3.0);
+		coefficientmatrix = MatrixRing.transponent.apply(coefficientmatrix); 
 
 		Vektor<Double> rowResults = new Vektor<>(2, 1.0);
 
