@@ -136,7 +136,6 @@ public class MatrixTests
 		valueList = Arrays.asList(1.0, 0.0, 1.0);
 		m2 = new Matrix<>(1, valueList);
 		assert(matrix.getColumn(0).equals(m2));
-		System.out.println(matrix.getColumn(0));
 	}
 
 
@@ -184,9 +183,7 @@ public class MatrixTests
 		
 		List<Double> listOfValues = Arrays.asList(0.0, 2.0, 1.0, 1.0);
 		Matrix<Double> detTwoMinus = new Matrix<Double>(matrixSideLength, listOfValues);
-		System.out.println(detTwoMinus);
 		Matrix<Double> neutrumMatrixMultiplication = ring.getNeutrumOfOperation(Operations.multiply);
-		System.out.println(neutrumMatrixMultiplication);
 		Matrix<Double> prod = ring.multiply(neutrumMatrixMultiplication, detTwoMinus);
 
 		assert(prod.equals(detTwoMinus));
@@ -203,7 +200,6 @@ public class MatrixTests
 		setup(matrixSideLength);//Matrix side length and related stuff.
 		List<Double> listOfValues = Arrays.asList(1.0, 0.0, 0.0, 0.0, 1.0, 3.0, 0.0, 1.0, 1.0);
 		Matrix<Double> detTwoMinus = new Matrix<Double>(matrixSideLength, listOfValues);
-		System.out.println(detTwoMinus);
 		
 		Double o = MatrixStuff.determinant(dField, detTwoMinus);
 
@@ -234,7 +230,6 @@ public class MatrixTests
 		setup(matrixSideLength);//Matrix side length and related stuff.
 		List<Double> listOfValues = Arrays.asList(1.0, 0.0, 0.0, 0.0, 1.0, 3.0, 0.0, 1.0, 1.0);
 		Matrix<Double> detTwoMinus = new Matrix<Double>(matrixSideLength, listOfValues);
-		System.out.println(detTwoMinus);
 		
 		Matrix<Double> t = ring.transponent.apply(detTwoMinus);
 		assert(!t.equals(detTwoMinus));

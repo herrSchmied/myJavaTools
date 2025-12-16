@@ -184,6 +184,7 @@ public class MatrixRing extends Operations<Matrix<Double>>
 			{
 
 				Matrix<Double> coefficientMatrix = matrix.clone();
+				coefficientMatrix = MatrixRing.transponent.apply(coefficientMatrix);
 				Vektor<Double> rowResults = new Vektor<>(rows, 0.0);
 				rowResults = rowResults.setValue(n, 1.0);
 
@@ -192,15 +193,17 @@ public class MatrixRing extends Operations<Matrix<Double>>
 
 				Vektor<Object> result = LinearEquationSolver.solve(extendedCoefficientMatrix);
 				Vektor<Double> doubleResult = LinearEquationSolver.convertSolutionVektorToExampleVektor(result);
-				output = output.setRow(doubleResult, n);
+				output = output.setRow(doubleResult, n);				
 			}
+			
+			return output;
 		}
 		catch(MathException mex)
 		{
 			mex.printStackTrace();
 		}
 		
-		return null;
+		throw new RuntimeException("Should not happen!");
 	};
 
 	public MatrixRing(int n) throws MathException
