@@ -160,13 +160,13 @@ public class MatrixRing extends Operations<Matrix<Double>>
 
 	public static final Function<Matrix<Double>, Matrix<Double>> invert = (matrix)->
 	{
-		
+
 		if(!matrix.isQuadratic())
 		{
 			System.out.println("Matrix is not quadratic so not invertable.");
 			return null;
 		}
-		
+
 		try
 		{
 			Double determinant = MatrixStuff.determinant(new DoubleField(), matrix);

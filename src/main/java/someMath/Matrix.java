@@ -147,7 +147,7 @@ public class Matrix<O> implements Cloneable
 		
 		return new Matrix<O>(valueArrClone);
 	}
-	
+
 	public Matrix<O> setColumn(Vektor<O> columnVektor, int column) throws MathException
 	{
 
@@ -175,26 +175,26 @@ public class Matrix<O> implements Cloneable
 		Matrix<O> output = new Matrix<>(columns+1, rows, o);
 		for(int col=1;col<columns+1;col++)
 		{
-			Vektor<O> v = this.getColumnAsVektor(col);
-			output.setColumn(v, col);
+			Vektor<O> v = this.getColumnAsVektor(col-1);
+			output = output.setColumn(v, col);
 		}
-		output.setColumn(columnVektor, 0);
+		output = output.setColumn(columnVektor, 0);
 
 		return output;
 	}
 
 	public Matrix<O> glueColumnToThisOnTheRight(Vektor<O> columnVektor) throws MathException
 	{
-		
+
 		O o = this.getValue(0, 0);
 		Matrix<O> output = new Matrix<>(columns+1, rows, o);
 		for(int col=0;col<columns;col++)
 		{
 			Vektor<O> v = this.getColumnAsVektor(col);
-			output.setColumn(v, col);
+			output = output.setColumn(v, col);
 		}
-		output.setColumn(columnVektor, columns);
-		
+		output = output.setColumn(columnVektor, columns);
+
 		return output;
 	}
 
