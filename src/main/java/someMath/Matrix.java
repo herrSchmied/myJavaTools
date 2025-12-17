@@ -170,7 +170,7 @@ public class Matrix<O> implements Cloneable
 	
 	public Matrix<O> glueColumnToThisOnTheLeft(Vektor<O> columnVektor) throws MathException
 	{
-		
+
 		O o = this.getValue(0, 0);
 		Matrix<O> output = new Matrix<>(columns+1, rows, o);
 		for(int col=1;col<columns+1;col++)

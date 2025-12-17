@@ -246,14 +246,17 @@ public class MatrixTests
 	{
 
 		Vektor<Double> toBeAttached = new Vektor<>(Arrays.asList(1.0, 2.0, 3.0));
-		List<Double> list = Arrays.asList(0.0, 1.0, 1.0, 2.0, 2.0, 3.0);
+		List<Double> list = Arrays.asList(0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
 		Matrix<Double> toBeAttachedTo = new Matrix<>(2, list);
-		System.out.println(toBeAttachedTo);
-		
-		toBeAttachedTo = toBeAttachedTo.glueColumnToThisOnTheRight(toBeAttached);
-		
-		toBeAttachedTo = toBeAttachedTo.glueColumnToThisOnTheLeft(toBeAttached);
-		System.out.println(toBeAttachedTo);
 
+		toBeAttachedTo = toBeAttachedTo.glueColumnToThisOnTheRight(toBeAttached);
+		toBeAttachedTo = toBeAttachedTo.glueColumnToThisOnTheLeft(toBeAttached);
+
+		Vektor<Double> left = toBeAttachedTo.getColumnAsVektor(0);
+		int cols = toBeAttachedTo.getColumns();
+		Vektor<Double> right = toBeAttachedTo.getColumnAsVektor(cols-1);
+
+		assert(left.equals(right));
+		assert(toBeAttached.equals(left));
 	}
 }
