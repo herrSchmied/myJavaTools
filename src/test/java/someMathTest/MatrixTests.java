@@ -215,7 +215,7 @@ public class MatrixTests
 
 		int matrixSideLength = 3;
 		setup(matrixSideLength);//Matrix side length and related stuff.
-		List<Double> list = Arrays.asList(3.0, 0.0, 0.0, 0.0, 3.0, 0.0, 0.0, 0.0, 3.0);
+		List<Double> list = Arrays.asList(3.0, 1.0, 0.0, 0.0, 3.0, 0.0, 0.0, 0.0, 3.0);
 		Matrix<Double> matrix = new Matrix<Double>(matrixSideLength, list);
 
 		Matrix<Double> inverted = MatrixRing.invert.apply(matrix);
@@ -223,11 +223,15 @@ public class MatrixTests
 		Matrix<Double> I = ring.getNeutrumMatrixMultiplication();
 		assert(ring.multiply(inverted, matrix).equals(I));
 		
+		MatrixRing ringII = new MatrixRing(2);
+		I = ringII.getNeutrumMatrixMultiplication();
 		list = Arrays.asList(1.0, 2.0, 3.0, 4.0);
 		matrix = new Matrix<>(2, list);
 		inverted = MatrixRing.invert.apply(matrix);
 		System.out.println(inverted);
-		assert(ring.multiply(inverted, matrix).equals(I));
+		Matrix<Double> prod = ringII.multiply(inverted, matrix);
+		System.out.println(prod);
+		assert(prod.equals(I));
 	}
 
 	@Test

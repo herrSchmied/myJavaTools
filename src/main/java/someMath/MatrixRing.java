@@ -182,11 +182,11 @@ public class MatrixRing extends Operations<Matrix<Double>>
 			int rows = columns;
 		
 			Matrix<Double> coefficientMatrix = matrix.clone();
+			coefficientMatrix = MatrixRing.transponent.apply(coefficientMatrix);
 			Matrix<Double> output = new Matrix<>(columns, rows, 0.0);
 			for(int n=0;n<rows;n++)
 			{
 
-				coefficientMatrix = MatrixRing.transponent.apply(coefficientMatrix);
 				Vektor<Double> rowResults = new Vektor<>(rows, 0.0);
 				rowResults = rowResults.setValue(n, 1.0);
 			
