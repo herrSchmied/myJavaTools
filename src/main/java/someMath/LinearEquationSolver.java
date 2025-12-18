@@ -254,7 +254,7 @@ public class LinearEquationSolver
 		}
 
 		Vektor<Object> solutionVektor = new Vektor<>(values);
-		System.out.println(solutionVektor);
+		//System.out.println(solutionVektor);
 		return solutionVektor;
 	}
 	

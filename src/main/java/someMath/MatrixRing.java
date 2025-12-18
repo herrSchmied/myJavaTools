@@ -192,6 +192,7 @@ public class MatrixRing extends Operations<Matrix<Double>>
 
 				Matrix<Double> extendedCoefficientMatrix = 
 					coefficientMatrix.glueColumnToThisOnTheRight(rowResults);
+
 				Vektor<Object> result = solve(extendedCoefficientMatrix);
 				Vektor<Double> doubleResult = convertSolutionVektorToExampleVektor(result);
 				output = output.setRow(doubleResult, n);				
