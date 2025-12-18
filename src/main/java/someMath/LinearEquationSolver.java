@@ -122,19 +122,19 @@ public class LinearEquationSolver
 		
 		if(rows<=1)return output;
 		
+		int a = 0;
+		int b = 1;
 		while(true)
 		{
+
 			if(output.getRows()==1)return output;
 
-			int a = 0;
-			int b = 1;
 			Matrix<Double> rowVektor1 = output.getRow(a);
 			int k1 = nrOfLeadingZeros(rowVektor1);
 			if(k1==cols-1)return output;
 		
 			Matrix<Double> rowVektor2 = output.getRow(b);
 			int k2 = nrOfLeadingZeros(rowVektor2);
-			if(k2==cols-1)return output;
 			
 			if(k2<k1)output = bubbleSortByLeadingZeros(output);
 
