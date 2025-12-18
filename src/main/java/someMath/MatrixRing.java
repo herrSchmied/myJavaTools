@@ -179,18 +179,18 @@ public class MatrixRing extends Operations<Matrix<Double>>
 			int columns = matrix.getColumns();
 			int rows = columns;
 		
+			Matrix<Double> coefficientMatrix = matrix.clone();
 			Matrix<Double> output = new Matrix<>(columns, rows, 0.0);
 			for(int n=0;n<rows;n++)
 			{
 
-				Matrix<Double> coefficientMatrix = matrix.clone();
 				coefficientMatrix = MatrixRing.transponent.apply(coefficientMatrix);
 				Vektor<Double> rowResults = new Vektor<>(rows, 0.0);
 				rowResults = rowResults.setValue(n, 1.0);
-
+			
 				Matrix<Double> extendedCoefficientMatrix = 
 					coefficientMatrix.glueColumnToThisOnTheRight(rowResults);
-
+				System.out.println("Extended Coefficient Matrix:\n"+extendedCoefficientMatrix);
 				Vektor<Object> result = LinearEquationSolver.solve(extendedCoefficientMatrix);
 				Vektor<Double> doubleResult = LinearEquationSolver.convertSolutionVektorToExampleVektor(result);
 				output = output.setRow(doubleResult, n);				

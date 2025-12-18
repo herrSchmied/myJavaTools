@@ -212,18 +212,20 @@ public class MatrixTests
 	@Test
 	public void invertTest() throws MathException
 	{
+
+		int matrixSideLength = 3;
+		setup(matrixSideLength);//Matrix side length and related stuff.
+		List<Double> list = Arrays.asList(3.0, 0.0, 0.0, 0.0, 3.0, 0.0, 0.0, 0.0, 3.0);
+		Matrix<Double> matrix = new Matrix<Double>(matrixSideLength, list);
+
+		Matrix<Double> inverted = MatrixRing.invert.apply(matrix);
+
+		Matrix<Double> I = ring.getNeutrumMatrixMultiplication();
+		assert(ring.multiply(inverted, matrix).equals(I));
 		
-//		int matrixSideLength = 3;
-//		setup(matrixSideLength);//Matrix side length and related stuff.
-//		List<Double> listOfValues = Arrays.asList(3.0, 0.0, 0.0, 0.0, 3.0, 0.0, 0.0, 0.0, 3.0);
-//		Matrix<Double> detTwoMinus = new Matrix<Double>(matrixSideLength, listOfValues);
-//		System.out.println(detTwoMinus);
-//
-//		Matrix<Double> inverted = MatrixRing.invert.apply(detTwoMinus);
-//		System.out.println("Inverted:\n" + inverted);
-//
-//		Matrix<Double> I = ring.getNeutrumMatrixMultiplication();
-//		assert(ring.multiply(inverted, detTwoMinus).equals(I));
+//		list = Arrays.asList(1.0, 2.0, 3.0, 4.0);
+//		matrix = new Matrix<>(2, list);
+//		inverted = MatrixRing.invert.apply(matrix);
 	}
 
 	@Test
@@ -234,10 +236,10 @@ public class MatrixTests
 		List<Double> listOfValues = Arrays.asList(1.0, 0.0, 0.0, 0.0, 1.0, 3.0, 0.0, 1.0, 1.0);
 		Matrix<Double> detTwoMinus = new Matrix<Double>(matrixSideLength, listOfValues);
 		
-		Matrix<Double> t = ring.transponent.apply(detTwoMinus);
+		Matrix<Double> t = MatrixRing.transponent.apply(detTwoMinus);
 		assert(!t.equals(detTwoMinus));
 		
-		Matrix<Double> t2 = ring.transponent.apply(t);
+		Matrix<Double> t2 = MatrixRing.transponent.apply(t);
 		assert(detTwoMinus.equals(t2));
 	}
 	

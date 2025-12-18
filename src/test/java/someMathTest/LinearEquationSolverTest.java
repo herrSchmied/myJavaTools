@@ -34,22 +34,23 @@ public class LinearEquationSolverTest
 		Matrix<Double> coefficientmatrix = new Matrix<>(2,2, 0.0);
 		coefficientmatrix = coefficientmatrix.setValue(0, 0, 3.0);
 		coefficientmatrix = coefficientmatrix.setValue(1, 1, 3.0);
-		//coefficientmatrix = MatrixRing.transponent.apply(coefficientmatrix); 
 
 		Vektor<Double> rowResults = new Vektor<>(2, 1.0);
 
 		Matrix<Double> extendedCoefficientMatrix = coefficientmatrix.glueColumnToThisOnTheRight(rowResults);
 
-		Vektor<Object> v = solve(extendedCoefficientMatrix);
-		System.out.println(v);
-
+		Vektor<Object> objectSolution1 = solve(extendedCoefficientMatrix);
+		Vektor<Double> solution = convertSolutionVektorToExampleVektor(objectSolution1);
+		Vektor<Double> rowVektor = coefficientmatrix.getRowAsVektor(0);
+		Double r = Vektorraum.scalarProduct.apply(solution, rowVektor);
+		assert(r.equals(rowResults.getValue(1)));
+		
 		coefficientmatrix = coefficientmatrix.setValue(1, 0, 1.0);
 		extendedCoefficientMatrix = coefficientmatrix.glueColumnToThisOnTheRight(rowResults);
 		Vektor<Double> v1 = coefficientmatrix.getRowAsVektor(0);
-		Vektor<Double> solution = convertSolutionVektorToExampleVektor(solve(extendedCoefficientMatrix));
-		System.out.println(solution);
+		solution = convertSolutionVektorToExampleVektor(solve(extendedCoefficientMatrix));
 
-		Double r = Vektorraum.scalarProduct.apply(v1, solution);
+		r = Vektorraum.scalarProduct.apply(v1, solution);
 
 		assert(r.equals(rowResults.getValue(1)));
 	}
@@ -206,7 +207,7 @@ public class LinearEquationSolverTest
 		valueArr[1][2]= 0.0;
 		valueArr[2][2]= 1.0;
 		valueArr[3][2]= 1.0;
-		
+
 		Matrix<Double> matrix = new Matrix<>(valueArr);
 
 		assert(isRowEchelonForm(matrix));
