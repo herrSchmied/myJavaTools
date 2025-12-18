@@ -66,12 +66,12 @@ public class LinearEquationSolver
 			}
 		}
 
-		if(isRowEchelonForm(customizable))return calculateSolvingVektor(customizable);
-		if(isInStaggeredForm(customizable)&&isUnderDeterministic(customizable))return calculateSolvingVektor(customizable);
+//		if(isRowEchelonForm(customizable))return calculateSolvingVektor(customizable);
+//		if(isInStaggeredForm(customizable)&&isUnderDeterministic(customizable))return calculateSolvingVektor(customizable);
+		if(isInStaggeredForm(customizable))return calculateSolvingVektor(customizable);
+		customizable = transFormEquations(customizable);
 		
-		transFormEquations(customizable);
-		
-		return calculateSolvingVektor(extendedCoefficientMatrix);
+		return calculateSolvingVektor(customizable);
 	}
 
 	public static Matrix<Double> scrapeOffTheTop(Matrix<Double> extendedCoefficientMatrix) throws MathException
@@ -154,8 +154,7 @@ public class LinearEquationSolver
 				output = output.setRow(newRow, b);
 				output = bubbleSortByLeadingZeros(output);
 				output = eraseZeroRows(output);
-				if(isRowEchelonForm(output)&&output.isQuadratic())return output;
-				if(isInStaggeredForm(output)&&isUnderDeterministic(output))return output;
+				if(isInStaggeredForm(output))return output;
 			}			
 		}
 	}

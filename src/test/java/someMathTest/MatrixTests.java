@@ -223,9 +223,11 @@ public class MatrixTests
 		Matrix<Double> I = ring.getNeutrumMatrixMultiplication();
 		assert(ring.multiply(inverted, matrix).equals(I));
 		
-//		list = Arrays.asList(1.0, 2.0, 3.0, 4.0);
-//		matrix = new Matrix<>(2, list);
-//		inverted = MatrixRing.invert.apply(matrix);
+		list = Arrays.asList(1.0, 2.0, 3.0, 4.0);
+		matrix = new Matrix<>(2, list);
+		inverted = MatrixRing.invert.apply(matrix);
+		System.out.println(inverted);
+		assert(ring.multiply(inverted, matrix).equals(I));
 	}
 
 	@Test

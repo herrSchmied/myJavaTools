@@ -13,6 +13,8 @@ import java.util.function.Function;
 
 import someMath.exceptions.MathException;
 
+import static someMath.LinearEquationSolver.*;
+
 public class MatrixRing extends Operations<Matrix<Double>>
 {
 
@@ -191,8 +193,8 @@ public class MatrixRing extends Operations<Matrix<Double>>
 				Matrix<Double> extendedCoefficientMatrix = 
 					coefficientMatrix.glueColumnToThisOnTheRight(rowResults);
 				System.out.println("Extended Coefficient Matrix:\n"+extendedCoefficientMatrix);
-				Vektor<Object> result = LinearEquationSolver.solve(extendedCoefficientMatrix);
-				Vektor<Double> doubleResult = LinearEquationSolver.convertSolutionVektorToExampleVektor(result);
+				Vektor<Object> result = solve(extendedCoefficientMatrix);
+				Vektor<Double> doubleResult = convertSolutionVektorToExampleVektor(result);
 				output = output.setRow(doubleResult, n);				
 			}
 			
@@ -202,7 +204,7 @@ public class MatrixRing extends Operations<Matrix<Double>>
 		{
 			mex.printStackTrace();
 		}
-		
+
 		throw new RuntimeException("Should not happen!");
 	};
 

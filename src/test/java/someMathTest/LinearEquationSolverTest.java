@@ -53,6 +53,19 @@ public class LinearEquationSolverTest
 		r = Vektorraum.scalarProduct.apply(v1, solution);
 
 		assert(r.equals(rowResults.getValue(1)));
+		
+		List<Double> list = Arrays.asList(1.0, 2.0, 3.0, 4.0);
+		coefficientmatrix = new Matrix<>(2, list);
+
+		rowResults = new Vektor<>(2, 1.0);
+
+		extendedCoefficientMatrix = coefficientmatrix.glueColumnToThisOnTheRight(rowResults);
+		
+		objectSolution1 = solve(extendedCoefficientMatrix);
+		solution = convertSolutionVektorToExampleVektor(objectSolution1);
+		rowVektor = coefficientmatrix.getRowAsVektor(0);
+		r = Vektorraum.scalarProduct.apply(solution, rowVektor);
+		assert(r.equals(rowResults.getValue(1)));
 	}
 
 	@Test
