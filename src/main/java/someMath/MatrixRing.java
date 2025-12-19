@@ -207,6 +207,31 @@ public class MatrixRing extends Operations<Matrix<Double>>
 
 		throw new RuntimeException("Should not happen!");
 	};
+	
+	public static final Function<Matrix<Double>, Double> frobeniusNorm = (matrix)->
+	{
+		Double[] output = new Double[1];
+		output[0]= 0.0;
+		
+		BiConsumer<Point, Double> bic = (p, d)->
+		{
+			output[0] = output[0]+d*d;
+		};
+
+		try
+		{
+			matrix.walkThrouMatrix(bic);
+		}
+		catch(MathException e)
+		{
+			e.printStackTrace();
+			throw new RuntimeException("Could not compute Frobenius norm.");
+		}
+		
+		output[0]=Math.sqrt(output[0]);
+		
+		return output[0];
+	};
 
 	public MatrixRing(int n) throws MathException
 	{

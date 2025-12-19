@@ -226,37 +226,37 @@ public class MatrixTests
 	{
 
 //		//TODO:Something goes wrong when using 3x3 Matrixes???
-//		int matrixSideLength = 2;
-//		setup(matrixSideLength);//Matrix side length and related stuff.
-//		MatrixRing ring2 = new MatrixRing(2);
-//		Matrix<Double> I = ring2.getNeutrumMatrixMultiplication();
-//
-//		int n = 0;
-//		while(n<10)
-//		{
-//			List<Double> list = createListOfDoubles(4, 11, 0);
-//
-//			Matrix<Double> matrix = new Matrix<Double>(matrixSideLength, list);
-//
-//			Double determinante = MatrixStuff.determinant(dField, matrix);
-//			if(!determinante.equals(0.0))
-//			{
-//
-//				Matrix<Double> inverted = MatrixRing.invert.apply(matrix);
-//				Matrix<Double> prod = ring2.multiply(inverted, matrix);
-//				if(!prod.equals(I))
-//				{
-//					System.out.println("Matrix:\n" + matrix);
-//					System.out.println("Inverted:\n" + inverted);
-//					System.out.println("Product:\n" + prod);
-//					System.out.println("Neutrum:\n" + I);
-//					assert(false);
-//				}
-//				n++;
-//			}
-//			
-//			assert(true);
-//		}
+		int matrixSideLength = 2;
+		setup(matrixSideLength);//Matrix side length and related stuff.
+		MatrixRing ring2 = new MatrixRing(2);
+		Matrix<Double> I = ring2.getNeutrumMatrixMultiplication();
+
+		int n = 0;
+		while(n<10)
+		{
+			List<Double> list = createListOfDoubles(4, 11, 0);
+
+			Matrix<Double> matrix = new Matrix<Double>(matrixSideLength, list);
+
+			Double determinante = MatrixStuff.determinant(dField, matrix);
+			if(!determinante.equals(0.0))
+			{
+
+				Matrix<Double> inverted = MatrixRing.invert.apply(matrix);
+				Matrix<Double> prod = ring2.multiply(inverted, matrix);
+				if(!prod.equals(I))
+				{
+					System.out.println("Matrix:\n" + matrix);
+					System.out.println("Inverted:\n" + inverted);
+					System.out.println("Product:\n" + prod);
+					System.out.println("Neutrum:\n" + I);
+					assert(false);
+				}
+				n++;
+			}
+			
+			assert(true);
+		}
 	}
 
 	private List<Double> createListOfDoubles(int n, int max, int min)
