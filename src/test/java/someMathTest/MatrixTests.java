@@ -244,7 +244,11 @@ public class MatrixTests
 
 				Matrix<Double> inverted = MatrixRing.invert.apply(matrix);
 				Matrix<Double> prod = ring2.multiply(inverted, matrix);
-				if(!prod.equals(I))
+				prod =MatrixRing.scaling.apply(-1.0, prod);
+				Matrix<Double> sum = MatrixRing.addition.apply(I, prod);
+				Double norm = MatrixRing.frobeniusNorm.apply(sum);
+				Double prettySmall = Math.pow(10, -15);
+				if(!(norm<=prettySmall))
 				{
 					System.out.println("Matrix:\n" + matrix);
 					System.out.println("Inverted:\n" + inverted);
