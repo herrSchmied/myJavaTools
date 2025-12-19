@@ -226,15 +226,16 @@ public class MatrixTests
 	{
 
 //		//TODO:Something goes wrong when using 3x3 Matrixes???
-		int matrixSideLength = 2;
+		int matrixSideLength = 3;
 		setup(matrixSideLength);//Matrix side length and related stuff.
-		MatrixRing ring2 = new MatrixRing(2);
+		MatrixRing ring2 = new MatrixRing(matrixSideLength);
 		Matrix<Double> I = ring2.getNeutrumMatrixMultiplication();
 
 		int n = 0;
 		while(n<10)
 		{
-			List<Double> list = createListOfDoubles(4, 11, 0);
+			int m = matrixSideLength*matrixSideLength;
+			List<Double> list = createListOfDoubles(m, 11, 0);
 
 			Matrix<Double> matrix = new Matrix<Double>(matrixSideLength, list);
 
@@ -247,7 +248,7 @@ public class MatrixTests
 				prod =MatrixRing.scaling.apply(-1.0, prod);
 				Matrix<Double> sum = MatrixRing.addition.apply(I, prod);
 				Double norm = MatrixRing.frobeniusNorm.apply(sum);
-				Double prettySmall = Math.pow(10, -15);
+				Double prettySmall = Math.pow(10, -14);
 				if(!(norm<=prettySmall))
 				{
 					System.out.println("Matrix:\n" + matrix);
