@@ -169,6 +169,8 @@ public class MatrixRing extends Operations<Matrix<Double>>
 			return null;
 		}
 
+		System.out.println("Inverting Matrix.");
+		
 		try
 		{
 			Double determinant = MatrixStuff.determinant(new DoubleField(), matrix);
@@ -186,7 +188,8 @@ public class MatrixRing extends Operations<Matrix<Double>>
 			Matrix<Double> output = new Matrix<>(columns, rows, 0.0);
 			for(int n=0;n<rows;n++)
 			{
-
+				
+				System.out.println("Making ExtendedMatrix.");
 				Vektor<Double> rowResults = new Vektor<>(rows, 0.0);
 				rowResults = rowResults.setValue(n, 1.0);
 
@@ -197,7 +200,8 @@ public class MatrixRing extends Operations<Matrix<Double>>
 				Vektor<Double> doubleResult = convertSolutionVektorToExampleVektor(result);
 				output = output.setRow(doubleResult, n);				
 			}
-			
+		
+			System.out.println("Inverison Complete.");
 			return output;
 		}
 		catch(MathException mex)

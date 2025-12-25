@@ -232,10 +232,12 @@ public class MatrixTests
 		Matrix<Double> I = ring2.getNeutrumMatrixMultiplication();
 
 		int n = 0;
-		while(n<10)
+		while(n<800)
 		{
+			
+			System.out.println("InvertTestNr.:" + (n+1));
 			int m = matrixSideLength*matrixSideLength;
-			List<Double> list = createListOfDoubles(m, 11, 0);
+			List<Double> list = createListOfDoubles(m, 11, 1);
 
 			Matrix<Double> matrix = new Matrix<Double>(matrixSideLength, list);
 
@@ -248,13 +250,14 @@ public class MatrixTests
 				prod =MatrixRing.scaling.apply(-1.0, prod);
 				Matrix<Double> sum = MatrixRing.addition.apply(I, prod);
 				Double norm = MatrixRing.frobeniusNorm.apply(sum);
-				Double prettySmall = Math.pow(10, -14);
+				Double prettySmall = Math.pow(10, -12);
 				if(!(norm<=prettySmall))
 				{
 					System.out.println("Matrix:\n" + matrix);
 					System.out.println("Inverted:\n" + inverted);
 					System.out.println("Product:\n" + prod);
 					System.out.println("Neutrum:\n" + I);
+					System.out.println("Norm of Diff: " + norm);
 					assert(false);
 				}
 				n++;

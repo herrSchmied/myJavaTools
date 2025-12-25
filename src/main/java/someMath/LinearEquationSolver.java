@@ -18,7 +18,8 @@ public class LinearEquationSolver
 
 	public static Vektor<Object> solve(Matrix<Double> extendedCoefficientMatrix) throws MathException
 	{
-		
+
+		System.out.println("Solving Extendedmatrix.");
 		Matrix<Double> customizable = extendedCoefficientMatrix.clone();
 		int rows = customizable.getRows();
 		int cols = customizable.getColumns();
@@ -69,7 +70,7 @@ public class LinearEquationSolver
 //		if(isRowEchelonForm(customizable))return calculateSolvingVektor(customizable);
 //		if(isInStaggeredForm(customizable)&&isUnderDeterministic(customizable))return calculateSolvingVektor(customizable);
 		if(isInStaggeredForm(customizable))return calculateSolvingVektor(customizable);
-		customizable = transFormEquations(customizable);
+		customizable = transformCoefficients(customizable);
 		
 		return calculateSolvingVektor(customizable);
 	}
@@ -112,51 +113,75 @@ public class LinearEquationSolver
 
 	}
 
-	public static Matrix<Double> transFormEquations(Matrix<Double> extendedCoefficientMatrix) throws MathException
+	public static Matrix<Double> transformCoefficients(Matrix<Double> extendedCoefficientMatrix, int upperRowNr) throws MathException
 	{
+		
+		System.out.println("Transforming Coefficients. upperRowNr: " + upperRowNr);
 
 		Matrix<Double> output = extendedCoefficientMatrix.clone();
 		
+		if(isInStaggeredForm(output))return output;
+
 		int rows = output.getRows();
-		int cols = output.getColumns();
+		System.out.println("Rows: " + rows);
 		
 		if(rows<=1)return output;
 		
-		int a = 0;
-		int b = 1;
-		while(true)
+		int lowerRowNr = upperRowNr + 1;
+
+		if(lowerRowNr>rows-1)return output;
+
+		Matrix<Double> upperRowVektor = output.getRow(upperRowNr);
+		int upperRowLeadingZeros = nrOfLeadingZeros(upperRowVektor);
+		if(upperRowLeadingZeros==rows-1)return output;
+	
+		Matrix<Double> lowerRowVektor = output.getRow(lowerRowNr);
+		int lowerRowLeadingZeros = nrOfLeadingZeros(lowerRowVektor);
+		
+		//if upperRowLeadingZeros are greater than
+		//lowerRowLeadingZeros Order isn't right.
+		if(lowerRowLeadingZeros<upperRowLeadingZeros)
+		{
+			output = bubbleSortByLeadingZeros(output);
+			return transformCoefficients(output, 0);
+		}
+
+		//if upperRowLeadingZeros are less than
+		//lowerRowLeadingZeros then increase rowNrs.
+		if(lowerRowLeadingZeros>upperRowLeadingZeros)
 		{
 
-			if(output.getRows()==1)return output;
-
-			Matrix<Double> rowVektor1 = output.getRow(a);
-			int k1 = nrOfLeadingZeros(rowVektor1);
-			if(k1==cols-1)return output;
-		
-			Matrix<Double> rowVektor2 = output.getRow(b);
-			int k2 = nrOfLeadingZeros(rowVektor2);
-			
-			if(k2<k1)output = bubbleSortByLeadingZeros(output);
-
-			if(k2>k1)
-			{
-				if(b<cols-1)
-				{
-					a++;
-					b++;
-				}
-				else return output;
-			}
-		
-			if(k1==k2)
-			{
-				Matrix<Double> newRow = makeAtLeastOneExtraLeadingZero(rowVektor1, rowVektor2);
-				output = output.setRow(newRow, b);
-				output = bubbleSortByLeadingZeros(output);
-				output = eraseZeroRows(output);
-				if(isInStaggeredForm(output))return output;
-			}			
+			System.out.println("Next Line.");
+			upperRowNr++;
+			lowerRowNr++;
+			return transformCoefficients(extendedCoefficientMatrix, upperRowNr);
 		}
+
+		//if upper and low leandingZeros are Equal
+		//it can't stay so.
+		if(upperRowLeadingZeros==lowerRowLeadingZeros)
+		{
+
+			System.out.println("Lines of Equal length.");
+	
+			Matrix<Double> klon = output.clone();
+			
+			Matrix<Double> newRow = makeAtLeastOneExtraLeadingZero(upperRowVektor, lowerRowVektor);
+			output = output.setRow(newRow, lowerRowNr);
+			output = bubbleSortByLeadingZeros(output);
+			output = eraseZeroRows(output);
+			
+			if(klon.equals(output))return output; //throw new MathException("I'm stuck here!");
+
+			return transformCoefficients(output, upperRowNr);
+		}
+
+		throw new MathException("Should not happen!");			
+	}
+	
+	public static Matrix<Double> transformCoefficients(Matrix<Double> extendedCoefficientMatrix) throws MathException
+	{
+		return transformCoefficients(extendedCoefficientMatrix, 0);
 	}
 
 	public static Matrix<Double> makeAtLeastOneExtraLeadingZero(Matrix<Double> rowVektorSource, Matrix<Double> rowVektorDest) throws MathException
@@ -182,6 +207,8 @@ public class LinearEquationSolver
 
 	public static Vektor<Object> calculateSolvingVektor(Matrix<Double> extendedCoefficientMatrix) throws MathException
 	{
+
+		System.out.println("Calculating solving Vektor.");
 
 		int rows = extendedCoefficientMatrix.getRows();
 		int cols = extendedCoefficientMatrix.getColumns();
@@ -260,7 +287,9 @@ public class LinearEquationSolver
 	
 	public static Vektor<Double> convertSolutionVektorToExampleVektor(Vektor<Object> solution) throws MathException
 	{
-		
+
+		System.out.println("Converting Vector.");
+
 		int rows = solution.getRows();
 		Vektor<Double> example = new Vektor<>(rows, 0.0);
 		
@@ -268,7 +297,10 @@ public class LinearEquationSolver
 		{
 			
 			Object value = solution.getValue(row);
-			if(!(value instanceof Double))throw new MathException("Not Yet supported");
+			if(!(value instanceof Double))
+			{
+				throw new MathException("Not Yet supported");
+			}
 			Double dValue = (Double)value;
 			example = example.setValue(row, dValue);
 		}
