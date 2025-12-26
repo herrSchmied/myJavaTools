@@ -12,7 +12,7 @@ import someMath.exceptions.MathException;
 public class LinearEquationSolver
 {
 
-	private static VariableIndizies variablesTrackRecord;
+	private static List<Integer> erasedIndizies = new ArrayList<>();
 	private static Set<String> freeVariables = new HashSet<>();
 	private static Set<Matrix<Double>> offTheTop = new HashSet<>();
 
@@ -23,8 +23,6 @@ public class LinearEquationSolver
 		Matrix<Double> customizable = extendedCoefficientMatrix.clone();
 		int rows = customizable.getRows();
 		int cols = customizable.getColumns();
-
-		variablesTrackRecord = new VariableIndizies(cols);
 	
 		customizable = bubbleSortByLeadingZeros(customizable);
 		customizable = scrapeOffTheTop(customizable);
@@ -71,7 +69,7 @@ public class LinearEquationSolver
 //		if(isInStaggeredForm(customizable)&&isUnderDeterministic(customizable))return calculateSolvingVektor(customizable);
 		if(isInStaggeredForm(customizable))return calculateSolvingVektor(customizable);
 		customizable = transformCoefficients(customizable);
-		
+
 		return calculateSolvingVektor(customizable);
 	}
 
@@ -115,7 +113,7 @@ public class LinearEquationSolver
 
 	public static Matrix<Double> transformCoefficients(Matrix<Double> extendedCoefficientMatrix, int upperRowNr) throws MathException
 	{
-		
+
 		System.out.println("Transforming Coefficients. upperRowNr: " + upperRowNr);
 
 		Matrix<Double> output = extendedCoefficientMatrix.clone();
@@ -163,17 +161,17 @@ public class LinearEquationSolver
 		{
 
 			System.out.println("Lines of Equal length.");
-	
+
 			Matrix<Double> klon = output.clone();
-			
+
 			Matrix<Double> newRow = makeAtLeastOneExtraLeadingZero(upperRowVektor, lowerRowVektor);
 			output = output.setRow(newRow, lowerRowNr);
 			output = bubbleSortByLeadingZeros(output);
 			output = eraseZeroRows(output);
 			
-			if(klon.equals(output))return output; //throw new MathException("I'm stuck here!");
+			if(klon.equals(output))throw new MathException("I'm stuck here!");
 
-			return transformCoefficients(output, upperRowNr);
+			return transformCoefficients(output, upperRowNr+1);
 		}
 
 		throw new MathException("Should not happen!");			
@@ -218,20 +216,18 @@ public class LinearEquationSolver
 		//Backwards!!
 		for(int row=rows-1;row>-1;row--)
 		{
-			Matrix<Double> rowVektor = extendedCoefficientMatrix.getRow(row);
+			Vektor<Double> rowVektor = extendedCoefficientMatrix.getRowAsVektor(row);
 
 			List<Integer> nonZeroList = nonZeros(rowVektor);
-			
-			Double rowResult = rowVektor.getValue(cols-1, 0);
+			if(nonZeroList.isEmpty())throw new MathException("Hey!! Only Zeros here?\n " + rowVektor);
 
+			Double rowResult = rowVektor.getValue(cols-1);
 
-			//Far Left Index is the variable which is
-			//unsolved
+			//Far Left Index is the variable to be unsolved
 			int positionToBeSolved = nonZeroList.get(0);
-			int oldIndex = variablesTrackRecord.getOldIndexOf(positionToBeSolved+1);
-			String toBeSolvedVariableName = variablesTrackRecord.indexToName(oldIndex);
-			Double toBeSolvedVariableCoefficient = rowVektor.getValue(positionToBeSolved, 0);
-
+			String toBeSolvedVariableName = "x"+positionToBeSolved;
+			Double toBeSolvedVariableCoefficient = rowVektor.getValue(positionToBeSolved);
+			System.out.println("Position: " + positionToBeSolved+". Name: " + toBeSolvedVariableName);
 			if(nonZeroList.size()==1)
 			{
 
@@ -253,9 +249,9 @@ public class LinearEquationSolver
 				{
 
 					if(place==positionToBeSolved)continue;
-					int oldIndex2 = variablesTrackRecord.getOldIndexOf(place+1);
-					String variableName = variablesTrackRecord.indexToName(oldIndex2);
-					Double coefficient = rowVektor.getValue(place, 0);
+					//int oldIndex2 = variablesTrackRecord.getOldIndexOf(place+1);
+					String variableName = "x"+place;
+					Double coefficient = rowVektor.getValue(place);
 					Double solvedVariable = solvedVariables.get(variableName);
 					sumOfProducts = sumOfProducts + coefficient*solvedVariable;
 				}
@@ -266,12 +262,13 @@ public class LinearEquationSolver
 
 		}
 
+		System.out.println("SolvedVariables: " + solvedVariables);
 		List<Object> values = new ArrayList<>();
 		int s = cols;
 		for(int n=1;n<s;n++)
 		{
 
-			String name = variablesTrackRecord.indexToName(n);
+			String name = "x"+n;
 			if(solvedVariables.containsKey(name))
 			{
 				Double d = solvedVariables.get(name);
@@ -288,7 +285,7 @@ public class LinearEquationSolver
 	public static Vektor<Double> convertSolutionVektorToExampleVektor(Vektor<Object> solution) throws MathException
 	{
 
-		System.out.println("Converting Vector.");
+		System.out.println("Converting Vector.\n" + solution);
 
 		int rows = solution.getRows();
 		Vektor<Double> example = new Vektor<>(rows, 0.0);
@@ -308,19 +305,18 @@ public class LinearEquationSolver
 		return example;
 	}
 
-	public static List<Integer> nonZeros(Matrix<Double> rowVektor) throws MathException
+	public static List<Integer> nonZeros(Vektor<Double> rowVektor) throws MathException
 	{
 		
 		List<Integer> positions = new ArrayList<>();
-		int cols = rowVektor.getColumns();
+		int rows = rowVektor.getRows();
 		
 		//One the Right side is the value is not coefficient!!
 		//So it goes only up too cols-1!!!
-		for(int col=0;col<cols-1;col++)
+		for(int row=0;row<rows-1;row++)
 		{
-			Double coefficient = rowVektor.getValue(col, 0);
-			if(!coefficient.equals(0.0))positions.add(col);
-
+			Double coefficient = rowVektor.getValue(row);
+			if(!coefficient.equals(0.0))positions.add(row);
 		}
 		
 		return positions;
@@ -434,18 +430,6 @@ public class LinearEquationSolver
 		return output;
 	}
 
-	public static void upDateVariableIndizies(int eraseIndex, Matrix<Double> extendedCoefficientMatrix) throws MathException
-	{
-
-		int indiziesSize = extendedCoefficientMatrix.getColumns();
-
-		for(int n=eraseIndex+1;n<indiziesSize;n++)
-		{
-			int oldIndex = variablesTrackRecord.getOldIndexOf(n);
-			variablesTrackRecord.setNewIndexOf(oldIndex, n-1);
-		}
-	}
-
 	public static Matrix<Double> eraseColumn(int eraseCol, Matrix<Double> extendedCoefficientMatrix) throws MathException
 	{
 
@@ -472,10 +456,9 @@ public class LinearEquationSolver
 			}
 		}
 
-		upDateVariableIndizies(eraseCol, extendedCoefficientMatrix);
+		erasedIndizies.add(eraseCol);
 
 		return output;
-		
 	}
 	
 	public static Matrix<Double> bubbleSortByLeadingZeros(Matrix<Double> extendedCoefficientMatrix) throws MathException
