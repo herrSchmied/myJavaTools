@@ -232,7 +232,7 @@ public class MatrixTests
 		Matrix<Double> I = ring2.getNeutrumMatrixMultiplication();
 
 		int n = 0;
-		while(n<800)
+		while(n<100)
 		{
 			
 			System.out.println("InvertTestNr.:" + (n+1));

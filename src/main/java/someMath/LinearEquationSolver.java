@@ -12,11 +12,15 @@ import someMath.exceptions.MathException;
 public class LinearEquationSolver
 {
 
-	private static List<Integer> erasedIndizies = new ArrayList<>();
-	private static Set<String> freeVariables = new HashSet<>();
+	private List<Integer> erasedIndizies = new ArrayList<>();
 	private static Set<Matrix<Double>> offTheTop = new HashSet<>();
 
-	public static Vektor<Object> solve(Matrix<Double> extendedCoefficientMatrix) throws MathException
+	public LinearEquationSolver()
+	{
+		
+	}
+
+	public Vektor<Object> solve(Matrix<Double> extendedCoefficientMatrix) throws MathException
 	{
 
 		System.out.println("Solving Extendedmatrix.");
@@ -73,7 +77,7 @@ public class LinearEquationSolver
 		return calculateSolvingVektor(customizable);
 	}
 
-	public static Matrix<Double> scrapeOffTheTop(Matrix<Double> extendedCoefficientMatrix) throws MathException
+	public Matrix<Double> scrapeOffTheTop(Matrix<Double> extendedCoefficientMatrix) throws MathException
 	{
 		
 		Matrix<Double> output = extendedCoefficientMatrix.clone();
@@ -86,7 +90,7 @@ public class LinearEquationSolver
 		for(int row=0;row<diff;row++)
 		{
 			Matrix<Double> rowVektor = output.getRow(row);
-			output = eraseRow(row, output);
+			output = output.eraseRow(row);
 			offTheTop.add(rowVektor);
 		}
 		
@@ -111,7 +115,7 @@ public class LinearEquationSolver
 
 	}
 
-	public static Matrix<Double> transformCoefficients(Matrix<Double> extendedCoefficientMatrix, int upperRowNr) throws MathException
+	public Matrix<Double> transformCoefficients(Matrix<Double> extendedCoefficientMatrix, int upperRowNr) throws MathException
 	{
 
 		System.out.println("Transforming Coefficients. upperRowNr: " + upperRowNr);
@@ -177,12 +181,12 @@ public class LinearEquationSolver
 		throw new MathException("Should not happen!");			
 	}
 	
-	public static Matrix<Double> transformCoefficients(Matrix<Double> extendedCoefficientMatrix) throws MathException
+	public Matrix<Double> transformCoefficients(Matrix<Double> extendedCoefficientMatrix) throws MathException
 	{
 		return transformCoefficients(extendedCoefficientMatrix, 0);
 	}
 
-	public static Matrix<Double> makeAtLeastOneExtraLeadingZero(Matrix<Double> rowVektorSource, Matrix<Double> rowVektorDest) throws MathException
+	public Matrix<Double> makeAtLeastOneExtraLeadingZero(Matrix<Double> rowVektorSource, Matrix<Double> rowVektorDest) throws MathException
 	{
 
 		Matrix<Double> output = rowVektorDest.clone();
@@ -203,7 +207,7 @@ public class LinearEquationSolver
 	}
 
 
-	public static Vektor<Object> calculateSolvingVektor(Matrix<Double> extendedCoefficientMatrix) throws MathException
+	public Vektor<Object> calculateSolvingVektor(Matrix<Double> extendedCoefficientMatrix) throws MathException
 	{
 
 		System.out.println("Calculating solving Vektor.");
@@ -282,7 +286,7 @@ public class LinearEquationSolver
 		return solutionVektor;
 	}
 	
-	public static Vektor<Double> convertSolutionVektorToExampleVektor(Vektor<Object> solution) throws MathException
+	public Vektor<Double> convertSolutionVektorToExampleVektor(Vektor<Object> solution) throws MathException
 	{
 
 		System.out.println("Converting Vector.\n" + solution);
@@ -305,7 +309,7 @@ public class LinearEquationSolver
 		return example;
 	}
 
-	public static List<Integer> nonZeros(Vektor<Double> rowVektor) throws MathException
+	public List<Integer> nonZeros(Vektor<Double> rowVektor) throws MathException
 	{
 		
 		List<Integer> positions = new ArrayList<>();
@@ -322,7 +326,7 @@ public class LinearEquationSolver
 		return positions;
 	}
 	
-	public static Matrix<Double> shortenMatrix(Matrix<Double> extendedCoefficientMatrix) throws MathException
+	public Matrix<Double> shortenMatrix(Matrix<Double> extendedCoefficientMatrix) throws MathException
 	{
 
 		Matrix<Double> output = extendedCoefficientMatrix.clone();
@@ -333,7 +337,7 @@ public class LinearEquationSolver
 		return output;
 	}
 
-	public static Matrix<Double> eraseZeroRows(Matrix<Double> matrix) throws MathException
+	public Matrix<Double> eraseZeroRows(Matrix<Double> matrix) throws MathException
 	{
 
 		Matrix<Double> output = matrix.clone();
@@ -344,8 +348,8 @@ public class LinearEquationSolver
 			
 			if(rowContainsOnlyZeros(row, output))
 			{
-				output = eraseRow(row, output);
-				output = eraseZeroRows(output);
+				output = output.eraseRow(row);
+				//output = eraseZeroRows(output);
 				break;
 			}
 		}
@@ -353,12 +357,12 @@ public class LinearEquationSolver
 		return output;
 	}
 
-	public static Matrix<Double> eraseZeroColumns(Matrix<Double> extendedCoefficientMatrix) throws MathException
+	public Matrix<Double> eraseZeroColumns(Matrix<Double> extendedCoefficientMatrix) throws MathException
 	{
 
 		Matrix<Double> output = extendedCoefficientMatrix.clone();
 		int cols = output.getColumns();
-		
+
 		//column to erase can not be the Right side of
 		//a extendedCoefficientMatrix.
 		for(int col=0;col<cols-1;col++)
@@ -366,8 +370,9 @@ public class LinearEquationSolver
 			
 			if(columnContainsOnlyZeros(col, output))
 			{
-				output = eraseColumn(col, output);
-				output = eraseZeroColumns(output);
+				output = output.eraseColumn(col);
+				//output = eraseZeroColumns(output);
+				erasedIndizies.add(col);
 				break;
 			}
 		}
@@ -403,62 +408,6 @@ public class LinearEquationSolver
 		}
 		
 		return true;
-	}
-	
-	public static Matrix<Double> eraseRow(int eraseRow, Matrix<Double> extendedCoefficientMatrix) throws MathException
-	{
-		int rows = extendedCoefficientMatrix.getRows();
-		int cols = extendedCoefficientMatrix.getColumns();
-		
-		Matrix<Double> output = new Matrix<>(cols, rows-1, 0.0);
-		
-		for(int row=0;row<rows;row++)
-		{
-			if(row<eraseRow)
-			{
-				Matrix<Double> rowVektor = extendedCoefficientMatrix.getRow(row);
-				output = output.setRow(rowVektor, row);
-			}
-			
-			if(row>eraseRow)
-			{
-				Matrix<Double> rowVektor = extendedCoefficientMatrix.getRow(row);
-				output = output.setRow(rowVektor, row-1);
-			}
-		}
-
-		return output;
-	}
-
-	public static Matrix<Double> eraseColumn(int eraseCol, Matrix<Double> extendedCoefficientMatrix) throws MathException
-	{
-
-		
-		int rows = extendedCoefficientMatrix.getRows();
-		int cols = extendedCoefficientMatrix.getColumns();
-		if(eraseCol == cols-1)System.out.println("Warning erasing the Right side of extendedCoefficientMatrix.");
-	
-		Matrix<Double> output = new Matrix<>(cols-1, rows, 0.0);
-
-		for(int col=0;col<cols;col++)
-		{
-
-			if(col<eraseCol)
-			{
-				Matrix<Double> colVektor = extendedCoefficientMatrix.getColumn(col);
-				output = output.setColumn(colVektor, col);
-			}
-			
-			if(col>eraseCol)
-			{
-				Matrix<Double> colVektor = extendedCoefficientMatrix.getColumn(col);
-				output = output.setColumn(colVektor, col-1);
-			}
-		}
-
-		erasedIndizies.add(eraseCol);
-
-		return output;
 	}
 	
 	public static Matrix<Double> bubbleSortByLeadingZeros(Matrix<Double> extendedCoefficientMatrix) throws MathException

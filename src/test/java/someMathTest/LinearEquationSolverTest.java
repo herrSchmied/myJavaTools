@@ -15,14 +15,14 @@ import java.util.List;
 import someMath.SmallTools;
 
 import someMath.Matrix;
-import someMath.MatrixRing;
+
 import someMath.Vektor;
 
 import someMath.Vektorraum;
 
 import someMath.exceptions.MathException;
 
-
+import someMath.LinearEquationSolver;
 
 public class LinearEquationSolverTest
 {
@@ -31,6 +31,8 @@ public class LinearEquationSolverTest
 	public void solvingTest() throws MathException, InterruptedException
 	{
 
+		LinearEquationSolver les = new LinearEquationSolver();
+		
 		Matrix<Double> coefficientmatrix = new Matrix<>(2,2, 0.0);
 		coefficientmatrix = coefficientmatrix.setValue(0, 0, 3.0);
 		coefficientmatrix = coefficientmatrix.setValue(1, 1, 3.0);
@@ -39,8 +41,8 @@ public class LinearEquationSolverTest
 
 		Matrix<Double> extendedCoefficientMatrix = coefficientmatrix.glueColumnToThisOnTheRight(rowResults);
 
-		Vektor<Object> objectSolution1 = solve(extendedCoefficientMatrix);
-		Vektor<Double> solution = convertSolutionVektorToExampleVektor(objectSolution1);
+		Vektor<Object> objectSolution1 = les.solve(extendedCoefficientMatrix);
+		Vektor<Double> solution = les.convertSolutionVektorToExampleVektor(objectSolution1);
 		Vektor<Double> rowVektor = coefficientmatrix.getRowAsVektor(0);
 		Double r = Vektorraum.scalarProduct.apply(solution, rowVektor);
 		assert(r.equals(rowResults.getValue(1)));
@@ -48,7 +50,7 @@ public class LinearEquationSolverTest
 		coefficientmatrix = coefficientmatrix.setValue(1, 0, 1.0);
 		extendedCoefficientMatrix = coefficientmatrix.glueColumnToThisOnTheRight(rowResults);
 		Vektor<Double> v1 = coefficientmatrix.getRowAsVektor(0);
-		solution = convertSolutionVektorToExampleVektor(solve(extendedCoefficientMatrix));
+		solution = les.convertSolutionVektorToExampleVektor(les.solve(extendedCoefficientMatrix));
 
 		r = Vektorraum.scalarProduct.apply(v1, solution);
 
@@ -61,8 +63,8 @@ public class LinearEquationSolverTest
 
 		extendedCoefficientMatrix = coefficientmatrix.glueColumnToThisOnTheRight(rowResults);
 		
-		objectSolution1 = solve(extendedCoefficientMatrix);
-		solution = convertSolutionVektorToExampleVektor(objectSolution1);
+		objectSolution1 = les.solve(extendedCoefficientMatrix);
+		solution = les.convertSolutionVektorToExampleVektor(objectSolution1);
 		rowVektor = coefficientmatrix.getRowAsVektor(0);
 		r = Vektorraum.scalarProduct.apply(solution, rowVektor);
 		assert(r.equals(rowResults.getValue(1)));
@@ -71,6 +73,8 @@ public class LinearEquationSolverTest
 	@Test
 	public void makeAtLeastOneExtraLeadingZeroTest() throws MathException
 	{
+
+		LinearEquationSolver les = new LinearEquationSolver();
 
 		for(int n=0;n<4;n++)
 		{
@@ -83,7 +87,7 @@ public class LinearEquationSolverTest
 		
 			Matrix<Double> destRow = new Matrix<>(3, listD);
 		
-			Matrix<Double> result = makeAtLeastOneExtraLeadingZero(sourceRow, destRow);
+			Matrix<Double> result = les.makeAtLeastOneExtraLeadingZero(sourceRow, destRow);
 
 			List<Double> listC = Arrays.asList(0.0, -(z+1), -(z+2));
 			
@@ -138,7 +142,9 @@ public class LinearEquationSolverTest
 	@Test
 	public void scrapeOffTheTopTest() throws MathException
 	{
-		
+
+		LinearEquationSolver les = new LinearEquationSolver();
+
 		Double[][] valueArr = new Double[3][3];
 		valueArr[0][0]= 1.0;
 		valueArr[1][0]= 0.0;
@@ -151,7 +157,7 @@ public class LinearEquationSolverTest
 		valueArr[2][2]= 1.0;
 		
 		Matrix<Double> matrix = new Matrix<>(valueArr);
-		Matrix<Double> m2 = scrapeOffTheTop(matrix);
+		Matrix<Double> m2 = les.scrapeOffTheTop(matrix);
 
 		assert(matrix.equals(m2));
 		
@@ -169,7 +175,7 @@ public class LinearEquationSolverTest
 		int rows = matrix.getRows();
 		int cols = matrix.getColumns();
 		
-		m2 = scrapeOffTheTop(matrix);
+		m2 = les.scrapeOffTheTop(matrix);
 
 		assert(matrix.equals(m2));
 		assert(!isOverDeterministic(matrix));
@@ -188,7 +194,7 @@ public class LinearEquationSolverTest
 		rows = matrix.getRows();
 		cols = matrix.getColumns();
 		
-		m2 = scrapeOffTheTop(matrix);
+		m2 = les.scrapeOffTheTop(matrix);
 
 		assert(!matrix.equals(m2));
 

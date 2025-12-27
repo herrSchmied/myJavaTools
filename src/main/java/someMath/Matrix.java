@@ -511,4 +511,54 @@ public class Matrix<O> implements Cloneable
 			}
 		}
 	}
+
+	public Matrix<O> eraseColumn(int eraseCol) throws MathException
+	{
+
+		O o = getValue(0, 0);
+		Matrix<O> output = new Matrix<>(columns-1, rows, o);
+
+		for(int col=0;col<columns;col++)
+		{
+
+			if(col<eraseCol)
+			{
+				Matrix<O> colVektor = getColumn(col);
+				output = output.setColumn(colVektor, col);
+			}
+			
+			if(col>eraseCol)
+			{
+				Matrix<O> colVektor = getColumn(col);
+				output = output.setColumn(colVektor, col-1);
+			}
+		}
+	
+	
+		return output;
+	}
+
+	public Matrix<O> eraseRow(int eraseRow) throws MathException
+	{
+		
+		O o = getValue(0, 0);
+		Matrix<O> output = new Matrix<>(columns, rows-1, o);
+		
+		for(int row=0;row<rows;row++)
+		{
+			if(row<eraseRow)
+			{
+				Matrix<O> rowVektor = getRow(row);
+				output = output.setRow(rowVektor, row);
+			}
+			
+			if(row>eraseRow)
+			{
+				Matrix<O> rowVektor = getRow(row);
+				output = output.setRow(rowVektor, row-1);
+			}
+		}
+	
+		return output;
+	}
 }

@@ -163,6 +163,8 @@ public class MatrixRing extends Operations<Matrix<Double>>
 	public static final Function<Matrix<Double>, Matrix<Double>> invert = (matrix)->
 	{
 
+		LinearEquationSolver les = new LinearEquationSolver();
+	
 		if(!matrix.isQuadratic())
 		{
 			System.out.println("Matrix is not quadratic so not invertable.");
@@ -196,8 +198,8 @@ public class MatrixRing extends Operations<Matrix<Double>>
 				Matrix<Double> extendedCoefficientMatrix = 
 					coefficientMatrix.glueColumnToThisOnTheRight(rowResults);
 
-				Vektor<Object> result = solve(extendedCoefficientMatrix);
-				Vektor<Double> doubleResult = convertSolutionVektorToExampleVektor(result);
+				Vektor<Object> result = les.solve(extendedCoefficientMatrix);
+				Vektor<Double> doubleResult = les.convertSolutionVektorToExampleVektor(result);
 				output = output.setRow(doubleResult, n);				
 			}
 		
