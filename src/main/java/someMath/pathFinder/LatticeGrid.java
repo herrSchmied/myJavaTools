@@ -205,22 +205,22 @@ public class LatticeGrid
 		setLatticesOnTileThruBitNr(x, y, bitNr);
 	}
 	
-	/**
-	 * Can potentially set more than one Lattice or 'un-set'
-	 * One needs to know the corresponding latticeCode.
-	 * @param p Tile Coordinates.
-	 * @param latticeCode determines which lattices will appear.
-	 * @throws LTGCException if p is beyond the width or height
-	 * or when p is null. Also if latticeCode ain't valid.
-	 */
-	private void setLatticesOnTile(Point p, int latticeCode) throws LTGCException
-	{
-		
-		throwsExceptionIfPIsNull(p);
-		throwsExceptionIfLatticeCodeAintValide(latticeCode);
-		throwsExceptionIfOutOfBounds(p.x, p.y);
-		setLatticesOnTile(p.x, p.y, latticeCode);
-	}
+//	/**
+//	 * Can potentially set more than one Lattice or 'un-set'
+//	 * One needs to know the corresponding latticeCode.
+//	 * @param p Tile Coordinates.
+//	 * @param latticeCode determines which lattices will appear.
+//	 * @throws LTGCException if p is beyond the width or height
+//	 * or when p is null. Also if latticeCode ain't valid.
+//	 */
+//	private void setLatticesOnTile(Point p, int latticeCode) throws LTGCException
+//	{
+//		
+//		throwsExceptionIfPIsNull(p);
+//		throwsExceptionIfLatticeCodeAintValide(latticeCode);
+//		throwsExceptionIfOutOfBounds(p.x, p.y);
+//		setLatticesOnTile(p.x, p.y, latticeCode);
+//	}
 
 	/**
 	 * This is the workhorse. The cashCow. The chosen one.

@@ -3,7 +3,7 @@ package someMath;
 import someMath.exceptions.CollectionException;
 import someMath.exceptions.DivisionByZeroException;
 import someMath.exceptions.NaturalNumberException;
-import someMath.exceptions.RNumException;
+
 
 /*
  * Any Class implementing this Interface
@@ -22,7 +22,7 @@ public abstract class Multiplyable<E>
 	
 	public abstract boolean hasNeutralOne();
 	
-	public abstract E multiplyWith(E e) throws NaturalNumberException, RNumException, CloneNotSupportedException, DivisionByZeroException, CollectionException;
+	public abstract E multiplyWith(E e) throws NaturalNumberException, CloneNotSupportedException, DivisionByZeroException, CollectionException;
 	
 	public abstract E getNeutralOne() throws NaturalNumberException;
 }

@@ -3,11 +3,11 @@ package someMathTest;
 import java.util.List;
 import java.util.Set;
 
-import org.junit.jupiter.api.BeforeEach;
+
 import org.junit.jupiter.api.Test;
 
 import consoleTools.BashSigns;
-import consoleTools.TerminalXDisplay;
+
 import someMath.Partitions;
 import someMath.exceptions.CollectionException;
 import someMath.exceptions.MathException;
