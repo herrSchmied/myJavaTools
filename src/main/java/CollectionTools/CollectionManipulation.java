@@ -21,7 +21,7 @@ public class CollectionManipulation
 
 	public static boolean isRegularArray(Object array)
 	{
-		
+
 	    if (array == null || !array.getClass().isArray())
 	        return false;
 
@@ -54,6 +54,7 @@ public class CollectionManipulation
 
 	    return true;
 	}
+
 	public static int getArrayDimension(Object array)
 	{
 	    int dim = 0;
@@ -115,7 +116,7 @@ public class CollectionManipulation
 
 		return sumList;
 	}
-	
+
 	public static double randomNrBoundBetween(List<Double> layers)
 	{
 		if(layers==null||layers.isEmpty())return 0.0d;
@@ -124,7 +125,7 @@ public class CollectionManipulation
 		
 		return Math.random()*sum;
 	}
-	
+
 	public static <A> int  betweenWhichElements(double betweener, List<Pair<A, Double>> layers)
 	{
 		
@@ -153,7 +154,7 @@ public class CollectionManipulation
 		
 		throw new IllegalArgumentException("Something is Wrong.");
 	}
-	
+
 	public static <A> List<Double> getRidOfTheGeneric(List<Pair<A, Double>> layers) throws CollectionException
 	{
 		
@@ -170,7 +171,6 @@ public class CollectionManipulation
 		return upStacking;
 	}
 
-	
 	public static <T> T catchRandomElementOfCollection(Collection<T> collection) throws CollectionException
 	{
 		
@@ -182,7 +182,6 @@ public class CollectionManipulation
 		return catchRandomElementOfList(list);
 	}
 
-	
 	public static <T> T catchRandomElementOfSet(Set<T> set) throws CollectionException
 	{
 		
@@ -193,7 +192,7 @@ public class CollectionManipulation
 		
 		return catchRandomElementOfList(list);
 	}
-	
+
 	public static <T> T catchRandomElementOfList(List<T> list) throws CollectionException
 	{
 		
@@ -204,7 +203,7 @@ public class CollectionManipulation
 		
 		return list.get(r);
 	}
-	
+
 	public static <T> Set<List<T>> cartesianProduct(List<Set<T>> input) throws CollectionException
 	{
 		
@@ -271,7 +270,7 @@ public class CollectionManipulation
 	
 		return output;
 	}
-	
+
 	public static <T> Set<List<T>> permutationsWithoutRepition(Set<T> originSet)throws CollectionException
 	{
 		
@@ -303,6 +302,7 @@ public class CollectionManipulation
 
 		return output;
 	}
+
 	public static <T extends Comparable<T>> Set<List<T>> permutationsWithRepition(List<T> originList) throws CollectionException
 	{
 		
@@ -402,7 +402,7 @@ public class CollectionManipulation
 		
 		return output;
 	}
-	
+
 	public static <T> Set<Set<T>> combinationsOfSizeNWithoutRepition(Set<T> originSet, int n) throws CollectionException
 	{
 
@@ -438,7 +438,7 @@ public class CollectionManipulation
 
 		return output;
 	}
-	
+
 	public static <T> Set<List<T>> discriminate(Set<List<T>> origin, Predicate<List<T>> predicate)
 	{
 		
@@ -464,6 +464,7 @@ public class CollectionManipulation
 
 		return output;
 	}
+
 	public static <T extends Number> Double multiplyListElements(List<T> origin, int n) throws CollectionException
 	{
 		int s = origin.size();
@@ -500,7 +501,7 @@ public class CollectionManipulation
 
 		return sum;
 	}
-	
+
 	public static <T extends Number> Double multiplySetElements(Set<T> origin) throws CollectionException
 	{
 		
@@ -520,7 +521,7 @@ public class CollectionManipulation
 
 		return product;
 	}
-	
+
 	public static <T extends Number> Double addListElements(List<T> origin, int n) throws CollectionException
 	{
 
@@ -542,7 +543,7 @@ public class CollectionManipulation
 
 		return sum;
 	}
-	
+
 	public static <T extends Number> Double productSumSet(Set<T> set, int n) throws CollectionException
 	{
 		
@@ -554,7 +555,7 @@ public class CollectionManipulation
 		
 		return ps;
 	}
-	
+
 	public static <T extends Number> Double sumProductSet(Set<T> set, int n) throws CollectionException
 	{
 		
@@ -566,7 +567,6 @@ public class CollectionManipulation
 		
 		return ps;
 	}
-	
 
 	public static Set<Integer> getSetOfFirstNIntegers(int n)
 	{
@@ -593,7 +593,6 @@ public class CollectionManipulation
 		
 		return output;
 	}
-
 
 	public static Set<Character> getSetOfFirstNLatinLettersUppercase(int n)
 	{
@@ -628,7 +627,7 @@ public class CollectionManipulation
 		
 		return output;
 	}
-	
+
 	public static List<Character> getListOfFirstNLettersLowerCase(int n)
 	{
 		Set<Character> set = getSetOfFirstNLatinLettersLowerCase(n);
@@ -648,7 +647,7 @@ public class CollectionManipulation
 
 		return output;
 	}
-	
+
 	public static <E> Set<E> implode(Set<Set<E>> origin)
 	{
 		

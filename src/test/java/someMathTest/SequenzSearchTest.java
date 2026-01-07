@@ -1,16 +1,22 @@
 package someMathTest;
 
+
+
 import java.awt.Point;
+
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
-import java.util.ListIterator;
+
 
 import org.junit.jupiter.api.Test;
 
+
 import CollectionTools.SequenzInListSearch;
+
+
 import consoleTools.TerminalXDisplay;
+
 
 
 public class SequenzSearchTest

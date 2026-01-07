@@ -1,6 +1,7 @@
 package someMath;
 
-import java.util.ArrayList;
+
+
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -11,7 +12,8 @@ import someMath.exceptions.CollectionException;
 
 import static CollectionTools.CollectionManipulation.*;
 import static consoleTools.BashSigns.*;
-import static consoleTools.TerminalXDisplay.*;
+
+
 
 public class MathSetClosedUnderUnion
 {
@@ -147,7 +149,7 @@ public class MathSetClosedUnderUnion
 	}
 	*/
 	
-	private static <T> Set<Set<T>> allSubSetsOfSizeN(Set<Set<T>> origin, int n) {
+	public static <T> Set<Set<T>> allSubSetsOfSizeN(Set<Set<T>> origin, int n) {
 		
 		Set<Set<T>> output = new HashSet<>();
 		

@@ -137,7 +137,6 @@ public class LatticeGridTest
 		
 		Point test = new Point(3, 3);
 		LatticeGrid lg = new LatticeGrid(10, 10);
-		boolean [] latticeCode = new boolean[4];
 	
 		lg.setOneLatticeOnTile(test,indexLatticeBitLeft);
 		

@@ -1,17 +1,16 @@
 package someMath;
 
 
+
 import java.math.BigDecimal;
 import java.math.BigInteger;
+
 import java.util.*;
 
-import javafx.util.Pair;
-import someMath.exceptions.CollectionException;
-import someMath.exceptions.DivisionByZeroException;
-import someMath.exceptions.NaturalNumberException;
-import someMath.exceptions.RNumException;
 
-import static someMath.NaturalNumber.*;
+import javafx.util.Pair;
+
+
 
 public class SmallTools
 {

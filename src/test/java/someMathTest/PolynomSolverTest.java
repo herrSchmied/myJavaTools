@@ -1,14 +1,6 @@
 package someMathTest;
 
 
-import org.junit.jupiter.api.Test;
-
-import someMath.exceptions.CollectionException;
-
-import someMath.exceptions.DivisionByZeroException;
-
-import someMath.NaturalNumberException;
-
 //import someMath.RNumException;
 
 //import someMath.RationalNumber;

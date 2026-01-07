@@ -4,7 +4,6 @@ package someMathTest;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 
@@ -66,9 +65,9 @@ public class MatrixTests
 		Matrix<Double> matrix3 = matrix2.switchColumns(0, 1);
 
 		assert(matrix2.getColumn(0).equals(matrix3.getColumn(1)));
-		Double det2=MatrixStuff.determinant(dField, matrix3);
+		Double det2 = MatrixStuff.determinant(dField, matrix3);
 
-		assert(det1.equals(MatrixStuff.determinant(dField, matrix3)));
+		assert(det1.equals(det2));
 	}
 
 	@Test

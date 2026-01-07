@@ -13,7 +13,7 @@ import java.util.function.Function;
 
 import someMath.exceptions.MathException;
 
-import static someMath.LinearEquationSolver.*;
+
 
 public class MatrixRing extends Operations<Matrix<Double>>
 {

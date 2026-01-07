@@ -150,6 +150,7 @@ public class TerminalXDisplay
 	public static String formatBashStringBoldInColorX(Color c, String s) throws ConsoleToolsException
 	{
 
+		if(!availableColors.contains(c))throw new ConsoleToolsException("Not a available Color.");
 		if(c==null) throw new ConsoleToolsException("Null is not a Color.");
 
 		if(c.equals(Color.RED))return formatBashStringBoldAndRed(s);
@@ -163,6 +164,7 @@ public class TerminalXDisplay
 	public static String formatBashStringInColorX(Color c, String s) throws Exception
 	{
 
+		if(!availableColors.contains(c))throw new ConsoleToolsException("Not a available Color.");
 		if(c==null) throw new ConsoleToolsException("Null is not a Color.");
 
 		if(c.equals(Color.RED))return formatBashStringRed(s);

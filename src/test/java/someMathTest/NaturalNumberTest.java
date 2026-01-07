@@ -1,10 +1,10 @@
 package someMathTest;
 
-import java.util.ArrayList;
+
 
 import org.junit.jupiter.api.Test;
 
-import java.util.List;
+
 
 import someMath.NaturalNumber;
 import someMath.NaturalNumberException;

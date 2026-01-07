@@ -1,8 +1,10 @@
 package someMath;
 
-import java.math.BigInteger;
+
+
 import java.util.Objects;
-import static consoleTools.TerminalXDisplay.*;
+
+
 
 //Even so it implements addition, subtraction, multiplication and division this is
 // NOT a mathematical Group!!!!
