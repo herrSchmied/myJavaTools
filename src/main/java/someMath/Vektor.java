@@ -2,7 +2,6 @@ package someMath;
 
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -14,12 +13,13 @@ public class Vektor<O> extends Matrix<O>
 
 	public static <O> List<O> getDefaultValueList(int n, O defaultValue)
 	{
+
 		List<O> list = new ArrayList<>();
 		for(int m=0;m<n;m++)
 		{
 			list.add(defaultValue);
 		}
-		
+
 		return list;
 	}
 
@@ -28,9 +28,9 @@ public class Vektor<O> extends Matrix<O>
 		super(1, valueList);
 	}
 	
-	public Vektor(O[] valueArray) throws MathException
+	public Vektor(O[][] valueArray) throws MathException
 	{
-		this(Arrays.asList(valueArray));
+		super(valueArray);
 	}
 	
 	public Vektor(int rows, O defaultValue) throws MathException
@@ -156,5 +156,10 @@ public class Vektor<O> extends Matrix<O>
 		}
 
 		return true;
+	}
+	
+	public String toString()
+	{
+		return super.toString();
 	}
 }

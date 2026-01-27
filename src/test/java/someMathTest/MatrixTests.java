@@ -277,6 +277,7 @@ public class MatrixTests
 		}
 		return list;
 	}
+
 	@Test
 	public void testTransponing()throws MathException
 	{

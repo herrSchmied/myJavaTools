@@ -41,18 +41,18 @@ public class LinearEquationSolverTest
 
 		Matrix<Double> extendedCoefficientMatrix = coefficientmatrix.glueColumnToThisOnTheRight(rowResults);
 
-		Vektor<Object> objectSolution1 = les.solve(extendedCoefficientMatrix);
-		Vektor<Double> solution = les.convertSolutionVektorToExampleVektor(objectSolution1);
+		Vektor<Double> solution1 = les.solve(extendedCoefficientMatrix);
+		//Vektor<Double> solution = les.convertSolutionVektorToExampleVektor(objectSolution1);
 		Vektor<Double> rowVektor = coefficientmatrix.getRowAsVektor(0);
-		Double r = Vektorraum.scalarProduct.apply(solution, rowVektor);
+		Double r = Vektorraum.scalarProduct.apply(solution1, rowVektor);
 		assert(r.equals(rowResults.getValue(1)));
 		
 		coefficientmatrix = coefficientmatrix.setValue(1, 0, 1.0);
 		extendedCoefficientMatrix = coefficientmatrix.glueColumnToThisOnTheRight(rowResults);
 		Vektor<Double> v1 = coefficientmatrix.getRowAsVektor(0);
-		solution = les.convertSolutionVektorToExampleVektor(les.solve(extendedCoefficientMatrix));
+		//solution = les.convertSolutionVektorToExampleVektor(les.solve(extendedCoefficientMatrix));
 
-		r = Vektorraum.scalarProduct.apply(v1, solution);
+		r = Vektorraum.scalarProduct.apply(v1, solution1);
 
 		assert(r.equals(rowResults.getValue(1)));
 		
@@ -63,10 +63,10 @@ public class LinearEquationSolverTest
 
 		extendedCoefficientMatrix = coefficientmatrix.glueColumnToThisOnTheRight(rowResults);
 		
-		objectSolution1 = les.solve(extendedCoefficientMatrix);
-		solution = les.convertSolutionVektorToExampleVektor(objectSolution1);
+		solution1 = les.solve(extendedCoefficientMatrix);
+		//solution = les.convertSolutionVektorToExampleVektor(objectSolution1);
 		rowVektor = coefficientmatrix.getRowAsVektor(0);
-		r = Vektorraum.scalarProduct.apply(solution, rowVektor);
+		r = Vektorraum.scalarProduct.apply(solution1, rowVektor);
 		assert(r.equals(rowResults.getValue(1)));
 	}
 

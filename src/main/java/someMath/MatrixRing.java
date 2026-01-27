@@ -198,9 +198,9 @@ public class MatrixRing extends Operations<Matrix<Double>>
 				Matrix<Double> extendedCoefficientMatrix = 
 					coefficientMatrix.glueColumnToThisOnTheRight(rowResults);
 
-				Vektor<Object> result = les.solve(extendedCoefficientMatrix);
-				Vektor<Double> doubleResult = les.convertSolutionVektorToExampleVektor(result);
-				output = output.setRow(doubleResult, n);				
+				Vektor<Double> result = les.solve(extendedCoefficientMatrix);
+				//Vektor<Double> doubleResult = les.convertSolutionVektorToExampleVektor(result);
+				output = output.setRow(result, n);				
 			}
 		
 			System.out.println("Inverison Complete.");

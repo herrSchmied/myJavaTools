@@ -20,7 +20,7 @@ public class LinearEquationSolver
 		
 	}
 
-	public Vektor<Object> solve(Matrix<Double> extendedCoefficientMatrix) throws MathException
+	public Vektor<Double> solve(Matrix<Double> extendedCoefficientMatrix) throws MathException
 	{
 
 		System.out.println("Solving Extendedmatrix.");
@@ -207,7 +207,7 @@ public class LinearEquationSolver
 	}
 
 
-	public Vektor<Object> calculateSolvingVektor(Matrix<Double> extendedCoefficientMatrix) throws MathException
+	public Vektor<Double> calculateSolvingVektor(Matrix<Double> extendedCoefficientMatrix) throws MathException
 	{
 
 		System.out.println("Calculating solving Vektor.");
@@ -267,9 +267,9 @@ public class LinearEquationSolver
 		}
 
 		System.out.println("SolvedVariables: " + solvedVariables);
-		List<Object> values = new ArrayList<>();
+		List<Double> values = new ArrayList<>();
 		int s = cols;
-		for(int n=1;n<s;n++)
+		for(int n=0;n<s;n++)
 		{
 
 			String name = "x"+n;
@@ -278,36 +278,36 @@ public class LinearEquationSolver
 				Double d = solvedVariables.get(name);
 				values.add(d);
 			}
-			else values.add(name);
+			//else values.add(name);
 		}
 
-		Vektor<Object> solutionVektor = new Vektor<>(values);
+		Vektor<Double> solutionVektor = new Vektor<>(values);
 		//System.out.println(solutionVektor);
 		return solutionVektor;
 	}
 	
-	public Vektor<Double> convertSolutionVektorToExampleVektor(Vektor<Object> solution) throws MathException
-	{
-
-		System.out.println("Converting Vector.\n" + solution);
-
-		int rows = solution.getRows();
-		Vektor<Double> example = new Vektor<>(rows, 0.0);
-		
-		for(int row=0;row<rows;row++)
-		{
-			
-			Object value = solution.getValue(row);
-			if(!(value instanceof Double))
-			{
-				throw new MathException("Not Yet supported");
-			}
-			Double dValue = (Double)value;
-			example = example.setValue(row, dValue);
-		}
-		
-		return example;
-	}
+//	public Vektor<Double> convertSolutionVektorToExampleVektor(Vektor<Object> solution) throws MathException
+//	{
+//
+//		System.out.println("Converting Vector.\n" + solution);
+//
+//		int rows = solution.getRows();
+//		Vektor<Double> example = new Vektor<>(rows, 0.0);
+//		
+//		for(int row=0;row<rows;row++)
+//		{
+//			
+//			Object value = solution.getValue(row);
+//			if(!(value instanceof Double))
+//			{
+//				throw new MathException("Not Yet supported");
+//			}
+//			Double dValue = (Double)value;
+//			example = example.setValue(row, dValue);
+//		}
+//		
+//		return example;
+//	}
 
 	public List<Integer> nonZeros(Vektor<Double> rowVektor) throws MathException
 	{
