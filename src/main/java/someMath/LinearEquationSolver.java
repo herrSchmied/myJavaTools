@@ -27,29 +27,28 @@ public class LinearEquationSolver
 		Matrix<Double> customizable = extendedCoefficientMatrix.clone();
 		int rows = customizable.getRows();
 		int cols = customizable.getColumns();
-	
+
 		customizable = bubbleSortByLeadingZeros(customizable);
 		customizable = scrapeOffTheTop(customizable);
 		customizable = shortenMatrix(customizable);
 
 		rows = customizable.getRows();
 		cols = customizable.getColumns();
-		
+
 		if(rows==cols-1)
 		{
-			
+
 			DoubleField dField = new DoubleField();
 			Matrix<Double> coefficientMatrix = new Matrix<>(cols-1, cols-1, 0.0);
-			
 			for(int col=0;col<cols-1;col++)
 			{
 				Matrix<Double> columnVektor = customizable.getColumn(col);
 				coefficientMatrix = coefficientMatrix.setColumn(columnVektor, col);
 			}
-			
+
 			Double determinant = MatrixStuff.determinant(dField, coefficientMatrix);
 			Matrix<Double> columnVektor = customizable.getColumn(cols-1);
-			
+
 			if(determinant.equals(0.0))
 			{
 				int n=0;
@@ -60,9 +59,10 @@ public class LinearEquationSolver
 					Double sideDeterminant = MatrixStuff.determinant(dField, switchMatrix);
 					if(sideDeterminant.equals(0.0))n++;
 				}
-				
+
 				if(n<cols-1)
 				{
+
 					System.out.println("No Solution for this Linear Equation System");
 					return null;
 				}

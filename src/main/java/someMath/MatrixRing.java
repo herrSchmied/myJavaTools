@@ -160,7 +160,7 @@ public class MatrixRing extends Operations<Matrix<Double>>
 		}
 	};
 
-	public static final Function<Matrix<Double>, Matrix<Double>> invert = (matrix)->
+	public static final Matrix<Double> invert(Matrix<Double> matrix) throws MathException
 	{
 
 		LinearEquationSolver les = new LinearEquationSolver();
@@ -173,47 +173,38 @@ public class MatrixRing extends Operations<Matrix<Double>>
 
 		System.out.println("Inverting Matrix.");
 		
-		try
+		Double determinant = MatrixStuff.determinant(new DoubleField(), matrix);
+		if(determinant.equals(0.0))
 		{
-			Double determinant = MatrixStuff.determinant(new DoubleField(), matrix);
-			if(determinant.equals(0.0))
-			{
-				System.out.println("Matrix determinant is Zero so not invertable.");
-				return null;
-			}
-		
-			int columns = matrix.getColumns();
-			int rows = columns;
-		
-			Matrix<Double> coefficientMatrix = matrix.clone();
-			coefficientMatrix = MatrixRing.transponent.apply(coefficientMatrix);
-			Matrix<Double> output = new Matrix<>(columns, rows, 0.0);
-			for(int n=0;n<rows;n++)
-			{
-				
-				System.out.println("Making ExtendedMatrix.");
-				Vektor<Double> rowResults = new Vektor<>(rows, 0.0);
-				rowResults = rowResults.setValue(n, 1.0);
-
-				Matrix<Double> extendedCoefficientMatrix = 
-					coefficientMatrix.glueColumnToThisOnTheRight(rowResults);
-
-				Vektor<Double> result = les.solve(extendedCoefficientMatrix);
-				//Vektor<Double> doubleResult = les.convertSolutionVektorToExampleVektor(result);
-				output = output.setRow(result, n);				
-			}
-		
-			System.out.println("Inverison Complete.");
-			return output;
+			System.out.println("Matrix determinant is Zero so not invertable.");
+			return null;
 		}
-		catch(MathException mex)
+		
+		int columns = matrix.getColumns();
+		int rows = columns;
+		
+		Matrix<Double> coefficientMatrix = matrix.clone();
+		coefficientMatrix = MatrixRing.transponent.apply(coefficientMatrix);
+		Matrix<Double> output = new Matrix<>(columns, rows, 0.0);
+		for(int n=0;n<rows;n++)
 		{
-			mex.printStackTrace();
-		}
-
-		throw new RuntimeException("Should not happen!");
-	};
 	
+			System.out.println("Making ExtendedMatrix.");
+			Vektor<Double> rowResults = new Vektor<>(rows, 0.0);
+			rowResults = rowResults.setValue(n, 1.0);
+
+			Matrix<Double> extendedCoefficientMatrix = 
+				coefficientMatrix.glueColumnToThisOnTheRight(rowResults);
+
+			Vektor<Double> result = les.solve(extendedCoefficientMatrix);
+			//Vektor<Double> doubleResult = les.convertSolutionVektorToExampleVektor(result);
+			output = output.setRow(result, n);				
+		}
+		
+		System.out.println("Inverison Complete.");
+		return output;
+	}
+
 	public static final Function<Matrix<Double>, Double> frobeniusNorm = (matrix)->
 	{
 		Double[] output = new Double[1];

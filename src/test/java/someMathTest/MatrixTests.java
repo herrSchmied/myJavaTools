@@ -229,6 +229,8 @@ public class MatrixTests
 		setup(matrixSideLength);//Matrix side length and related stuff.
 		MatrixRing ring2 = new MatrixRing(matrixSideLength);
 		Matrix<Double> I = ring2.getNeutrumMatrixMultiplication();
+		Matrix<Double> I2 = MatrixRing.invert(I);
+		assert(I2.equals(I));
 
 		int n = 0;
 		while(n<100)
@@ -244,7 +246,7 @@ public class MatrixTests
 			if(!determinante.equals(0.0))
 			{
 
-				Matrix<Double> inverted = MatrixRing.invert.apply(matrix);
+				Matrix<Double> inverted = MatrixRing.invert(matrix);
 				Matrix<Double> prod = ring2.multiply(inverted, matrix);
 				prod =MatrixRing.scaling.apply(-1.0, prod);
 				Matrix<Double> sum = MatrixRing.addition.apply(I, prod);

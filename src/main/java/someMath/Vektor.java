@@ -50,18 +50,19 @@ public class Vektor<O> extends Matrix<O>
 	
 	public Vektor<O> setValue(int row, O value) throws MathException
 	{
-		
+
 		if(row>super.getRows()-1||row<0)throw new MathException("Row out of Bounds.");
 		if(value==null)throw new MathException("Can't accept Null-Value.");
-		
+
 		List<O> list = new ArrayList<>();
-		
+
 		for(int r=0;r<super.getRows();r++)
 		{
+
 			O o;
 			o = this.getValue(r);
 			if(r==row)o = value;
-			
+
 			list.add(o);
 		}
 

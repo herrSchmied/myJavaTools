@@ -87,16 +87,17 @@ public class Matrix<O> implements Cloneable
 	
 	public O getValue(int column, int row) throws MathException
 	{
-		if(column>columns-1||column<0)throw new MathException("Column out of Bounds.");
-		if(row>rows-1||row<0)throw new MathException("Row out of Bounds.");
+
+		if(column>=columns||column<0)throw new MathException("Column out of Bounds.");
+		if(row>=rows||row<0)throw new MathException("Row out of Bounds.");
 
 		return valueArr[column][row];
 	}
 
 	public Matrix<O> setValue(int column, int row, O o) throws MathException
 	{
-		if(column>columns-1||column<0)throw new MathException("Column out of Bounds.");
-		if(row>rows-1||row<0)throw new MathException("Row out of Bounds.");
+		if(column>=columns||column<0)throw new MathException("Column out of Bounds.");
+		if(row>=rows||row<0)throw new MathException("Row out of Bounds.");
 		if(o==null)throw new MathException("Can't accept Null-Value.");
 		
 		O[][] valueArrClone = valueArr.clone();
@@ -113,7 +114,7 @@ public class Matrix<O> implements Cloneable
 	public Vektor<O> getColumnAsVektor(int col) throws MathException
 	{
 
-		if(col>columns-1||col<0)throw new MathException("Column out of Bounds.");
+		if(col>=columns||col<0)throw new MathException("Column out of Bounds.");
 
 		O o = this.getValue(0, 0);
 		int rows = this.getRows();
@@ -130,7 +131,7 @@ public class Matrix<O> implements Cloneable
 	public Matrix<O> getColumn(int column) throws MathException
 	{
 		
-		if(column>columns-1||column<0)throw new MathException("Column out of Bounds.");
+		if(column>=columns||column<0)throw new MathException("Column out of Bounds.");
 		O[][] valueArr = (O[][]) new Object[1][rows];
 		
 		for(int i=0;i<rows;i++)valueArr[0][i]=getValue(column, i);
@@ -140,7 +141,7 @@ public class Matrix<O> implements Cloneable
 	
 	public Matrix<O> setColumn(List<O> list, int column) throws MathException
 	{
-		if(column>columns-1||column<0)throw new MathException("Column out of Bounds.");
+		if(column>=columns||column<0)throw new MathException("Column out of Bounds.");
 		O[][] valueArrClone = valueArr.clone();
 		
 		for(int i=0;i<rows;i++)valueArrClone[column][i]= list.get(i);
@@ -151,7 +152,7 @@ public class Matrix<O> implements Cloneable
 	public Matrix<O> setColumn(Vektor<O> columnVektor, int column) throws MathException
 	{
 
-		if(column>columns-1||column<0)throw new MathException("Column out of Bounds.");
+		if(column>=columns||column<0)throw new MathException("Column out of Bounds.");
 		O[][] valueArrClone = valueArr.clone();
 		for(int i=0;i<rows;i++)valueArrClone[column][i]= columnVektor.getValue(i);
 	
@@ -161,7 +162,7 @@ public class Matrix<O> implements Cloneable
 	public Matrix<O> setColumn(Matrix<O> columnVektor, int column) throws MathException
 	{
 
-		if(column>columns-1||column<0)throw new MathException("Column out of Bounds.");
+		if(column>=columns||column<0)throw new MathException("Column out of Bounds.");
 		O[][] valueArrClone = valueArr.clone();
 		for(int i=0;i<rows;i++)valueArrClone[column][i]= columnVektor.getValue(0, i);
 	
@@ -201,8 +202,8 @@ public class Matrix<O> implements Cloneable
 	public Matrix<O> switchColumns(int colA, int colB) throws MathException
 	{
 
-		if(colA>columns-1||colA<0)throw new MathException("Column (A) out of Bounds.");
-		if(colB>columns-1||colB<0)throw new MathException("Column (B) out of Bounds.");
+		if(colA>=columns||colA<0)throw new MathException("Column (A) out of Bounds.");
+		if(colB>=columns||colB<0)throw new MathException("Column (B) out of Bounds.");
 
 		Matrix<O> colVektorA = this.getColumn(colA);
 		Matrix<O> colVektorB = this.getColumn(colB);
@@ -217,7 +218,7 @@ public class Matrix<O> implements Cloneable
 	public Vektor<O> getRowAsVektor(int row) throws MathException
 	{
 
-		if(row>rows-1||row<0)throw new MathException("Row out of Bounds.");
+		if(row>=rows||row<0)throw new MathException("Row out of Bounds.");
 
 		O o = this.getValue(0, 0);
 		int cols = this.getColumns();
@@ -234,7 +235,7 @@ public class Matrix<O> implements Cloneable
 	@SuppressWarnings("unchecked")
 	public Matrix<O> getRow(int row) throws MathException
 	{
-		if(row>rows-1||row<0)throw new MathException("Row out of Bounds.");
+		if(row>=rows||row<0)throw new MathException("Row out of Bounds.");
 		O[][] valueArr = (O[][]) new Object[columns][1];
 		
 		for(int i=0;i<columns;i++)valueArr[i][0]=getValue(i, row);
@@ -244,7 +245,7 @@ public class Matrix<O> implements Cloneable
 	
 	public Matrix<O> setRow(List<O> list, int row) throws MathException
 	{
-		if(row>rows-1||row<0)throw new MathException("Row out of Bounds.");
+		if(row>=rows||row<0)throw new MathException("Row out of Bounds.");
 		O[][] valueArrClone = valueArr.clone();
 		for(int i=0;i<columns;i++)valueArrClone[i][row]=list.get(i);
 		
@@ -253,7 +254,8 @@ public class Matrix<O> implements Cloneable
 
 	public Matrix<O> setRow(Vektor<O> rowVektor, int row) throws MathException
 	{
-		if(row>rows-1||row<0)throw new MathException("Row out of Bounds.");
+		if(row<0)throw new MathException("Row smaller than Zero!?");
+		if(row>=rows)throw new MathException("Row toBig.");
 		O[][] valueArrClone = valueArr.clone();
 		for(int col=0;col<columns;col++)valueArrClone[col][row]=rowVektor.getValue(col);
 		
@@ -292,7 +294,7 @@ public class Matrix<O> implements Cloneable
 
 	public Matrix<O> setRow(Matrix<O> rowVektor, int row) throws MathException
 	{
-		if(row>rows-1||row<0)throw new MathException("Row out of Bounds.");
+		if(row>=rows||row<0)throw new MathException("Row out of Bounds.");
 		O[][] valueArrClone = valueArr.clone();
 		for(int i=0;i<columns;i++)valueArrClone[i][row]=rowVektor.getValue(i, 0);
 		
@@ -302,8 +304,8 @@ public class Matrix<O> implements Cloneable
 	public Matrix<O> switchRows(int rowA, int rowB) throws MathException
 	{
 
-		if(rowA>rows-1||rowA<0)throw new MathException("Row (A) out of Bounds.");
-		if(rowB>rows-1||rowB<0)throw new MathException("Row (B) out of Bounds.");
+		if(rowA>=rows||rowA<0)throw new MathException("Row (A) out of Bounds.");
+		if(rowB>=rows||rowB<0)throw new MathException("Row (B) out of Bounds.");
 
 		Matrix<O> rowVektorA = this.getRow(rowA);
 		Matrix<O> rowVektorB = this.getRow(rowB);
