@@ -255,7 +255,7 @@ public class Matrix<O> implements Cloneable
 	{
 		if(row>rows-1||row<0)throw new MathException("Row out of Bounds.");
 		O[][] valueArrClone = valueArr.clone();
-		for(int i=0;i<columns;i++)valueArrClone[i][row]=rowVektor.getValue(i);
+		for(int col=0;col<columns;col++)valueArrClone[col][row]=rowVektor.getValue(col);
 		
 		return new Matrix<O>(valueArrClone);
 	}

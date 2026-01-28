@@ -56,11 +56,12 @@ public class Vektor<O> extends Matrix<O>
 		
 		List<O> list = new ArrayList<>();
 		
-		for(int n=0;n<super.getRows();n++)
+		for(int r=0;r<super.getRows();r++)
 		{
 			O o;
-			if(n==row)o = value;
-			else o = this.getValue(n);
+			o = this.getValue(r);
+			if(r==row)o = value;
+			
 			list.add(o);
 		}
 

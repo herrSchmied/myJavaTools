@@ -18,27 +18,21 @@ public class Vektorraum extends Operations<Vektor<Double>>
 	private final BiFunction<Vektor<Double>, Vektor<Double>, Vektor<Double>> addition;
 	private final BiFunction<Vektor<Double>, Vektor<Double>, Vektor<Double>> subtraction;
 
-	public static final BiFunction<Double, Vektor<Double>, Vektor<Double>> scaling = (d,s)->
+	public static final Vektor<Double> scaling(Double scale, Vektor<Double> toBeScaled) throws MathException
 	{
 
-		Vektor<Double> v2 = s.clone();
-		int rows = v2.getRows();
-		
-		for(int row=0;row<rows;row++)
+		Vektor<Double> output = toBeScaled.clone();
+		int rows = toBeScaled.getRows();
+
+		for(int r=0;r<rows;r++)
 		{
-			try
-			{
-				double v = s.getValue(row);
-				v2.setValue(row, v*d);
-			}
-			catch(MathException me)
-			{
-				me.printStackTrace();
-			}
+			double oldValue = toBeScaled.getValue(r);
+			double newValue = oldValue*scale;
+			output = output.setValue(r, newValue);
 		}
-		
-		return v2;
-	};
+
+		return output;
+	}
 
 	public static final BiFunction<Vektor<Double>, Vektor<Double>, Double> scalarProduct = (v1, v2)->
 	{
@@ -104,9 +98,18 @@ public class Vektorraum extends Operations<Vektor<Double>>
 		subtraction = (v1, v2)-> 
 		{
 
-			Vektor<Double> mV2 = scaling.apply(-1.0, v2);
+			Vektor<Double> mV2;
+			try
+			{
+				mV2 = scaling(-1.0, v2);
+				return addition.apply(v1, mV2);
+			}
+			catch (MathException e)
+			{
+				e.printStackTrace();
+				throw new RuntimeException("Realy this Should not happen!");
+			}
 			
-			return addition.apply(v1, mV2);
 		};
 
 		op = new Operation<>(Operations.minus, null, subtraction);

@@ -50,36 +50,38 @@ public class VectorTests
 	public void scaleTest() throws MathException
 	{
 
+		Double scale = 1.5;
+		
 		List<Double> list = createListOfDoubles(3,0,9);
 		Vektor<Double> original = new Vektor<>(list);
 		System.out.println("original:\n" + original);
 
-		Double scaledValue0 = list.get(0);
-		Double scaledValue1 = list.get(1);
-		Double scaledValue2 = list.get(2);
+		Double value0 = list.get(0);
+		Double value1 = list.get(1);
+		Double value2 = list.get(2);
 		
 		List<Double> list2 = 
-				Arrays.asList(scaledValue0*1.5, scaledValue1*1.5, scaledValue2*1.5);
-		Vektor<Double> scaleCheck = new Vektor<>(list2);
-		System.out.println("scaleCheck:\n" + scaleCheck);
+				Arrays.asList(value0*scale, value1*scale, value2*scale);
+		Vektor<Double> scaleCheckVektor = new Vektor<>(list2);
+		System.out.println("scaleCheck:\n" + scaleCheckVektor);
 
-		Vektor<Double> scaled = Vektorraum.scaling.apply(1.5, original);
-		System.out.println("scaled:\n" + scaled);
+		Vektor<Double> scaledVektor = Vektorraum.scaling(scale, original);
+		System.out.println("scaled:\n" + scaledVektor);
 
-		assert(scaled.equals(scaleCheck));
+		assert(scaledVektor.equals(scaleCheckVektor));
 
-		Vektor<Double> backToTheOriginal = Vektorraum.scaling.apply((2.0/3), scaleCheck);
+		Vektor<Double> backToTheOriginal = Vektorraum.scaling((1/scale), scaleCheckVektor);
 		System.out.println("backToTheoriginal:\n" + backToTheOriginal);
 
-		assert(scaled.equals(scaleCheck));
+		assert(scaledVektor.equals(scaleCheckVektor));
 		assert(backToTheOriginal.equals(original));
 		
-		assert(backToTheOriginal.getValue(0).equals(scaledValue0));
-		assert(backToTheOriginal.getValue(1).equals(scaledValue1));
-		assert(backToTheOriginal.getValue(2).equals(scaledValue2));
-		assert(scaled.getValue(0).equals(scaledValue0*1.5));
-		assert(scaled.getValue(1).equals(scaledValue1*1.5));
-		assert(scaled.getValue(2).equals(scaledValue2*1.5));
+		assert(backToTheOriginal.getValue(0).equals(original.getValue(0)));
+		assert(backToTheOriginal.getValue(1).equals(original.getValue(1)));
+		assert(backToTheOriginal.getValue(2).equals(original.getValue(2)));
+		assert(scaledVektor.getValue(0).equals(value0*scale));
+		assert(scaledVektor.getValue(1).equals(value1*scale));
+		assert(scaledVektor.getValue(2).equals(value2*scale));
 
 	}
 	
