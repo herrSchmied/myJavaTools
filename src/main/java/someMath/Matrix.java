@@ -96,19 +96,35 @@ public class Matrix<O> implements Cloneable
 
 	public Matrix<O> setValue(int column, int row, O o) throws MathException
 	{
+
 		if(column>=columns||column<0)throw new MathException("Column out of Bounds.");
 		if(row>=rows||row<0)throw new MathException("Row out of Bounds.");
 		if(o==null)throw new MathException("Can't accept Null-Value.");
-		
-		O[][] valueArrClone = valueArr.clone();
+
+		O[][] valueArrClone = deepCopyOfValueArr();
 		valueArrClone[column][row] = o;
 		
 		return new Matrix<O>(valueArrClone);
 	}
 	
+	private O[][] deepCopyOfValueArr()
+	{
+		Object [][] arrayOfValues = new Object[columns][rows];
+		
+		for(int row=0;row<rows;row++)
+		{
+			for(int col=0;col<columns;col++)
+			{
+				arrayOfValues[col][row]= valueArr[col][row];
+			}
+		}
+		
+		return (O[][])arrayOfValues;
+	}
+
 	public O[][] getValueArray()
 	{
-		return valueArr.clone();
+		return deepCopyOfValueArr();
 	}
 
 	public Vektor<O> getColumnAsVektor(int col) throws MathException
