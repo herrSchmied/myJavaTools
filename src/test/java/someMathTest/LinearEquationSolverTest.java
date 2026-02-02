@@ -44,7 +44,7 @@ public class LinearEquationSolverTest
 		Vektor<Double> solution1 = les.solve(extendedCoefficientMatrix);
 		//Vektor<Double> solution = les.convertSolutionVektorToExampleVektor(objectSolution1);
 		Vektor<Double> rowVektor = coefficientmatrix.getRowAsVektor(0);
-		Double r = Vektorraum.scalarProduct.apply(solution1, rowVektor);
+		Double r = Vektorraum.scalarProduct(solution1, rowVektor);
 		assert(r.equals(rowResults.getValue(1)));
 		
 		coefficientmatrix = coefficientmatrix.setValue(1, 0, 1.0);
@@ -52,7 +52,7 @@ public class LinearEquationSolverTest
 		Vektor<Double> v1 = coefficientmatrix.getRowAsVektor(0);
 		//solution = les.convertSolutionVektorToExampleVektor(les.solve(extendedCoefficientMatrix));
 
-		r = Vektorraum.scalarProduct.apply(v1, solution1);
+		r = Vektorraum.scalarProduct(v1, solution1);
 
 		assert(r.equals(rowResults.getValue(1)));
 		
@@ -66,7 +66,7 @@ public class LinearEquationSolverTest
 		solution1 = les.solve(extendedCoefficientMatrix);
 		//solution = les.convertSolutionVektorToExampleVektor(objectSolution1);
 		rowVektor = coefficientmatrix.getRowAsVektor(0);
-		r = Vektorraum.scalarProduct.apply(solution1, rowVektor);
+		r = Vektorraum.scalarProduct(solution1, rowVektor);
 		assert(r.equals(rowResults.getValue(1)));
 	}
 

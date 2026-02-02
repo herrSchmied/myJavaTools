@@ -13,7 +13,6 @@ import someMath.DoubleField;
 import someMath.Matrix;
 import someMath.MatrixRing;
 import someMath.MatrixStuff;
-import someMath.Operations;
 import someMath.SmallTools;
 import someMath.Vektor;
 import someMath.exceptions.MathException;
@@ -35,6 +34,19 @@ public class MatrixTests
 		ring = new MatrixRing(n);
 	}
 
+	@Test
+	public void cloneTest() throws MathException
+	{
+		setup(3);
+		
+		List<Double> list = createListOfDoubles(9,0,9);
+		Matrix<Double> matrix = new Matrix<>(3, list);
+		Matrix<Double> klon = matrix.clone();
+		
+		assert(matrix.equals(klon));
+		assert(klon!=matrix);
+	}
+	
 	@Test
 	public void switchRowsAndColumnTest() throws MathException
 	{
@@ -152,15 +164,15 @@ public class MatrixTests
 		int matrixSideLength = 2;
 		setup(2);//Matrix side length and related stuff.
 		
-		Matrix<Double> zero = ring.getNeutrumOfOperation(Operations.add);
+		Matrix<Double> zero = ring.getNeutrumMatrixAddition();
 		
-		Matrix<Double> s = ring.add(zero, zero);
+		Matrix<Double> s = MatrixRing.sum(zero, zero);
 		
-		Matrix<Double> one = ring.getNeutrumOfOperation(Operations.multiply);
+		Matrix<Double> one = ring.getNeutrumMatrixMultiplication();
 		
 		assert(s.equals(zero));
 		
-		Matrix<Double> unchanged = ring.add(zero, one);
+		Matrix<Double> unchanged = MatrixRing.sum(zero, one);
 		assert(one.equals(unchanged));
 		
 		List<Double> listOfValues1 = Arrays.asList(1.0, 1.0, 1.0, 1.0);
@@ -175,8 +187,8 @@ public class MatrixTests
 		List<Double> listOfValues34 = Arrays.asList(3.0, 4.0, 3.0, 4.0);
 		Matrix<Double> zeroDet34 = new Matrix<Double>(matrixSideLength, listOfValues34);
 		
-		Matrix<Double> holder = ring.add(zeroDetOne, zeroDetTwo);
-		Matrix<Double> zeroDet = ring.add(holder, zeroDetThree);
+		Matrix<Double> holder = MatrixRing.sum(zeroDetOne, zeroDetTwo);
+		Matrix<Double> zeroDet = MatrixRing.sum(holder, zeroDetThree);
 		assert(zeroDet34.equals(zeroDet));
 	}
 	
@@ -188,12 +200,12 @@ public class MatrixTests
 		
 		List<Double> listOfValues = Arrays.asList(0.0, 2.0, 1.0, 1.0);
 		Matrix<Double> detTwoMinus = new Matrix<Double>(matrixSideLength, listOfValues);
-		Matrix<Double> neutrumMatrixMultiplication = ring.getNeutrumOfOperation(Operations.multiply);
-		Matrix<Double> prod = ring.multiply(neutrumMatrixMultiplication, detTwoMinus);
+		Matrix<Double> neutrumMatrixMultiplication = ring.getNeutrumMatrixMultiplication();
+		Matrix<Double> prod = MatrixRing.multiply(neutrumMatrixMultiplication, detTwoMinus);
 
 		assert(prod.equals(detTwoMinus));
 
-		prod = ring.multiply(detTwoMinus, neutrumMatrixMultiplication);
+		prod = MatrixRing.multiply(detTwoMinus, neutrumMatrixMultiplication);
 		assert(prod.equals(detTwoMinus));
 	}
 
@@ -209,7 +221,7 @@ public class MatrixTests
 			List<Double> list2 = createListOfDoubles(9, 10, 0);
 			Matrix<Double> matrix = new Matrix<Double>(l, list);
 			Matrix<Double> matrix2 = new Matrix<Double>(l, list2);
-			Matrix<Double> matrix3 = MatrixRing.multiplication.apply(matrix, matrix2);
+			Matrix<Double> matrix3 = MatrixRing.multiply(matrix, matrix2);
 
 			Double o = MatrixStuff.determinant(dField, matrix);
 			Double o2 = MatrixStuff.determinant(dField, matrix2);
@@ -245,7 +257,7 @@ public class MatrixTests
 		System.out.println("Inverted test Matrix:\n" + invertedMatrix);
 		System.out.println("Determinant: " + d);
 		
-		Matrix<Double>  product = MatrixRing.multiplication.apply(test, invertedMatrix);
+		Matrix<Double>  product = MatrixRing.multiply(test, invertedMatrix);
 		System.out.println("Product Matrix:\n" + product);
 		System.out.println("Neutrum Matrix:\n" + e);
 		//assert(product.equals(e));
@@ -307,10 +319,10 @@ public class MatrixTests
 		List<Double> listOfValues = Arrays.asList(1.0, 0.0, 0.0, 0.0, 1.0, 3.0, 0.0, 1.0, 1.0);
 		Matrix<Double> detTwoMinus = new Matrix<Double>(matrixSideLength, listOfValues);
 
-		Matrix<Double> t = MatrixRing.transponent.apply(detTwoMinus);
+		Matrix<Double> t = MatrixRing.transpone(detTwoMinus);
 		assert(!t.equals(detTwoMinus));
 		
-		Matrix<Double> t2 = MatrixRing.transponent.apply(t);
+		Matrix<Double> t2 = MatrixRing.transpone(t);
 		assert(detTwoMinus.equals(t2));
 	}
 	

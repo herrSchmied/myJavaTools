@@ -3,26 +3,24 @@ package someMath;
 
 import java.awt.Point;
 import java.util.ArrayList;
-import java.util.HashSet;
+
 import java.util.List;
 
 import java.util.function.BiConsumer;
-import java.util.function.BiFunction;
-import java.util.function.Function;
 
 
 import someMath.exceptions.MathException;
 
 
 
-public class MatrixRing extends Operations<Matrix<Double>>
+public class MatrixRing
 {
 
 	private final Matrix<Double> neutrumMatrixAddition;
 	
 	private final Matrix<Double> neutrumMatrixMultiplication;
 
-	public static final BiFunction<Matrix<Double>, Matrix<Double>, Matrix<Double>> addition = (m1, m2)-> 
+	public static final Matrix<Double> sum(Matrix<Double> m1, Matrix<Double> m2)
 	{
 		
 		if(!(m1.getRows()==m2.getRows()))throw new RuntimeException("Can't add those Matrizes.");
@@ -42,7 +40,7 @@ public class MatrixRing extends Operations<Matrix<Double>>
 
 					Double d = m1.getValue(col, row);
 					Double d2 = m2.getValue(col, row);
-					sum.setValue(col, row, (d+d2));
+					sum = sum.setValue(col, row, (d+d2));
 				}
 				catch(MathException me)
 				{
@@ -52,9 +50,9 @@ public class MatrixRing extends Operations<Matrix<Double>>
 		}
 
 		return sum;
-	};
+	}
 	
-	public static final BiFunction<Matrix<Double>, Matrix<Double>, Matrix<Double>> multiplication = (m1, m2)-> 
+	public static final Matrix<Double> multiply(Matrix<Double> m1, Matrix<Double> m2)
 	{
 
 		if(!(m1.getColumns()==m2.getRows()))throw new RuntimeException("Can't multiply those Matrizes.");
@@ -77,20 +75,21 @@ public class MatrixRing extends Operations<Matrix<Double>>
 		}
 
 		int s = m1.getColumns();//equal to m2.getRows();
-		for(int col=0;col<cols;col++)
+
+		for(int r=0;r<rows;r++)
 		{
-			for(int row=0;row<rows;row++)
+			for(int c=0;c<cols;c++)
 			{
-				
+
 				try
 				{
 					double sum = 0.0;
 					for(int n=0;n<s;n++)
 					{
-						sum = sum + m1.getValue(n, row)*m2.getValue(col, n);
+						sum = sum + m1.getValue(n, r)*m2.getValue(c, n);
 					}
 				
-					product.setValue(col, row, sum);
+					product = product.setValue(c, r, sum);
 				}
 				catch(MathException me)
 				{
@@ -100,9 +99,9 @@ public class MatrixRing extends Operations<Matrix<Double>>
 		}
 		
 		return product;
-	};
+	}
 	
-	public static final Function<Matrix<Double>, Matrix<Double>> transponent = (matrix)->
+	public static final Matrix<Double> transpone(Matrix<Double> matrix)
 	{
 		
 
@@ -119,7 +118,7 @@ public class MatrixRing extends Operations<Matrix<Double>>
 				for(int row=0;row<rows;row++)
 				{
 					Double d = matrix.getValue(col, row);
-					transponed.setValue(row, col, d);
+					transponed = transponed.setValue(row, col, d);
 				}
 			}
 		}
@@ -132,7 +131,7 @@ public class MatrixRing extends Operations<Matrix<Double>>
 		return transponed;
 	};
 
-	public static final BiFunction<Double, Matrix<Double>, Matrix<Double>> scaling = (d, m)->
+	public static final Matrix<Double> scale(Double d, Matrix<Double> m)
 	{
 
 		Matrix<Double> m2 = m.clone();
@@ -184,7 +183,7 @@ public class MatrixRing extends Operations<Matrix<Double>>
 		int rows = columns;
 		
 		Matrix<Double> coefficientMatrix = matrix.clone();
-		coefficientMatrix = MatrixRing.transponent.apply(coefficientMatrix);
+		coefficientMatrix = transpone(coefficientMatrix);
 		Matrix<Double> output = new Matrix<>(columns, rows, 0.0);
 		for(int n=0;n<rows;n++)
 		{
@@ -205,7 +204,7 @@ public class MatrixRing extends Operations<Matrix<Double>>
 		return output;
 	}
 
-	public static final Function<Matrix<Double>, Double> frobeniusNorm = (matrix)->
+	public static final Double frobeniusNorm (Matrix<Double> matrix)
 	{
 		Double[] output = new Double[1];
 		output[0]= 0.0;
@@ -228,35 +227,23 @@ public class MatrixRing extends Operations<Matrix<Double>>
 		output[0]=Math.sqrt(output[0]);
 		
 		return output[0];
-	};
+	}
 
 	public MatrixRing(int n) throws MathException
 	{
-		
-		super(new HashSet<Operation<Matrix<Double>>>());
-		DoubleField df = new DoubleField();
-		
+
 		List<Double> zeros = new ArrayList<>();
-		for(int m=0;m<n*n;m++)zeros.add(df.getNeutrumOfOperation(add));
+		for(int m=0;m<n*n;m++)zeros.add(0.0);//DoubleField Neutral of addition!
 		neutrumMatrixAddition = new Matrix<>(n, zeros);
 		
 		List<Double> diagonalMOne = new ArrayList<>();
 		for(int x=0;x<n;x++)for(int y=0;y<n;y++)
 		{
-			if(x==y)diagonalMOne.add(df.getNeutrumOfOperation(multiply));
-			else diagonalMOne.add(df.getNeutrumOfOperation(add));
+			if(x==y)diagonalMOne.add(1.0);//DoubleField Neutral of multiplication!
+			else diagonalMOne.add(0.0);//DoubleField Neutral of addition!
 		}
 		neutrumMatrixMultiplication = new Matrix<>(n, diagonalMOne);
 		
-		@SuppressWarnings("static-access")
-		Operation<Matrix<Double>> addOpp = new Operation<>(super.add, neutrumMatrixAddition,
-				 addition);
-
-		@SuppressWarnings("static-access")
-		Operation<Matrix<Double>> multiply = new Operation<>(super.multiply, neutrumMatrixMultiplication, multiplication);
-		
-		super.setOperation(addOpp);
-		super.setOperation(multiply);
 	}
 
 	public Matrix<Double> getNeutrumMatrixAddition()

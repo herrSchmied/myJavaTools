@@ -201,9 +201,9 @@ public class LinearEquationSolver
 			
 		double factor = -(destValueAtIndexK/sourceValueAtIndexK);
 			
-		Matrix<Double> addOn = MatrixRing.scaling.apply(factor, rowVektorSource);
+		Matrix<Double> addOn = MatrixRing.scale(factor, rowVektorSource);
 			
-		return MatrixRing.addition.apply(output, addOn);
+		return MatrixRing.sum(output, addOn);
 	}
 
 

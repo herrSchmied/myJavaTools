@@ -37,8 +37,8 @@ public class VectorTests
 		
 		List<Double> list = Arrays.asList(1.0, 1.0, 1.0);
 		Vektor<Double> vektor = new Vektor<>(list);
-		Double product = Vektorraum.scalarProduct.apply(vektor, vektor);
-
+		Double product = Vektorraum.scalarProduct(vektor, vektor);
+		
 		assert(product.equals(3.0));
 		
 		assert(vektor.getValue(0).equals(1.0));

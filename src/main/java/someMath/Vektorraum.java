@@ -2,22 +2,35 @@ package someMath;
 
 
 import java.util.ArrayList;
-import java.util.HashSet;
+
 import java.util.List;
-import java.util.function.BiFunction;
+
 
 
 import someMath.exceptions.MathException;
 
-public class Vektorraum extends Operations<Vektor<Double>>
+public class Vektorraum
 {
 
 	private final Vektor<Double> neutrumVektorAddition;
-	private final DoubleField df;
 
-	private final BiFunction<Vektor<Double>, Vektor<Double>, Vektor<Double>> addition;
-	private final BiFunction<Vektor<Double>, Vektor<Double>, Vektor<Double>> subtraction;
 
+	public static final Vektor<Double> sum(Vektor<Double> v1, Vektor<Double> v2) throws MathException
+	{
+		
+		if(v1.getRows()!=v2.getRows()) throw new MathException("Can't add those.");
+		
+		Vektor<Double> sum = v1.clone();
+		for(int r=0;r<v1.getRows();r++)
+		{
+			
+			Double s = v1.getValue(r)+v2.getValue(r);
+			sum = sum.setValue(r, s);
+		}
+		
+		return sum;
+	}
+	
 	public static final Vektor<Double> scaling(Double scale, Vektor<Double> toBeScaled) throws MathException
 	{
 
@@ -34,20 +47,16 @@ public class Vektorraum extends Operations<Vektor<Double>>
 		return output;
 	}
 
-	public static final BiFunction<Vektor<Double>, Vektor<Double>, Double> scalarProduct = (v1, v2)->
+	public static final Double scalarProduct(Vektor<Double> v1, Vektor<Double> v2)
 	{
 
-		if(v1.getColumns()!=1)
-			throw new RuntimeException("Factor 1 has not the Right nr. of Columns");
-		if(v2.getColumns()!=1)
-			throw new RuntimeException("Factor 2 has not the Right nr. of Columns");
 		if(v1.getRows()!=v2.getRows())
 			throw new RuntimeException("These two Vektors have different number of Rows(Dimension).");
 		
 		try
 		{
-			Matrix<Double> t = MatrixRing.transponent.apply(v1);
-			Matrix<Double> erg = MatrixRing.multiplication.apply(t, v2);
+			Matrix<Double> t = MatrixRing.transpone(v1);
+			Matrix<Double> erg = MatrixRing.multiply(t, v2);
 		
 			return erg.getValue(0, 0);
 		}
@@ -60,59 +69,9 @@ public class Vektorraum extends Operations<Vektor<Double>>
 
 	public Vektorraum(int n) throws MathException
 	{
-		super(new HashSet<Operation<Vektor<Double>>>());
-		df = new DoubleField();
+
 		List<Double> zeros = new ArrayList<>();
-		for(int m=0;m<n;m++)zeros.add(df.getNeutrumOfOperation(add));
+		for(int m=0;m<n;m++)zeros.add(0.0);//DoubleField Neutral of Addition!
 		neutrumVektorAddition = new Vektor<Double>(zeros);
-		
-		addition = (v1, v2)-> 
-		{
-			
-			Vektor<Double> sum = v1.clone();
-
-			int rows = v1.getRows();
-			
-	
-				for(int row=0;row<rows;row++)
-				{
-					try
-					{
-						Double d = v1.getValue(row);
-						Double d2 = v2.getValue(row);
-						sum.setValue(row, (d+d2));
-					}
-					catch(MathException me)
-					{
-						me.printStackTrace();
-					}
-				}
-			
-
-			return sum;
-		};
-		
-		Operation<Vektor<Double>> op = new Operation<>(Operations.add, neutrumVektorAddition, addition);
-		super.setOperation(op);
-		
-		subtraction = (v1, v2)-> 
-		{
-
-			Vektor<Double> mV2;
-			try
-			{
-				mV2 = scaling(-1.0, v2);
-				return addition.apply(v1, mV2);
-			}
-			catch (MathException e)
-			{
-				e.printStackTrace();
-				throw new RuntimeException("Realy this Should not happen!");
-			}
-			
-		};
-
-		op = new Operation<>(Operations.minus, null, subtraction);
-		super.setOperation(op);
 	}
 }
