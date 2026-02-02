@@ -331,5 +331,19 @@ public class MatrixTests
 
 		assert(left.equals(right));
 		assert(toBeAttached.equals(left));
+		
+		toBeAttached = new Vektor<>(Arrays.asList(1.0, 2.0, 3.0, 4.0));
+		
+		toBeAttachedTo = toBeAttachedTo.glueRowToThisOnTheTop(toBeAttached);
+		toBeAttachedTo = toBeAttachedTo.glueRowToThisOnTheBottom(toBeAttached);
+
+		Vektor<Double> top = toBeAttachedTo.getRowAsVektor(0);
+		int rows = toBeAttachedTo.getRows();
+		Vektor<Double> bottom = toBeAttachedTo.getRowAsVektor(rows-1);
+
+		assert(top.equals(bottom));
+		assert(toBeAttached.equals(top));
+
+		
 	}
 }

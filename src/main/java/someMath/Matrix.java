@@ -283,12 +283,12 @@ public class Matrix<O> implements Cloneable
 		
 		O o = this.getValue(0, 0);
 		Matrix<O> output = new Matrix<>(columns, rows+1, o);
-		for(int row=0;row<rows;row++)
+		for(int row=0;row<rows-1;row++)
 		{
 			Vektor<O> v = this.getRowAsVektor(row);
-			output.setRow(v, row);
+			output = output.setRow(v, row);
 		}
-		output.setRow(rowVektor, rows);
+		output = output.setRow(rowVektor, rows);
 		
 		return output;
 	}
@@ -298,12 +298,12 @@ public class Matrix<O> implements Cloneable
 		
 		O o = this.getValue(0, 0);
 		Matrix<O> output = new Matrix<>(columns, rows+1, o);
-		for(int row=1;row<rows+1;row++)
+		for(int row=1;row<rows;row++)
 		{
 			Vektor<O> v = this.getRowAsVektor(row);
-			output.setRow(v, row);
+			output = output.setRow(v, row);
 		}
-		output.setRow(rowVektor, 0);
+		output = output.setRow(rowVektor, 0);
 		
 		return output;
 	}
@@ -477,42 +477,15 @@ public class Matrix<O> implements Cloneable
 	}
 
 	public Matrix<O> clone()
-	{
-		
-		O o = null;
+	{	
 		try
 		{
-			o = this.getValue(0, 0);
+			return new Matrix<O>(deepCopyOfValueArr());
 		}
-		catch (MathException e)
+		catch (MathException e) 
 		{
-			e.printStackTrace();
+			throw new RuntimeException("This should not happen!");
 		}
-		List<O> list = new ArrayList<>();
-		for(int n=0;n<rows*columns;n++)list.add(o);
-		
-		Matrix<O> klon = null;
-		
-		try
-		{
-		
-			klon = new Matrix<O>(columns, list);
-			
-			for(int col=0;col<columns;col++)
-			{
-				for(int row=0;row<rows;row++)
-				{
-					O o2 = this.getValue(col, row);
-					klon.setValue(col, row, o2);
-				}
-			}
-		}
-		catch(MathException e)
-		{
-			e.printStackTrace();
-		}
-		
-		return klon;
 	}
 
 	public void walkThrouMatrix(BiConsumer<Point, O> bic) throws MathException
