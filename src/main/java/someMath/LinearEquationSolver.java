@@ -37,7 +37,8 @@ public class LinearEquationSolver
 
 		if(rows==cols-1)
 		{
-
+			
+			//calculate the original coefficientMatrix
 			DoubleField dField = new DoubleField();
 			Matrix<Double> coefficientMatrix = new Matrix<>(cols-1, cols-1, 0.0);
 			for(int col=0;col<cols-1;col++)
@@ -49,6 +50,7 @@ public class LinearEquationSolver
 			Double determinant = MatrixStuff.determinant(dField, coefficientMatrix);
 			Matrix<Double> columnVektor = customizable.getColumn(cols-1);
 
+			//Check if despite determinant being Zero it is solvable??
 			if(determinant.equals(0.0))
 			{
 				int n=0;
@@ -69,8 +71,6 @@ public class LinearEquationSolver
 			}
 		}
 
-//		if(isRowEchelonForm(customizable))return calculateSolvingVektor(customizable);
-//		if(isInStaggeredForm(customizable)&&isUnderDeterministic(customizable))return calculateSolvingVektor(customizable);
 		if(isInStaggeredForm(customizable))return calculateSolvingVektor(customizable);
 		customizable = transformCoefficients(customizable);
 
@@ -130,18 +130,16 @@ public class LinearEquationSolver
 		if(rows<=1)return output;
 		
 		int lowerRowNr = upperRowNr + 1;
+		System.out.println("Transforming Coefficients. lowerRowNr: " + lowerRowNr);
 
 		if(lowerRowNr>rows-1)return output;
 
 		Matrix<Double> upperRowVektor = output.getRow(upperRowNr);
 		int upperRowLeadingZeros = nrOfLeadingZeros(upperRowVektor);
-		if(upperRowLeadingZeros==rows-1)return output;
 	
 		Matrix<Double> lowerRowVektor = output.getRow(lowerRowNr);
 		int lowerRowLeadingZeros = nrOfLeadingZeros(lowerRowVektor);
 		
-		//if upperRowLeadingZeros are greater than
-		//lowerRowLeadingZeros Order isn't right.
 		if(lowerRowLeadingZeros<upperRowLeadingZeros)
 		{
 			output = bubbleSortByLeadingZeros(output);
@@ -161,6 +159,7 @@ public class LinearEquationSolver
 
 		//if upper and low leandingZeros are Equal
 		//it can't stay so.
+		//try to make it staggered or delete a row.
 		if(upperRowLeadingZeros==lowerRowLeadingZeros)
 		{
 
@@ -169,13 +168,13 @@ public class LinearEquationSolver
 			Matrix<Double> klon = output.clone();
 
 			Matrix<Double> newRow = makeAtLeastOneExtraLeadingZero(upperRowVektor, lowerRowVektor);
-			output = output.setRow(newRow, lowerRowNr);
-			output = bubbleSortByLeadingZeros(output);
-			output = eraseZeroRows(output);
+			klon = klon.setRow(newRow, lowerRowNr);
+			klon = bubbleSortByLeadingZeros(klon);
+			klon = eraseZeroRows(klon);
 			
 			if(klon.equals(output))throw new MathException("I'm stuck here!");
 
-			return transformCoefficients(output, upperRowNr+1);
+			return transformCoefficients(klon, upperRowNr+1);
 		}
 
 		throw new MathException("Should not happen!");			

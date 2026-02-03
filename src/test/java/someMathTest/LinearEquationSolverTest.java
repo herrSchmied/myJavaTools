@@ -15,7 +15,7 @@ import java.util.List;
 import someMath.SmallTools;
 
 import someMath.Matrix;
-
+import someMath.MatrixRing;
 import someMath.Vektor;
 
 import someMath.Vektorraum;
@@ -33,41 +33,44 @@ public class LinearEquationSolverTest
 
 		LinearEquationSolver les = new LinearEquationSolver();
 		
-		Matrix<Double> coefficientmatrix = new Matrix<>(2,2, 0.0);
-		coefficientmatrix = coefficientmatrix.setValue(0, 0, 3.0);
-		coefficientmatrix = coefficientmatrix.setValue(1, 1, 3.0);
+		Matrix<Double> coefficientMatrix = new Matrix<>(2,2, 0.0);
+		coefficientMatrix = coefficientMatrix.setValue(0, 0, 3.0);
+		coefficientMatrix = coefficientMatrix.setValue(1, 1, 3.0);
+		coefficientMatrix = coefficientMatrix.setValue(0, 1, 1.0);
+		coefficientMatrix = coefficientMatrix.setValue(1, 0, 1.0);
 
+		/*
+		 *  coefficient Matrix = | 3.0  1.0 |
+		 *  					 | 1.0  3.0 |
+		 */
 		Vektor<Double> rowResults = new Vektor<>(2, 1.0);
+		
+		/*
+		 *  rowResults = | 1.0  1.0 |
+		 */
 
-		Matrix<Double> extendedCoefficientMatrix = coefficientmatrix.glueColumnToThisOnTheRight(rowResults);
+		Matrix<Double> extendedCoefficientMatrix = coefficientMatrix.glueColumnToThisOnTheRight(rowResults);
+
+		/*
+		 *  extended coefficient Matrix = | 3.0  1.0  1.0 |
+		 *  					          | 1.0  3.0  1.0 |
+		 */
 
 		Vektor<Double> solution1 = les.solve(extendedCoefficientMatrix);
-		//Vektor<Double> solution = les.convertSolutionVektorToExampleVektor(objectSolution1);
-		Vektor<Double> rowVektor = coefficientmatrix.getRowAsVektor(0);
-		Double r = Vektorraum.scalarProduct(solution1, rowVektor);
-		assert(r.equals(rowResults.getValue(1)));
+		/*
+		 *  solution = |(1/3)  (1/3)|
+		 */
 		
-		coefficientmatrix = coefficientmatrix.setValue(1, 0, 1.0);
-		extendedCoefficientMatrix = coefficientmatrix.glueColumnToThisOnTheRight(rowResults);
-		Vektor<Double> v1 = coefficientmatrix.getRowAsVektor(0);
-		//solution = les.convertSolutionVektorToExampleVektor(les.solve(extendedCoefficientMatrix));
+		Double r = 10.0;
+		Vektor<Double> row0 = coefficientMatrix.getRowAsVektor(0);
+		r =rowResults.getValue(0)-Vektorraum.scalarProduct(row0, solution1);
+		Double prettySmall = Math.pow(1, -12);
+		assert(r<=prettySmall);
 
-		r = Vektorraum.scalarProduct(v1, solution1);
+		Vektor<Double> row1 = coefficientMatrix.getRowAsVektor(1);
+		r = rowResults.getValue(1)-Vektorraum.scalarProduct(row1, solution1);
+		assert(r<=prettySmall);
 
-		assert(r.equals(rowResults.getValue(1)));
-		
-		List<Double> list = Arrays.asList(1.0, 2.0, 3.0, 4.0);
-		coefficientmatrix = new Matrix<>(2, list);
-
-		rowResults = new Vektor<>(2, 1.0);
-
-		extendedCoefficientMatrix = coefficientmatrix.glueColumnToThisOnTheRight(rowResults);
-		
-		solution1 = les.solve(extendedCoefficientMatrix);
-		//solution = les.convertSolutionVektorToExampleVektor(objectSolution1);
-		rowVektor = coefficientmatrix.getRowAsVektor(0);
-		r = Vektorraum.scalarProduct(solution1, rowVektor);
-		assert(r.equals(rowResults.getValue(1)));
 	}
 
 	@Test

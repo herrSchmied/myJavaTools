@@ -131,33 +131,25 @@ public class MatrixRing
 		return transponed;
 	};
 
-	public static final Matrix<Double> scale(Double d, Matrix<Double> m)
+	public static final Matrix<Double> scale(Double d, Matrix<Double> m) throws MathException
 	{
 
 		Matrix<Double> m2 = m.clone();
 		
-		BiConsumer<Point, Double> bic = (p, v)->
+		int rows = m.getRows();
+		int cols = m.getColumns();
+		
+		for(int r=0;r<rows;r++)
 		{
-			try
+			for(int c=0;c<cols;c++)
 			{
-				m2.setValue(p.x, p.y, v*d);
+				Double v = m.getValue(c, r);
+				m2 = m2.setValue(c, r, v*d);
 			}
-			catch (MathException e)
-			{
-				e.printStackTrace();
-			}
-		};
-
-		try
-		{
-			m2.walkThrouMatrix(bic);
-			return m2;
 		}
-		catch(MathException me)
-		{
-			throw new RuntimeException("Couldn't scale.");
-		}
-	};
+		
+		return m2;
+	}
 
 	public static final Matrix<Double> invert(Matrix<Double> matrix) throws MathException
 	{
