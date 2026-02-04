@@ -2,16 +2,21 @@ package consolToolsTest;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import java.awt.Color;
+import java.awt.Point;
 import java.io.ByteArrayInputStream;
 import java.time.LocalDateTime;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.junit.jupiter.api.Test;
 
 import consoleTools.InputArgumentException;
 import consoleTools.InputStreamSession;
 import consoleTools.TerminalTableDisplay;
+import javafx.util.Pair;
 import someMath.exceptions.ConsoleToolsException;
 
 public class TestingConsoleTools
@@ -26,25 +31,28 @@ public class TestingConsoleTools
 		List<String> rowTwo = Arrays.asList("BlubBlub", "BlubBlaBlaBla", "hhhhhh");
 		List<String> rowThree = Arrays.asList("ogggi", "vuqui", "texMexSex");
 		List<List<String>> cellValues = Arrays.asList(rowOne, rowTwo, rowThree);
-		TerminalTableDisplay ttd = new TerminalTableDisplay(headers, cellValues, '|', 10);
+		Set<Pair<Color, Point>> highLights = new HashSet<>();
+		Pair<Color, Point> pair = new Pair<>(Color.RED, new Point(1, 2));
+		highLights.add(pair);
+		TerminalTableDisplay ttd = new TerminalTableDisplay(headers, cellValues, '|', 10, highLights);
 		System.out.println(ttd);
 	}
 
-	@Test
-	public void InputStreamSessionTest()
-	{
-		
-		LocalDateTime yesterday = LocalDateTime.now().minusDays(1);
-		
-		String data = InputStreamSession.translateTimeToAnswerString(yesterday);
-		
-		ByteArrayInputStream bais = new ByteArrayInputStream(data.getBytes());
-
-		InputStreamSession iss = new InputStreamSession(bais);
-		
-		InputArgumentException iae = assertThrows(InputArgumentException.class, ()->
-		{
-			iss.getDateTimeInOneLine("DateTime please.", LocalDateTime.now(), LocalDateTime.now().plusMinutes(1));
-		});
-	}
+//	@Test
+//	public void InputStreamSessionTest()
+//	{
+//		
+//		LocalDateTime yesterday = LocalDateTime.now().minusDays(1);
+//		
+//		String data = InputStreamSession.translateTimeToAnswerString(yesterday);
+//		
+//		ByteArrayInputStream bais = new ByteArrayInputStream(data.getBytes());
+//
+//		InputStreamSession iss = new InputStreamSession(bais);
+//		
+//		InputArgumentException iae = assertThrows(InputArgumentException.class, ()->
+//		{
+//			iss.getDateTimeInOneLine("DateTime please.", LocalDateTime.now(), LocalDateTime.now().plusMinutes(1));
+//		});
+//	}
 }

@@ -126,10 +126,9 @@ public class TerminalTableDisplay
 				a = copy+StringManipulation.customMonoRepeatChar(' ', r);
 			}
 
-			
 			lines[n] = delimiter + a;
 			
-			if(highlights!=null)
+			if(highlights!=null&&c!=null)
 			{
 				lines[n] = delimiter + formatBashStringBoldInColorX(c, a);
 			}
