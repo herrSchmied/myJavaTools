@@ -105,8 +105,7 @@ public class TerminalTableDisplay
 			return singleLine;
 		}
 		
-		int linesNr = Math.floorDiv(l, (cellWidth));
-		if(l%(cellWidth)!=0)linesNr=linesNr+1;
+		int linesNr = Math.floorDiv(l, (cellWidth))+1;
 
 		String[] lines = new String[linesNr];
 		
@@ -116,21 +115,21 @@ public class TerminalTableDisplay
 		{
 			String a = "";
 			
-			if(copy.length()>=cellWidth)a = copy.substring(0, cellWidth);
+			if(copy.length()>=cellWidth)
+			{
+				a = copy.substring(0, cellWidth);
+				copy = copy.substring(cellWidth, copy.length());
+			}
 			else 
 			{
 				int r = cellWidth-copy.length();
-				a = String.valueOf(copy)+StringManipulation.customMonoRepeatChar(' ', r);
+				a = copy+StringManipulation.customMonoRepeatChar(' ', r);
 			}
-
-			if(copy.length()>=cellWidth)copy = copy.substring(cellWidth, copy.length());
 
 			
 			lines[n] = delimiter + a;
 			
-			if(highlights==null)return lines;
-
-			if(c!=null)
+			if(highlights!=null)
 			{
 				lines[n] = delimiter + formatBashStringBoldInColorX(c, a);
 			}

@@ -12,6 +12,7 @@ public class TerminalTableCell
 
 	public TerminalTableCell(String [] lines, char delimiter, int cellWidth)
 	{
+
 		this.lines = lines;
 		this.nrOfLines = lines.length;
 		this.delimiter = delimiter;
@@ -20,10 +21,11 @@ public class TerminalTableCell
 		
 	public String getLineByNr(int n)
 	{
+
 		String output = delimiter + StringManipulation.customMonoRepeatChar(' ', cellWidth);
-			
+
 		if(n<nrOfLines)output = lines[n];
-			
+
 		return output;
 	}
 		
