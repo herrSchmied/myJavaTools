@@ -164,7 +164,7 @@ public class MatrixRing
 
 		System.out.println("Inverting Matrix.");
 		
-		Double determinant = MatrixStuff.determinant(new DoubleField(), matrix);
+		Double determinant = MatrixStuff.determinant(matrix);
 		if(determinant.equals(0.0))
 		{
 			System.out.println("Matrix determinant is Zero so not invertable.");

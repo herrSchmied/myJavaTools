@@ -1,43 +1,51 @@
 package someMath;
 
 
-import java.util.HashSet;
-import java.util.function.BiFunction;
-
-import someMath.exceptions.MathException;
 
 import java.lang.Double;
 
-public class DoubleField extends Operations<Double>
+
+
+public class DoubleField implements AlgebraicField<Double>
 {
 
-	private static final Double neutrumAddition = 0.0;
-
-	private static final Double neutrumMultiplication = 1.0;
-
-
-	private static final BiFunction<Double, Double, Double> addition = (s1, s2)-> s1+s2; 
-
-	private static final BiFunction<Double, Double, Double> subtraction = (s1, s2)-> s1-s2; 
-
-	private static final BiFunction<Double, Double, Double> multiplication = (s1, s2)-> s1*s2; 
-
-	private static final BiFunction<Double, Double, Double> division = (s1, s2)-> s1/s2; 
-
-	private static final HashSet<Operation<Double>> set = new HashSet<Operation<Double>>();
-	
-	@SuppressWarnings("static-access")
-	public DoubleField() throws MathException
+	public DoubleField()
 	{
-		super(set);
-		
-		super.setOperation(new Operation<>(super.add, neutrumAddition, addition));
-		
-		super.setOperation(new Operation<>(super.minus, null, subtraction));
-		
-		super.setOperation(new Operation<>(super.multiply, neutrumMultiplication, multiplication));
-
-		super.setOperation(new Operation<>(super.divide, null, division));
 	}
 
+	@Override
+	public Double sum(Double o1, Double o2)
+	{
+		return o1 + o2;
+	}
+
+	@Override
+	public Double multiply(Double o1, Double o2)
+	{
+		return o1*o2;
+	}
+
+	@Override
+	public Double sumInverse(Double o)
+	{
+		return -1.0*o;
+	}
+
+	@Override
+	public Double multiplyInverse(Double o)
+	{
+		return (1/o);
+	}
+
+	@Override
+	public Double sumNeutral()
+	{
+		return 0.0;
+	}
+
+	@Override
+	public Double multiplyNeutral()
+	{
+		return 1.0;
+	}
 }

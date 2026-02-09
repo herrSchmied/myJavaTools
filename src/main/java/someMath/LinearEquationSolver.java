@@ -47,7 +47,7 @@ public class LinearEquationSolver
 				coefficientMatrix = coefficientMatrix.setColumn(columnVektor, col);
 			}
 
-			Double determinant = MatrixStuff.determinant(dField, coefficientMatrix);
+			Double determinant = MatrixStuff.determinant(coefficientMatrix);
 			Matrix<Double> columnVektor = customizable.getColumn(cols-1);
 
 			//Check if despite determinant being Zero it is solvable??
@@ -58,7 +58,7 @@ public class LinearEquationSolver
 				for(int col=0;col<cols-1;col++)
 				{
 					Matrix<Double> switchMatrix = coefficientMatrix.setColumn(columnVektor, col);
-					Double sideDeterminant = MatrixStuff.determinant(dField, switchMatrix);
+					Double sideDeterminant = MatrixStuff.determinant(switchMatrix);
 					if(sideDeterminant.equals(0.0))n++;
 				}
 

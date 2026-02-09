@@ -8,31 +8,28 @@ import someMath.exceptions.MathException;
 public class MatrixStuff
 {
 
-	public static <O, T extends Operations<O>> O determinant(T t,Matrix<O> matrix) throws MathException
+	public static Double determinant(Matrix<Double> matrix) throws MathException
 	{
 		if(!matrix.isQuadratic())throw new MathException("Can't compute Determinant of none quadratic Matrix");
-		if(matrix.getRows()==2)return determinantSimpleCase(t, matrix);
+		if(matrix.getRows()==2)return determinantSimpleCase(matrix);
 		
 		int rows = matrix.getRows();
 		
 		int col = 0;
-		O sum = t.getNeutrumOfOperation(Operations.add);
+		Double sum = 0.0;
 		
 		for(int row=0;row<rows;row++)
 		{
-			O m = matrix.getValue(0, row);
+			Double m = matrix.getValue(0, row);
 			
-			Matrix<O> subM = subMatrix(0, row, matrix);
-			O subDet = determinant(t, subM);
+			Matrix<Double> subM = subMatrix(0, row, matrix);
+			Double subDet = determinant(subM);
 			
-			O o = t.getNeutrumOfOperation(Operations.add);
-			O o2 = t.getNeutrumOfOperation(Operations.multiply);
+			Double minusOne = -1.0;
 			
-			O minusOne = t.minus(o, o2);
+			Double o3;
 			
-			O o3;
-			
-			if((row+col)%2==0)o3= t.multiply(subDet, m);
+			if((row+col)%2==0)o3= subDet * m;
 			else
 			{
 				/*
@@ -41,33 +38,33 @@ public class MatrixStuff
 				 * operands.add(subDet);
 				 * operands.add(m);
 				 */				
-				o3 = t.multiply(minusOne, subDet);
-				o3 = t.multiply(o3, m);
+				o3 = minusOne*subDet;
+				o3 = o3* m;
 			}
 			
-			sum = t.add(sum, o3);
+			sum = sum + o3;
 		}
 		
 		return sum;
 	}
 	
-	public static <O, T extends Operations<O>> O determinantSimpleCase(T t,Matrix<O> matrix) throws MathException
+	public static Double determinantSimpleCase(Matrix<Double> matrix) throws MathException
 	{
 		if(!matrix.isQuadratic())throw new MathException("Can't compute Determinant of none quadratic Matrix");
 		if(!(matrix.getRows()==2))throw new MathException("Shouldn't happen!(Matrix got not exactly 2 rows");
 		
 
-		O o11 = matrix.getValue(0, 0);
-		O o12 = matrix.getValue(1, 0);
-		O o21 = matrix.getValue(0, 1);
-		O o22 = matrix.getValue(1, 1);
+		Double o11 = matrix.getValue(0, 0);
+		Double o12 = matrix.getValue(1, 0);
+		Double o21 = matrix.getValue(0, 1);
+		Double o22 = matrix.getValue(1, 1);
 		
-		O q1 = t.multiply(o11, o22);
+		Double q1 = o11 * o22;
 		
-		O q2 = t.multiply(o12, o21);
+		Double q2 = o12 * o21;
 		
 		
-		O det = t.minus(q1, q2);
+		Double det = q1 - q2;
 		
 		return det;
 	}
@@ -95,23 +92,23 @@ public class MatrixStuff
 		return new Matrix<O>(rows-1, valueList);
 	}
 	
-	public <O, T extends Operations<O> > Matrix<O> scalarMultiplication(T t, O o, Matrix<O> matrix) throws MathException
+	public Matrix<Double> scalarMultiplication(Double o, Matrix<Double> matrix) throws MathException
 	{
 		
 		int cols = matrix.getColumns();
 		int rows = matrix.getRows();
 		
-		Matrix<O> klon = matrix.clone();
+		Matrix<Double> klon = matrix.clone();
 		
 		for(int col=0;col<cols;col++)
 		{
 			for(int row=0;row<rows;row++)
 			{
 				
-				O op = klon.getValue(col, row);
-				O op2 = o;
+				Double op = klon.getValue(col, row);
+	
 				
-				O product = t.multiply(op, op2);
+				Double product = o * op;
 				
 				klon.setValue(col, row, product);
 			}

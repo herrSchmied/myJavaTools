@@ -66,18 +66,18 @@ public class MatrixTests
 
 		Matrix<Double> matrix = new Matrix<>(valueArr);
 
-		Double det1 = MatrixStuff.determinant(dField, matrix);
+		Double det1 = MatrixStuff.determinant(matrix);
 
 		Matrix<Double> matrix2 = matrix.switchRows(0, 1);
 
 		assert(matrix.getRow(0).equals(matrix2.getRow(1)));
-		assert(det1.equals(-MatrixStuff.determinant(dField, matrix2)));
+		assert(det1.equals(-MatrixStuff.determinant(matrix2)));
 
 
 		Matrix<Double> matrix3 = matrix2.switchColumns(0, 1);
 
 		assert(matrix2.getColumn(0).equals(matrix3.getColumn(1)));
-		Double det2 = MatrixStuff.determinant(dField, matrix3);
+		Double det2 = MatrixStuff.determinant(matrix3);
 
 		assert(det1.equals(det2));
 	}
@@ -223,10 +223,10 @@ public class MatrixTests
 			Matrix<Double> matrix2 = new Matrix<Double>(l, list2);
 			Matrix<Double> matrix3 = MatrixRing.multiply(matrix, matrix2);
 
-			Double o = MatrixStuff.determinant(dField, matrix);
-			Double o2 = MatrixStuff.determinant(dField, matrix2);
+			Double o = MatrixStuff.determinant(matrix);
+			Double o2 = MatrixStuff.determinant(matrix2);
 
-			Double o3 = MatrixStuff.determinant(dField, matrix3);
+			Double o3 = MatrixStuff.determinant(matrix3);
 		
 			assert(o3.equals(o*o2));
 		}
@@ -248,10 +248,10 @@ public class MatrixTests
 		Matrix<Double> test = e.setValue(2, 1, 2.0);
 		test = test.setValue(1, 2, 1.0);
 		
-		Double d = MatrixStuff.determinant(dField, test);
+		Double d = MatrixStuff.determinant(test);
 		
 		Matrix<Double> invertedMatrix = MatrixRing.invert(test);
-		d = MatrixStuff.determinant(dField, invertedMatrix);
+		d = MatrixStuff.determinant(invertedMatrix);
 		
 		Matrix<Double>  product = MatrixRing.multiply(test, invertedMatrix);
 		assert(product.equals(e));
@@ -266,7 +266,7 @@ public class MatrixTests
 
 			Matrix<Double> matrix = new Matrix<Double>(matrixSideLength, list);
 
-			Double determinante = MatrixStuff.determinant(dField, matrix);
+			Double determinante = MatrixStuff.determinant(matrix);
 			if(!determinante.equals(0.0))
 			{
 
