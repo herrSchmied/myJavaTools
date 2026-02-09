@@ -174,7 +174,8 @@ public class LinearEquationSolver
 			
 			if(klon.equals(output))throw new MathException("I'm stuck here!");
 
-			return transformCoefficients(klon, upperRowNr+1);
+			if(isInStaggeredForm(klon))return klon;
+			else return transformCoefficients(klon, 0);
 		}
 
 		throw new MathException("Should not happen!");			
