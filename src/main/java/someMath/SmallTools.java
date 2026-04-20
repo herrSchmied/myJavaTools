@@ -9,6 +9,7 @@ import java.util.*;
 
 
 import javafx.util.Pair;
+import someMath.exceptions.MathException;
 
 
 
@@ -23,25 +24,22 @@ public class SmallTools
     final public static BigDecimal e = BigDecimal.valueOf(Math.E);
  
     final public static double prettySmall = Math.pow(10, -11);
-
-	private static final int standartDeepnessForRoot = 3;
     	
-	public static double superRoot(double p)
+	public static double superRoot(double p) throws MathException
 	{
 
-		if(p<=0)throw new IllegalArgumentException("Can't apply W-Function to a value lower or exact Zero.");
+		if(p<=1)throw new MathException("Can't apply superRoot to a value lower than One.");
 
-		double startValue = 2.0;
+		double startValue = 20.0;
 		return sRootHelp(p, startValue);
 	}
 
 	private static double sRootHelp(double p, double x0)
 	{
-		if(x0<=0||x0==1)throw new IllegalArgumentException("Illegal start value!");
 
 		double value = (0.5)*(x0+(Math.log(p)/(Math.log(x0))));
 		double erg = Math.pow(value, value);
-		
+
 		if(erg-p<prettySmall)return value;
 		else return sRootHelp(p, value);
 	}
@@ -51,15 +49,13 @@ public class SmallTools
 
 		if(p<=0)throw new IllegalArgumentException("Can't apply W-Function to a value lower or exact Zero.");
 		
-		double startValue = 2.0;
+		double startValue = 10.0;
 		return lambertWHelp(p, startValue);
 	}
 
 	private static double lambertWHelp(double p, double x0)
 	{
-		
-		if(x0<=0||x0==1)throw new IllegalArgumentException("Illegal start Value!");
-		
+				
 		double value = (0.5)*(x0+(p/(Math.pow(Math.E, x0))));
 		double erg = value*Math.pow(Math.E, value);
 		
@@ -125,11 +121,61 @@ public class SmallTools
 		
 		return true;
 	}
-        
 	
-	public static Pair<BigDecimal, BigDecimal> getCantorPair(BigDecimal cpNr)
+	public static Integer cantorTupel(List<Integer> list) throws MathException
 	{
-		return null;
+		if(list.isEmpty()) throw new MathException("Empty list forbidden.");
+		Integer s = list.size();
+		
+		if(s==1)return list.get(0);
+		
+		Integer l = list.get(0);
+		for(int n=1;n<s-1;n++)
+		{
+
+			Integer a = list.get(n);
+			Pair<Integer, Integer> pair = new Pair<>(a,l);
+			l = cantorPair(pair);
+		}
+		
+		return l;
+	}
+	
+	public static Integer cantorPair(Pair<Integer, Integer> pair) throws MathException
+	{
+		Integer a = pair.getKey();
+		Integer b = pair.getValue();
+		
+		if(a<0||b<0) throw new MathException("None of the parameters can be smaller than Zero.");
+		return b+((a+b)*(a+b+1))/2;
+	}
+	
+	public static List<Integer> reverseCantorTupel(Integer n, Integer size) throws MathException
+	{
+		if(n<1) throw new MathException("Cantor Nr. can't be smaller as 1.");
+		if(size<1) throw new MathException("Size of List can't be smaller than 1.");
+		List<Integer> output = new ArrayList<>();
+
+		return output;
+	}
+	public static Pair<Integer, Integer> reverseCantorPair(Integer n)
+	{
+
+		Integer a = n-triangleNum(floorOfTriangleRoot(n));
+		Integer b = floorOfTriangleRoot(n)-a;
+		
+		return new Pair<>(b, a);
+	}
+
+	public static Integer triangleNum(Integer w)
+	{
+		return (w*(w+1))/2;
+	}
+	
+	public static Integer floorOfTriangleRoot(Integer z)
+	{
+		
+		return (int) Math.floor((Math.sqrt(8*z+1)-1.0)/2); 
 	}
 	
 	public static Double log(Double basis, Double potenz)
@@ -146,18 +192,16 @@ public class SmallTools
 	public static int gcd(int a, int b)
 	{
 		//a should be bigger or equal b, so sorting is needed
-		if(a<b)switchValues(a, b);
+		if(a<b)
+		{
+			//switching Values	
+			int c = a;
+			a=b;
+			b=c;
+		}
         	
 		if(b==0)return a;
 		else return gcd(b,Math.floorMod(a,b));
-	}
-
-
-	public static void switchValues(Integer a, Integer b)//making use of the fact that a and b
-	{													 //are Objects!!!
-		Integer c = b;
-		b=a;
-		a = c;
 	}
 	
 	//Smallest Common Multiple.
@@ -165,8 +209,7 @@ public class SmallTools
 	{
 		return (a*b)/gcd(a,b);
 	}
-	
-	
+
 	public static int randomInt(int max, int min)
 	{
 		
