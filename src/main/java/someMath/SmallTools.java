@@ -130,11 +130,11 @@ public class SmallTools
 		if(s==1)return list.get(0);
 		
 		Integer l = list.get(0);
-		for(int n=1;n<s-1;n++)
+		for(int n=1;n<s;n++)
 		{
 
 			Integer a = list.get(n);
-			Pair<Integer, Integer> pair = new Pair<>(a,l);
+			Pair<Integer, Integer> pair = new Pair<>(l, a);
 			l = cantorPair(pair);
 		}
 		
@@ -154,10 +154,37 @@ public class SmallTools
 	{
 		if(n<1) throw new MathException("Cantor Nr. can't be smaller as 1.");
 		if(size<1) throw new MathException("Size of List can't be smaller than 1.");
+		List<Integer> toBeReversed = new ArrayList<>();
+		if(size==1)
+		{
+			toBeReversed.add(n);
+			return toBeReversed;
+		}
+		
+		int k = n;
+		for(int m=0;m<size;m++)
+		{
+			Pair<Integer, Integer> pair = reverseCantorPair(k);
+			toBeReversed.add(pair.getValue());
+			if(size-m==2)
+			{
+				toBeReversed.add(pair.getKey());
+				return toBeReversed;
+			}
+			
+			k = pair.getKey();
+		}
+		System.out.println("To be reversed: " + toBeReversed);
 		List<Integer> output = new ArrayList<>();
+		for(int l=size-1;l>=0;l--)
+		{
 
+			output.add(toBeReversed.get(l));
+		}
+		
 		return output;
 	}
+
 	public static Pair<Integer, Integer> reverseCantorPair(Integer n)
 	{
 

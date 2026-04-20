@@ -7,6 +7,7 @@ import someMath.exceptions.MathException;
 
 import static someMath.SmallTools.*;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -81,6 +82,28 @@ public class SmallToolsTest
 			assert(c3>c1);
 			assert(c4>c2);
 			assert(c4>c3);
+		}
+	}
+	
+	@Test
+	public void cantorTupelFunctionAndReverseTest() throws MathException, InterruptedException
+	{
+		
+		List<Integer> tupel = new ArrayList<>();
+		for(int n=0;n<10;n++)
+		{
+
+			tupel.clear();
+			int s = 3;//randomInt(1,6);
+			for(int k=0;k<s;k++)tupel.add(randomInt(0,8));
+			int c1 = cantorTupel(tupel);
+			System.out.println("Part " + n);
+			System.out.println("Tupel: " + tupel + " Size: " + tupel.size());
+			System.out.println("C1: " + c1);
+			List<Integer> sameSame = reverseCantorTupel(c1, s);
+			System.out.println("Same same: " + sameSame + " Size: " + sameSame.size());
+			Thread.sleep(2500);
+			assert(sameSame.equals(tupel));
 		}
 	}
 }
