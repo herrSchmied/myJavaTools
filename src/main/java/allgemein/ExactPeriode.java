@@ -33,7 +33,8 @@ public class ExactPeriode
 	private final NaturalNumber hours;
 	private final NaturalNumber minutes;
 	private final NaturalNumber seconds;
-	
+	private final NaturalNumber nanos;
+
 	private final LocalDateTime fromLDT;
 	private final LocalDateTime toLDT;
 	private final boolean isNegative;
@@ -42,16 +43,11 @@ public class ExactPeriode
 
 	public ExactPeriode(LocalDateTime fromLDT, LocalDateTime toLDT) throws NaturalNumberException
 	{
-
-		LocalDate fromLD = fromLDT.toLocalDate();
-		LocalTime fromTime = fromLDT.toLocalTime();
 		
-		this.fromLDT = LocalDateTime.of(fromLD, fromTime);//To ensure Immutability.
+		this.fromLDT = fromLDT.plusSeconds(0);//To ensure Immutability.
 		
-		LocalDate toLD = toLDT.toLocalDate();
-		LocalTime toTime = toLDT.toLocalTime();
 		
-		this.toLDT = LocalDateTime.of(toLD, toTime);//To ensure Immutability.
+		this.toLDT = toLDT.plusSeconds(0);//To ensure Immutability.
 		
     	/*
 			Nikolai Shevchenko's Code. StackOverFlow.
@@ -90,6 +86,9 @@ public class ExactPeriode
     	fromLDTTemp = fromLDTTemp.plusMinutes( minutes.getNumberCore().longValue() );
 
     	seconds = new NaturalNumber((int) fromLDTTemp.until( toLDTTemp, ChronoUnit.SECONDS ));
+    	fromLDTTemp = fromLDTTemp.plusSeconds( seconds.getNumberCore().longValue() );
+    	
+    	nanos = new NaturalNumber((int) fromLDTTemp.until(toLDTTemp, ChronoUnit.NANOS ));
 	}
 
 	public ExactPeriode plusYears(NaturalNumber yearsPlus) throws NaturalNumberException
@@ -172,6 +171,19 @@ public class ExactPeriode
 		LocalDateTime newToLDT = this.toLDT.plusSeconds(secondsPlus.getNumberCore().longValue());
 		return new ExactPeriode(fromLDT, newToLDT);
 	}
+	
+	public ExactPeriode plusNanos(NaturalNumber nanoSecondsPlus) throws NaturalNumberException
+	{
+
+		if(nanoSecondsPlus.isGreaterThen(max))
+		{
+			this.toLDT.plusNanos(max.getNumberCore().longValue());
+			return plusNanos(new NaturalNumber(nanoSecondsPlus.getNumberCore()-max.numberCore));
+		}
+
+		LocalDateTime newToLDT = this.toLDT.plusNanos(nanoSecondsPlus.getNumberCore().longValue());
+		return new ExactPeriode(fromLDT, newToLDT);
+	}
 
 	public ExactPeriode minusYears(NaturalNumber yearsMinus) throws NaturalNumberException
 	{
@@ -249,7 +261,21 @@ public class ExactPeriode
 		
 		return new ExactPeriode(fromLDT, newToLDT);
 	}
+
+	public ExactPeriode minusNanos(NaturalNumber nanosMinus) throws NaturalNumberException
+	{
+
+		LocalDateTime newToLDT;
+		if(nanosMinus.isGreaterThen(max))
+		{
+			newToLDT = this.toLDT.minusNanos(max.getNumberCore().longValue());
+			return minusNanos(new NaturalNumber(nanosMinus.numberCore-max.numberCore));
+		}
+		newToLDT = this.toLDT.minusNanos(nanosMinus.getNumberCore().longValue());
 		
+		return new ExactPeriode(fromLDT, newToLDT);
+	}
+
 	public int getAbsoluteDays() throws NaturalNumberException
 	{
 		Pair<LocalDateTime, LocalDateTime> pair = flipWhenNegative(fromLDT, toLDT);
@@ -292,6 +318,16 @@ public class ExactPeriode
 		return (int) fromLDTTemp.until( toLDTTemp, ChronoUnit.SECONDS );
 	}
 	
+	public int getAbsoluteNanos() throws NaturalNumberException
+	{
+		
+		Pair<LocalDateTime, LocalDateTime> pair = flipWhenNegative(fromLDT, toLDT);
+		LocalDateTime fromLDTTemp = pair.getKey();
+		LocalDateTime toLDTTemp = pair.getValue();
+		
+		return (int) fromLDTTemp.until( toLDTTemp, ChronoUnit.NANOS );
+	}
+
 	public Pair<LocalDateTime, LocalDateTime> flipWhenNegative(LocalDateTime fromLDT, LocalDateTime toLDT) throws NaturalNumberException
 	{
 		if(new ExactPeriode(fromLDT, toLDT).isNegative)return new Pair<LocalDateTime, LocalDateTime>(toLDT, fromLDT);
@@ -328,6 +364,11 @@ public class ExactPeriode
 		return seconds;
 	}
 	
+	public NaturalNumber getNanos()
+	{
+		return nanos;
+	}
+
 	public LocalDateTime getFromLDT()
 	{
 		
