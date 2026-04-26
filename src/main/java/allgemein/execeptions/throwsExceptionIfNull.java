@@ -7,6 +7,7 @@ import java.util.List;
 public class throwsExceptionIfNull
 {
 
+	@SafeVarargs
 	public static<T> void nullCheck(Class<? extends Exception> clazz, String msg, T... array) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException, Exception
 	{
 		

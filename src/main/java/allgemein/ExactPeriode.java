@@ -44,30 +44,21 @@ public class ExactPeriode
 	public ExactPeriode(LocalDateTime fromLDT, LocalDateTime toLDT) throws NaturalNumberException
 	{
 		
-		this.fromLDT = fromLDT.plusSeconds(0);//To ensure Immutability.
+		this.fromLDT = fromLDT;//To ensure Immutability.
 		
 		
-		this.toLDT = toLDT.plusSeconds(0);//To ensure Immutability.
+		this.toLDT = toLDT;//To ensure Immutability.
 		
-    	/*
-			Nikolai Shevchenko's Code. StackOverFlow.
-			Among other Modifications: No Zero's.
-		*/
+    	if(fromLDT.isBefore(toLDT))isNegative = false;
+    	else isNegative = true;    		
     	
-    	LocalDateTime fromLDTTemp;
-    	LocalDateTime toLDTTemp;
+    	LocalDateTime fromLDTTemp = fromLDT;
+    	LocalDateTime toLDTTemp = toLDT; 
     	
-    	if(fromLDT.isBefore(toLDT))
-    	{
-    		isNegative = false;
-    		fromLDTTemp = LocalDateTime.from( fromLDT );
-    		toLDTTemp = LocalDateTime.from( toLDT );
-    	}
-    	else 
-    	{
-    		isNegative = true;    		
-    		fromLDTTemp = LocalDateTime.from( toLDT );
-    		toLDTTemp = LocalDateTime.from( fromLDT );
+    	if(isNegative)
+    	{ 
+    		fromLDTTemp = toLDT;
+    		toLDTTemp = fromLDT;
     	}
 
     	years = new NaturalNumber((int) fromLDTTemp.until( toLDTTemp, ChronoUnit.YEARS ));

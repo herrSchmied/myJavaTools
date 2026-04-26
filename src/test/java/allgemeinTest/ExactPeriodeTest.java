@@ -13,7 +13,7 @@ public class ExactPeriodeTest
 {
 
 	@Test
-	public void test() throws NaturalNumberException
+	public void test() throws NaturalNumberException, InterruptedException
 	{
 
 		DateTimeFormatter formatter =
@@ -22,12 +22,16 @@ public class ExactPeriodeTest
 
 		String s = LocalDateTime.now().format(formatter);
 		LocalDateTime jetzt = LocalDateTime.parse(s, formatter);
+		Thread.sleep(1);
 		LocalDateTime later = jetzt.plusMinutes(3);
 		
 		ExactPeriode ep = new ExactPeriode(jetzt, later);
 		
 		System.out.println("" + ep.getNanos() + " " + ep.getAbsoluteNanos());
 		System.out.println("" + jetzt.getNano());
+		System.out.println("" + later.getNano());
+		System.out.println(""+LocalDateTime.now().getNano());
+		System.out.println(""+LocalDateTime.now().getNano());
 		
 		//Remember: Time does not go on. Why?
 	}

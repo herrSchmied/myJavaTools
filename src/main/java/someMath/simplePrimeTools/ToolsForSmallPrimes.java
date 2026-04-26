@@ -21,6 +21,7 @@ public class ToolsForSmallPrimes
 	String primeListPathStr;
 	int maxPrimeNr;
 
+	@SuppressWarnings("unchecked")
 	public ToolsForSmallPrimes(String pathStr, int maxPrimeNr) throws MathException, IOException, ClassNotFoundException
 	{
 
@@ -61,6 +62,7 @@ public class ToolsForSmallPrimes
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	private void setupAndLoad() throws ClassNotFoundException, IOException, MathException
 	{
 		new MakePrimeListFile(maxPrimeNr, primeListPathStr);
