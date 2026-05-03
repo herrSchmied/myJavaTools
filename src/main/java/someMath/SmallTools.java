@@ -11,6 +11,7 @@ import java.util.*;
 import javafx.util.Pair;
 import someMath.exceptions.MathException;
 
+import static consoleTools.TerminalXDisplay.*;
 
 
 public class SmallTools
@@ -122,87 +123,88 @@ public class SmallTools
 		return true;
 	}
 	
-	public static Integer cantorTupel(List<Integer> list) throws MathException
+	public static long cantorNumOfList(List<Long> list) throws MathException
 	{
 		if(list.isEmpty()) throw new MathException("Empty list forbidden.");
 		Integer s = list.size();
 		
 		if(s==1)return list.get(0);
 		
-		Integer l = list.get(0);
+		long l = list.get(0);
 		for(int n=1;n<s;n++)
 		{
 
-			Integer a = list.get(n);
-			Pair<Integer, Integer> pair = new Pair<>(l, a);
-			l = cantorPair(pair);
+			Long a = list.get(n);
+			Pair<Long, Long> pair = new Pair<>(l, a);
+			l = cantorNumOfPair(pair);
 		}
-		
+
 		return l;
 	}
 	
-	public static Integer cantorPair(Pair<Integer, Integer> pair) throws MathException
+	public static Long cantorNumOfPair(Pair<Long, Long> pair) throws MathException
 	{
-		Integer a = pair.getKey();
-		Integer b = pair.getValue();
+
+		Long a = pair.getKey();
+		Long b = pair.getValue();
 		
+		if(a<0||b<0)System.out.println("Natural Numbers only.");
 		if(a<0||b<0) throw new MathException("None of the parameters can be smaller than Zero.");
 		return b+((a+b)*(a+b+1))/2;
 	}
 	
-	public static List<Integer> reverseCantorTupel(Integer n, Integer size) throws MathException
+	public static List<Long> cantorTupel(Long n, Long listSize) throws MathException
 	{
-		if(n<1) throw new MathException("Cantor Nr. can't be smaller as 1.");
-		if(size<1) throw new MathException("Size of List can't be smaller than 1.");
-		List<Integer> toBeReversed = new ArrayList<>();
-		if(size==1)
+
+		if(n<0) throw new MathException("Cantor Nr. can't be smaller as 0.");
+		if(listSize<1) throw new MathException("Size of List can't be smaller than 1.");
+		if(listSize>5) throw new MathException("List size to large.");
+		List<Long> toBeReversed = new ArrayList<>();
+
+		if(listSize==1)
 		{
 			toBeReversed.add(n);
 			return toBeReversed;
 		}
 		
-		int k = n;
-		for(int m=0;m<size;m++)
+		Long k = n;
+		for(int m=0;m<listSize;m++)
 		{
-			Pair<Integer, Integer> pair = reverseCantorPair(k);
-			toBeReversed.add(pair.getValue());
-			if(size-m==2)
+			Pair<Long, Long> pair = cantorPair(k);
+			Long p = pair.getValue();
+			toBeReversed.add(p);
+			if(m==listSize-2)
 			{
 				toBeReversed.add(pair.getKey());
+				Collections.reverse(toBeReversed);
+
 				return toBeReversed;
 			}
 			
 			k = pair.getKey();
 		}
-		System.out.println("To be reversed: " + toBeReversed);
-		List<Integer> output = new ArrayList<>();
-		for(int l=size-1;l>=0;l--)
-		{
 
-			output.add(toBeReversed.get(l));
-		}
-		
-		return output;
+		throw new MathException("Should not happen!");
 	}
 
-	public static Pair<Integer, Integer> reverseCantorPair(Integer n)
+	public static Pair<Long, Long> cantorPair(Long n)
 	{
 
-		Integer a = n-triangleNum(floorOfTriangleRoot(n));
-		Integer b = floorOfTriangleRoot(n)-a;
+		Long a = n-triangleNum(floorOfTriangleRoot(n));
+		Long b = floorOfTriangleRoot(n)-a;
 		
 		return new Pair<>(b, a);
 	}
 
-	public static Integer triangleNum(Integer w)
+	public static Long triangleNum(Long w)
 	{
 		return (w*(w+1))/2;
 	}
 	
-	public static Integer floorOfTriangleRoot(Integer z)
+	public static Long floorOfTriangleRoot(Long z)
 	{
 		
-		return (int) Math.floor((Math.sqrt(8*z+1)-1.0)/2); 
+		return (long) Math.floor((Math.sqrt(8*z+1)-1.0)/2); 
 	}
 	
 	public static Double log(Double basis, Double potenz)

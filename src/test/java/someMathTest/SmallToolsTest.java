@@ -28,8 +28,6 @@ public class SmallToolsTest
 			double erg = Math.pow(x, x);
 		
 			assert(erg-i<prettySmall);
-			
-			System.out.println("SuperRoot of " + i + " equal to " + x);
 		}
 	}
 	
@@ -46,8 +44,6 @@ public class SmallToolsTest
 			double erg = x*Math.pow(Math.E, x);
 		
 			assert(erg-i<prettySmall);
-			
-			System.out.println("W Value of " + i + " equal to " + x);
 		}
 
 	}
@@ -58,25 +54,26 @@ public class SmallToolsTest
 		
 		for(int n=0;n<100;n++)
 		{
-			int a = randomInt(0,100);
-			int b = randomInt(0,100);
-			Pair<Integer, Integer> pair = new Pair<>(a,b);
-			int c1 = cantorPair(pair);
-			Pair<Integer, Integer> aPlusOne = new Pair<>(a+1,b);
-			int c2 = cantorPair(aPlusOne);
-			Pair<Integer, Integer> bPlusOne = new Pair<>(a,b+1);
-			int c3 = cantorPair(bPlusOne);
-			Pair<Integer, Integer> aAndBPlusOne = new Pair<>(a+1,b+1);
-			int c4 = cantorPair(aAndBPlusOne);
 
-			assert(a==reverseCantorPair(c1).getKey());
-			assert(b==reverseCantorPair(c1).getValue());
-			assert((a+1)==reverseCantorPair(c2).getKey());
-			assert(b==reverseCantorPair(c2).getValue());
-			assert((b+1)==reverseCantorPair(c3).getValue());
-			assert(a==reverseCantorPair(c3).getKey());
-			assert((a+1)==reverseCantorPair(c4).getKey());
-			assert((b+1)==reverseCantorPair(c4).getValue());
+			long a = randomInt(0,100);
+			long b = randomInt(0,100);
+			Pair<Long, Long> pair = new Pair<>(a,b);
+			long c1 = cantorNumOfPair(pair);
+			Pair<Long, Long> aPlusOne = new Pair<>(a+1,b);
+			long c2 = cantorNumOfPair(aPlusOne);
+			Pair<Long, Long> bPlusOne = new Pair<>(a,b+1);
+			long c3 = cantorNumOfPair(bPlusOne);
+			Pair<Long, Long> aAndBPlusOne = new Pair<>(a+1,b+1);
+			long c4 = cantorNumOfPair(aAndBPlusOne);
+
+			assert(a==cantorPair(c1).getKey());
+			assert(b==cantorPair(c1).getValue());
+			assert((a+1)==cantorPair(c2).getKey());
+			assert(b==cantorPair(c2).getValue());
+			assert((b+1)==cantorPair(c3).getValue());
+			assert(a==cantorPair(c3).getKey());
+			assert((a+1)==cantorPair(c4).getKey());
+			assert((b+1)==cantorPair(c4).getValue());
 			
 			assert(c2>c1);
 			assert(c3>c1);
@@ -88,22 +85,21 @@ public class SmallToolsTest
 	@Test
 	public void cantorTupelFunctionAndReverseTest() throws MathException, InterruptedException
 	{
-		
-		List<Integer> tupel = new ArrayList<>();
+
+		List<Long> tupel = new ArrayList<>();
 		for(int n=0;n<10;n++)
 		{
 
-			tupel.clear();
-			int s = 3;//randomInt(1,6);
-			for(int k=0;k<s;k++)tupel.add(randomInt(0,8));
-			int c1 = cantorTupel(tupel);
+			Long s = (long) 5;
+			for(int k=0;k<s;k++)tupel.add((long) randomInt(1,8));
+			Long c1 = cantorNumOfList(tupel);
 			System.out.println("Part " + n);
 			System.out.println("Tupel: " + tupel + " Size: " + tupel.size());
 			System.out.println("C1: " + c1);
-			List<Integer> sameSame = reverseCantorTupel(c1, s);
+			List<Long> sameSame = cantorTupel(c1, s);
 			System.out.println("Same same: " + sameSame + " Size: " + sameSame.size());
-			Thread.sleep(2500);
 			assert(sameSame.equals(tupel));
+			tupel.clear();
 		}
 	}
 }
