@@ -2,18 +2,18 @@ package someMath;
 
 
 
+import java.io.Serializable;
 import java.util.Objects;
 
 
 
 //Even so it implements addition, subtraction, multiplication and division this is
 // NOT a mathematical Group!!!!
-public class NaturalNumber extends Number implements Cloneable
+public class NaturalNumber extends Number implements Cloneable, Serializable
 {
 
 	private static final long serialVersionUID = 1L;
 
-	private static boolean toBigWarningOn = false;
 	
 	public final Integer numberCore;
 
@@ -34,6 +34,16 @@ public class NaturalNumber extends Number implements Cloneable
 		this.numberCore = Integer.parseInt(s);
 	}
 	
+	public NaturalNumber add(NaturalNumber nn) throws NaturalNumberException
+	{
+		return new NaturalNumber(numberCore+nn.getNumberCore());
+	}
+	
+	public NaturalNumber multiply(NaturalNumber nn) throws NaturalNumberException
+	{
+		return new NaturalNumber(numberCore*nn.getNumberCore());
+	}
+
 	public boolean isGreaterThen(NaturalNumber n)
 	{
 		return numberCore>n.numberCore;

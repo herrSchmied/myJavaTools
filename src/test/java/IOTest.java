@@ -62,31 +62,30 @@ public class IOTest
 	public void testIOPath() throws IOException, ClassNotFoundException
 	{
 
-
 		System.out.println("Old Text: "+oldText);
-		
+
 		Path path = Path.of(dir + fileName1);
 		TextAndObjSaveAndLoad.saveText(path, oldText);
 		String newText = TextAndObjSaveAndLoad.loadText(path);
-			
+
 		System.out.println("New Text: "+newText);
 			
 		assert(oldText.equals(newText));//Loaded Text equals the saved one?
-			
+
 		assert(path.toFile().delete());//deletion must be successful.
-		
+
 		Pair<String, String> pair = new Pair<String, String>("key", "value");
-		
+
 		path = Path.of(dir + objFileName);
 		TextAndObjSaveAndLoad.saveObject(path, pair);
-		
+
 		assert(Files.exists(path));
-		
+
 		@SuppressWarnings("unchecked")
 		Pair<String, String> loadedPair = (Pair<String, String>) TextAndObjSaveAndLoad.loadObject(path);
-	
+
 		assert(pair.equals(loadedPair));
-		
+
 		assert(path.toFile().delete());
 	}		
 }
