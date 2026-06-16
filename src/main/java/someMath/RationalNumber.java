@@ -75,84 +75,30 @@ public class RationalNumber extends Number implements Cloneable, Serializable
 		}
 	}
 	
+	public RationalNumber(boolean sign, NaturalNumber intPart)
+	{
+		this.sign = sign;
+		this.integerPart = intPart;
+		this.numerator = NaturalNumber.zero;
+		this.denominator = NaturalNumber.one;
+	}
+	
 	public RationalNumber(int intIntegerPart, int intNumerator, int intDenominator) throws MathException, NaturalNumberException
 	{
 
 		if(intDenominator==0)throw new MathException("Denominator can't be Zero.");
-
-		if(intNumerator==0)
-		{
-			this.sign = true;
-			this.integerPart = new NaturalNumber(intIntegerPart);
-			this.numerator = NaturalNumber.zero;
-			this.denominator = NaturalNumber.one;
-		}
-		else
-		{
+		
+		boolean intSign = intIntegerPart>0;
+		
+		RationalNumber intOne = new RationalNumber(intSign, new NaturalNumber(intIntegerPart));
+		RationalNumber fracOne = new RationalNumber(intNumerator, intDenominator);
 			
-			if(intIntegerPart==0)
-			{
-				RationalNumber rn = new RationalNumber(intNumerator, intDenominator);
-				this.sign = rn.sign;
-				this.integerPart = rn.integerPart;
-				this.numerator = rn.numerator;
-				this.denominator = rn.denominator;
-			}
-			else
-			{
-
-				boolean integerPartSign = (intIntegerPart>0);
-				boolean fracSign = ((intNumerator<0)&&(intDenominator<0))||((intNumerator>0)&&(intDenominator>0));
-				
-				if((integerPartSign&&fracSign)||((!integerPartSign)&&(!fracSign)))
-				{
-					this.sign = integerPartSign;
-					
-					RationalNumber rn = new RationalNumber(intNumerator, intDenominator);
-					this.integerPart = new NaturalNumber(intIntegerPart).add(rn.integerPart);
-					this.numerator = rn.numerator;
-					this.denominator = rn.denominator;
-					return;
-				}
-				
-				if(integerPartSign&&!fracSign)//TODO: The other way around too.
-				{
-					RationalNumber rn = new RationalNumber(intNumerator, intDenominator);
-					
-					int integerPart2 = rn.getIntegerPart().intValue();
-					if(intIntegerPart>integerPart2)
-					{
-						int integerPart3 = intIntegerPart-integerPart2;
-						this.sign = true;
-						this.integerPart = new NaturalNumber(integerPart3);
-						this.numerator = rn.numerator;
-						this.denominator = rn.denominator;
-						return;
-					}
-					
-					if(intIntegerPart<integerPart2)
-					{
-						int integerPart3 = integerPart2-intIntegerPart;
-						this.sign = false;
-						this.integerPart = new NaturalNumber(integerPart3);
-						this.numerator = rn.numerator;
-						this.denominator = rn.denominator;
-						return;
-					}
-					
-					if(intIntegerPart==integerPart2)
-					{
-
-						this.sign = true;
-						this.integerPart = NaturalNumber.zero;
-						this.numerator = rn.numerator;
-						this.denominator = rn.denominator;
-						return;
-					}
-
-				}
-			}
-		}
+		RationalNumber sum = intOne.add(fracOne);
+			
+		this.sign = sum.sign;
+		this.integerPart = sum.integerPart;
+		this.numerator = sum.numerator;
+		this.denominator = sum.denominator;
 	}
 
 	public RationalNumber(int intNumerator, int intDenominator) throws MathException, NaturalNumberException
@@ -216,7 +162,7 @@ public class RationalNumber extends Number implements Cloneable, Serializable
 	
 	public RationalNumber add(RationalNumber rn) throws NaturalNumberException, MathException
 	{
-		//TODO: Need this for the other way around and for other stuff!!!!
+
 		if(this.sign==rn.sign)
 		{
 
@@ -240,28 +186,90 @@ public class RationalNumber extends Number implements Cloneable, Serializable
 		}
 		else
 		{
-			if(!this.sign&&this.getAmount().isLargerThan(rn.getAmount()))
+
+			if(this.getAmount().equals(rn.getAmount()))
+				return new RationalNumber(true, NaturalNumber.zero, NaturalNumber.one);
+			
+			RationalNumber negativeOne;
+			RationalNumber positiveOne;
+			if(!this.sign)
 			{
-				boolean sign = false;
-				
-				int thisIntegerPart = this.integerPart.intValue();
-				int summandIntPart = rn.integerPart.intValue();
-				
-				NaturalNumber integerPart1 = new NaturalNumber(thisIntegerPart-summandIntPart);
-				
-				NaturalNumber newDenominator = denominator.multiply(rn.denominator);
-				
-				NaturalNumber newNumerator;
-				
-				if(this.getFrac().getAmount().isLargerThan(rn.getFrac()))
+				negativeOne = this.clone();
+				positiveOne = rn.clone();
+			}
+			else
+			{
+				negativeOne = rn.clone();
+				positiveOne = this.clone();
+			}
+			
+			boolean theLargerAmountIsNegative = negativeOne.getAmount().isLargerThan(positiveOne);
+			boolean newSign = !theLargerAmountIsNegative;
+			
+			int newDenominator = negativeOne.denominator.intValue()*positiveOne.denominator.intValue();
+			int newIntPart = negativeOne.integerPart.intValue()-positiveOne.integerPart.intValue();
+			
+			boolean negativeOneGotLargerFracAmount = negativeOne
+					.getFrac()
+					.getAmount()
+					.isLargerThan(rn.getFrac());
+			
+			int newNumerator = -negativeOne.numerator.intValue()*positiveOne.denominator.intValue()
+					+negativeOne.denominator.intValue()*positiveOne.numerator.intValue();
+
+
+			if(theLargerAmountIsNegative)
+			{
+
+				if(negativeOneGotLargerFracAmount)
 				{
-					int num = -getFrac().numerator.intValue()*rn.getFrac().denominator.intValue()
-							+getFrac().denominator.intValue()*rn.getFrac().numerator.intValue();
+					
+					NaturalNumber nnInt = new NaturalNumber(newIntPart);
+					NaturalNumber nnNum = new NaturalNumber(newNumerator);
+					NaturalNumber nnDenom = new NaturalNumber(newDenominator);
+					
+					return new RationalNumber(newSign, nnInt, nnNum, nnDenom);
+				}
+				else
+				{
+
+					newNumerator = newDenominator+newNumerator;
+					
+					NaturalNumber nnInt = new NaturalNumber(newIntPart);
+					NaturalNumber nnNum = new NaturalNumber(newNumerator);
+					NaturalNumber nnDenom = new NaturalNumber(newDenominator);
+
+					return new RationalNumber(newSign, nnInt, nnNum, nnDenom);
+				}
+			}
+			else
+			{
+
+				newIntPart = -newIntPart;
+				if(negativeOneGotLargerFracAmount)
+				{
+
+					newNumerator = newDenominator+newNumerator;
+
+					NaturalNumber nnInt = new NaturalNumber(newIntPart);
+					NaturalNumber nnNum = new NaturalNumber(newNumerator);
+					NaturalNumber nnDenom = new NaturalNumber(newDenominator);
+					
+					return new RationalNumber(newSign, nnInt, nnNum, nnDenom);
+
+				}
+				else
+				{
+			
+					NaturalNumber nnInt = new NaturalNumber(newIntPart);
+					NaturalNumber nnNum = new NaturalNumber(newNumerator);
+					NaturalNumber nnDenom = new NaturalNumber(newDenominator);
+			
+					return new RationalNumber(newSign, nnInt, nnNum, nnDenom);
+
 				}
 			}
 		}
-		
-		return null;
 	}
 	
 	public RationalNumber getFrac() throws NaturalNumberException, MathException
@@ -362,10 +370,14 @@ public class RationalNumber extends Number implements Cloneable, Serializable
 		
 		if(!numerator.equals(NaturalNumber.zero))
 		{
-		s = integerPart.intValue()  
-			+ "(" + numerator.intValue()
-			+ "/"
-			+ denominator.intValue()+ ")";
+			s = "(" + numerator.intValue()
+						+ "/"
+						+ denominator.intValue()+ ")";
+
+			if(!integerPart.equals(NaturalNumber.zero))
+			{
+				s = integerPart.intValue()+s;
+			}
 		}
 		else
 		{

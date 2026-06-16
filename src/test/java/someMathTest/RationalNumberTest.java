@@ -56,8 +56,20 @@ public class RationalNumberTest
 
 		assert(rn7.equals(rn8));
 
-		assert(!rn.isLargerThan(rn2));
+		RationalNumber rn9 = 
+				new RationalNumber(true, NaturalNumber.zero, new NaturalNumber(1), new NaturalNumber(9));
+		RationalNumber rn10 = 
+				new RationalNumber(false, NaturalNumber.zero, new NaturalNumber(1), new NaturalNumber(7));
 
+		System.out.println(rn9 + " + " + rn10);
+
+		RationalNumber product = 
+				new RationalNumber(false, NaturalNumber.zero, new NaturalNumber(9+7), new NaturalNumber(7*9));
+
+		assert(product.equals(rn9.add(rn10)));
+		
+		
+		assert(!rn.isLargerThan(rn2));
 		assert(rn3.isLargerThan(rn));
 		assert(rn3.isLargerThan(rn2));
 		assert(rn3.isLargerThan(rn5));
