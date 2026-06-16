@@ -1,6 +1,8 @@
 package someMathTest;
 
 
+import static org.junit.Assert.assertTrue;
+
 import org.junit.jupiter.api.Test;
 
 import someMath.NaturalNumber;
@@ -26,20 +28,43 @@ public class RationalNumberTest
 		
 		assert(rn.equals(rn2));
 		
-		rn = new RationalNumber(false, new NaturalNumber(9), new NaturalNumber(88), new NaturalNumber(88));
+		RationalNumber rn3 = 
+				new RationalNumber(true, new NaturalNumber(9), new NaturalNumber(88), new NaturalNumber(88));
 
-		rn2 = new RationalNumber(false, new NaturalNumber(5), new NaturalNumber(10), new NaturalNumber(2));
+		RationalNumber rn4 = 
+				new RationalNumber(true, new NaturalNumber(5), new NaturalNumber(10), new NaturalNumber(2));
 	
-		System.out.println(rn + " vs " + rn2);
+		System.out.println(rn3 + " vs " + rn4);
 		
-		assert(rn.equals(rn2));
+		assert(rn3.equals(rn4));
 
-		rn = new RationalNumber(false, new NaturalNumber(9), new NaturalNumber(11), new NaturalNumber(88));
-		rn2 = new RationalNumber(false, new NaturalNumber(8), new NaturalNumber(99), new NaturalNumber(88));
+		RationalNumber rn5 = 
+				new RationalNumber(false, new NaturalNumber(9), new NaturalNumber(11), new NaturalNumber(88));
+		RationalNumber rn6 = 
+				new RationalNumber(false, new NaturalNumber(8), new NaturalNumber(99), new NaturalNumber(88));
 
-		System.out.println(rn + " vs " + rn2);
+		System.out.println(rn5 + " vs " + rn6);
 
-		assert(rn.equals(rn2));
+		assert(rn5.equals(rn6));
+		
+		RationalNumber rn7 = 
+				new RationalNumber(false, new NaturalNumber(9), new NaturalNumber(11), new NaturalNumber(77));
+		RationalNumber rn8 = 
+				new RationalNumber(false, new NaturalNumber(8), new NaturalNumber(88), new NaturalNumber(77));
+
+		System.out.println(rn7 + " vs " + rn8);
+
+		assert(rn7.equals(rn8));
+
+		assert(!rn.isLargerThan(rn2));
+
+		assert(rn3.isLargerThan(rn));
+		assert(rn3.isLargerThan(rn2));
+		assert(rn3.isLargerThan(rn5));
+		assert(rn3.isLargerThan(rn6));
+		assert(rn5.isLargerThan(rn7));
+		assert(rn5.isLargerThan(rn8));
+
 
 	}
 }

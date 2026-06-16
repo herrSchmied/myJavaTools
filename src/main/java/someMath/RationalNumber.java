@@ -48,6 +48,144 @@ public class RationalNumber extends Number implements Cloneable, Serializable
 			else this.denominator = list.get(2);
 		}
 	}
+	
+	public RationalNumber(boolean sign, NaturalNumber numerator, NaturalNumber denominator) throws NaturalNumberException, MathException
+	{
+
+		if(denominator.equals(NaturalNumber.zero))throw new MathException("Denominator can't be Zero.");
+
+		this.sign = sign;
+
+		if(numerator.equals(NaturalNumber.zero))
+		{
+
+			this.integerPart = NaturalNumber.zero;
+			this.numerator = numerator;
+			this.denominator = NaturalNumber.one;
+		}
+		else
+		{
+
+			List<NaturalNumber> list = shorten(numerator.intValue(), denominator.intValue());
+			this.integerPart = list.get(0);
+			this.numerator = list.get(1);
+			
+			if(this.numerator==NaturalNumber.zero)this.denominator = NaturalNumber.one;
+			else this.denominator = list.get(2);
+		}
+	}
+	
+	public RationalNumber(int intIntegerPart, int intNumerator, int intDenominator) throws MathException, NaturalNumberException
+	{
+
+		if(intDenominator==0)throw new MathException("Denominator can't be Zero.");
+
+		if(intNumerator==0)
+		{
+			this.sign = true;
+			this.integerPart = new NaturalNumber(intIntegerPart);
+			this.numerator = NaturalNumber.zero;
+			this.denominator = NaturalNumber.one;
+		}
+		else
+		{
+			
+			if(intIntegerPart==0)
+			{
+				RationalNumber rn = new RationalNumber(intNumerator, intDenominator);
+				this.sign = rn.sign;
+				this.integerPart = rn.integerPart;
+				this.numerator = rn.numerator;
+				this.denominator = rn.denominator;
+			}
+			else
+			{
+
+				boolean integerPartSign = (intIntegerPart>0);
+				boolean fracSign = ((intNumerator<0)&&(intDenominator<0))||((intNumerator>0)&&(intDenominator>0));
+				
+				if((integerPartSign&&fracSign)||((!integerPartSign)&&(!fracSign)))
+				{
+					this.sign = integerPartSign;
+					
+					RationalNumber rn = new RationalNumber(intNumerator, intDenominator);
+					this.integerPart = new NaturalNumber(intIntegerPart).add(rn.integerPart);
+					this.numerator = rn.numerator;
+					this.denominator = rn.denominator;
+					return;
+				}
+				
+				if(integerPartSign&&!fracSign)//TODO: The other way around too.
+				{
+					RationalNumber rn = new RationalNumber(intNumerator, intDenominator);
+					
+					int integerPart2 = rn.getIntegerPart().intValue();
+					if(intIntegerPart>integerPart2)
+					{
+						int integerPart3 = intIntegerPart-integerPart2;
+						this.sign = true;
+						this.integerPart = new NaturalNumber(integerPart3);
+						this.numerator = rn.numerator;
+						this.denominator = rn.denominator;
+						return;
+					}
+					
+					if(intIntegerPart<integerPart2)
+					{
+						int integerPart3 = integerPart2-intIntegerPart;
+						this.sign = false;
+						this.integerPart = new NaturalNumber(integerPart3);
+						this.numerator = rn.numerator;
+						this.denominator = rn.denominator;
+						return;
+					}
+					
+					if(intIntegerPart==integerPart2)
+					{
+
+						this.sign = true;
+						this.integerPart = NaturalNumber.zero;
+						this.numerator = rn.numerator;
+						this.denominator = rn.denominator;
+						return;
+					}
+
+				}
+			}
+		}
+	}
+
+	public RationalNumber(int intNumerator, int intDenominator) throws MathException, NaturalNumberException
+	{
+		if(intDenominator==0)throw new MathException("Denominator can't be Zero.");
+		
+		if(intNumerator==0)
+		{
+			this.sign = true;
+			this.integerPart = NaturalNumber.zero;
+			this.numerator = NaturalNumber.zero;
+			this.denominator = NaturalNumber.one;
+		}
+		else
+		{
+			boolean signNumerator = (intNumerator>0);
+			boolean signDenominator = (intDenominator>0);
+			
+			this.sign = (signNumerator==signDenominator);
+			
+			int intNumerator2 = Math.abs(intNumerator);
+			
+			int intDenominator2 = Math.abs(intDenominator);
+
+			List<NaturalNumber> list = shorten(intNumerator2, intDenominator2);
+			
+			this.integerPart = list.get(0);
+			this.numerator = list.get(1);
+			
+			if(this.numerator==NaturalNumber.zero)this.denominator = NaturalNumber.one;
+			else this.denominator = list.get(2);
+		}
+	}
 
 	public List<NaturalNumber> shorten(int numerator, int denominator) throws NaturalNumberException
 	{
@@ -74,6 +212,107 @@ public class RationalNumber extends Number implements Cloneable, Serializable
 		output.add(new NaturalNumber(newDenominator));
 			
 		return output;
+	}
+	
+	public RationalNumber add(RationalNumber rn) throws NaturalNumberException, MathException
+	{
+		//TODO: Need this for the other way around and for other stuff!!!!
+		if(this.sign==rn.sign)
+		{
+
+			NaturalNumber integerPart1 = this.getIntegerPart().add(rn.integerPart);
+			
+			NaturalNumber newNumerator = numerator
+											.multiply(rn.denominator)
+											.add(rn.numerator.multiply(denominator));
+			
+			NaturalNumber newDenominator = denominator.multiply(rn.denominator);
+
+			RationalNumber sum1 = new RationalNumber(this.sign, newNumerator, newDenominator);
+			
+			NaturalNumber integerPart2 = integerPart1.add(sum1.integerPart);
+
+			RationalNumber sum2 = new RationalNumber
+					(this.sign, integerPart2, sum1.numerator, sum1.denominator);
+			
+			return sum2;
+			
+		}
+		else
+		{
+			if(!this.sign&&this.getAmount().isLargerThan(rn.getAmount()))
+			{
+				boolean sign = false;
+				
+				int thisIntegerPart = this.integerPart.intValue();
+				int summandIntPart = rn.integerPart.intValue();
+				
+				NaturalNumber integerPart1 = new NaturalNumber(thisIntegerPart-summandIntPart);
+				
+				NaturalNumber newDenominator = denominator.multiply(rn.denominator);
+				
+				NaturalNumber newNumerator;
+				
+				if(this.getFrac().getAmount().isLargerThan(rn.getFrac()))
+				{
+					int num = -getFrac().numerator.intValue()*rn.getFrac().denominator.intValue()
+							+getFrac().denominator.intValue()*rn.getFrac().numerator.intValue();
+				}
+			}
+		}
+		
+		return null;
+	}
+	
+	public RationalNumber getFrac() throws NaturalNumberException, MathException
+	{
+		return new RationalNumber(this.sign, numerator, denominator);
+	}
+	
+	public RationalNumber getAmount() throws NaturalNumberException, MathException
+	{
+		return new RationalNumber(true, integerPart, numerator, denominator);
+	}
+	
+	public boolean isLargerThan(RationalNumber rn) throws NaturalNumberException, MathException
+	{
+		
+		if(this.equals(rn))return false;
+		
+		if(sign&&!(rn.getSign()))return true;
+		if(!(sign)&&rn.getSign())return false;
+		
+		if(sign&&rn.getSign())
+		{
+			if(integerPart.isGreaterThen(rn.getIntegerPart()))return true;
+			if(integerPart.isSmallerThen(rn.getIntegerPart()))return false;
+			
+			NaturalNumber newNum1 = numerator.multiply(rn.getDenominator());
+			NaturalNumber newNum2 = rn.getNumerator().multiply(denominator);
+			
+			return (newNum1.isGreaterThen(newNum2));
+		}
+		
+		if(!(sign)&&!(rn.getSign()))
+		{
+			if(integerPart.isGreaterThen(rn.getIntegerPart()))return false;
+			if(integerPart.isSmallerThen(rn.getIntegerPart()))return true;
+			
+			NaturalNumber newNum1 = numerator.multiply(rn.getDenominator());
+			NaturalNumber newNum2 = rn.getNumerator().multiply(denominator);
+			
+			return (newNum1.isSmallerThen(newNum2));
+		}
+
+		
+		throw new MathException("Should not happen.");
+	}
+	
+	public boolean isSmallerThan(RationalNumber rn) throws NaturalNumberException, MathException
+	{
+		if(this.equals(rn))return false;
+		
+		return !this.isLargerThan(rn);
 	}
 
 	public NaturalNumber getIntegerPart() {
