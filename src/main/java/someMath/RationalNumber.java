@@ -225,7 +225,7 @@ public class RationalNumber extends Number implements Cloneable, Serializable
 				{
 					
 					NaturalNumber nnInt = new NaturalNumber(newIntPart);
-					NaturalNumber nnNum = new NaturalNumber(newNumerator);
+					NaturalNumber nnNum = new NaturalNumber(-newNumerator);
 					NaturalNumber nnDenom = new NaturalNumber(newDenominator);
 					
 					return new RationalNumber(newSign, nnInt, nnNum, nnDenom);
