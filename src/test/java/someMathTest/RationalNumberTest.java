@@ -63,7 +63,9 @@ public class RationalNumberTest
 		RationalNumber sum = 
 				new RationalNumber(false, NaturalNumber.zero, new NaturalNumber(2), new NaturalNumber(7*9));
 
-		System.out.println(rn9 + " + " + rn10 + " = " + sum);
+		RationalNumber sumFound = rn9.add(rn10);
+
+		System.out.println(rn9 + " + " + rn10 + " = " + sum + "; " + sumFound);
 
 		assert(sum.equals(rn9.add(rn10)));
 		
@@ -126,6 +128,13 @@ public class RationalNumberTest
 		System.out.println(rn19 + " + " + rn20 + " = " + sum);
 
 		assert(sum.equals(rn19.add(rn20)));
+		
+		RationalNumber rn21 = new RationalNumber(1, -1, 3);
+		RationalNumber rn22 = new RationalNumber(2, 3);
+		
+		System.out.println(rn21 + " vs " + rn22);
+
+		assert(rn21.equals(rn22));
 
 		assert(!rn.isLargerThan(rn2));
 		assert(rn3.isLargerThan(rn));
