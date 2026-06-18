@@ -133,7 +133,7 @@ public class RationalNumber extends Number implements Cloneable, Serializable
 		boolean sameSign = (intSign==fracSign);
 		boolean bothSmallerZero = ((!intSign)&&(!fracSign));
 		
-		this.sign = (newNum>0)||(!(sameSign&&bothSmallerZero));
+		this.sign = (!(sameSign&&bothSmallerZero))&&(newNum>=0);
 		NaturalNumber nnNum = new NaturalNumber(Math.abs(newNum));
 		NaturalNumber nnDenom = new NaturalNumber(Math.abs(newDenom));
 		List<NaturalNumber> list = shorten(nnNum, nnDenom);
@@ -274,6 +274,18 @@ public class RationalNumber extends Number implements Cloneable, Serializable
 		}
 	}
 	
+	public RationalNumber multiply(RationalNumber rn) throws NaturalNumberException, MathException
+	{
+		Pair<Integer, Integer> here = getAsOneFrac();
+		Pair<Integer, Integer> other = rn.getAsOneFrac();
+		
+		boolean productSign = (this.sign==rn.sign);
+		NaturalNumber nnNum = new NaturalNumber(here.getKey()*other.getKey());
+		NaturalNumber nnDenom = new NaturalNumber(here.getValue()*other.getValue());
+		
+		return new RationalNumber(productSign, nnNum, nnDenom);
+	}
+
 	public Pair<Integer, Integer> getAsOneFrac()//Without Sign.
 	{
 

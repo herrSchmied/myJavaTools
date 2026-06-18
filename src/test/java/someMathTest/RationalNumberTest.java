@@ -63,9 +63,8 @@ public class RationalNumberTest
 		RationalNumber sum = 
 				new RationalNumber(false, NaturalNumber.zero, new NaturalNumber(2), new NaturalNumber(7*9));
 
-		RationalNumber sumFound = rn9.add(rn10);
 
-		System.out.println(rn9 + " + " + rn10 + " = " + sum + "; " + sumFound);
+		System.out.println(rn9 + " + " + rn10 + " = " + sum);
 
 		assert(sum.equals(rn9.add(rn10)));
 		
@@ -134,8 +133,92 @@ public class RationalNumberTest
 		
 		System.out.println(rn21 + " vs " + rn22);
 
-		assert(rn21.equals(rn22));
+		RationalNumber rn23 = new RationalNumber(4, -20, 5);
+		RationalNumber rn24 = new RationalNumber(0, -3);
+		
+		System.out.println(rn23 + " vs " + rn24);
 
+		assert(rn23.equals(rn24));
+		
+		RationalNumber rn25 = new RationalNumber(-4, -20, 5);
+		RationalNumber rn26 = new RationalNumber(-8);
+		
+		System.out.println(rn25 + " vs " + rn26);
+
+		assert(rn25.equals(rn26));
+
+		RationalNumber rn27 = 
+				new RationalNumber(true, NaturalNumber.zero, new NaturalNumber(1), new NaturalNumber(9));
+		RationalNumber rn28 = 
+				new RationalNumber(false, NaturalNumber.zero, new NaturalNumber(1), new NaturalNumber(7));
+
+		RationalNumber product = 
+				new RationalNumber(false, NaturalNumber.zero, new NaturalNumber(1), new NaturalNumber(7*9));
+
+
+		System.out.println(rn27 + " * " + rn28 + " = " + product);
+
+		assert(product.equals(rn27.multiply(rn28)));
+		
+		rn27 = 
+				new RationalNumber(false, NaturalNumber.zero, new NaturalNumber(1), new NaturalNumber(9));
+		rn28 = 
+				new RationalNumber(true, NaturalNumber.zero, new NaturalNumber(1), new NaturalNumber(7));
+
+		product = 
+				new RationalNumber(false, NaturalNumber.zero, new NaturalNumber(1), new NaturalNumber(7*9));
+
+		System.out.println(rn27 + " * " + rn28 + " = " + product);
+
+		assert(product.equals(rn27.multiply(rn28)));
+
+		rn27 = 
+				new RationalNumber(true, new NaturalNumber(2), new NaturalNumber(1), new NaturalNumber(9));
+		rn28 = 
+				new RationalNumber(false, new NaturalNumber(3), new NaturalNumber(1), new NaturalNumber(7));
+
+		product = 
+				new RationalNumber(false, new NaturalNumber(19*22), new NaturalNumber(7*9));
+
+		System.out.println(rn27 + " * " + rn28 + " = " + product);
+
+		assert(product.equals(rn27.multiply(rn28)));
+		
+		rn27 = 
+				new RationalNumber(false, new NaturalNumber(2), new NaturalNumber(1), new NaturalNumber(9));
+		rn28 = 
+				new RationalNumber(true, new NaturalNumber(3), new NaturalNumber(1), new NaturalNumber(7));
+
+		//Product already there
+		System.out.println(rn27 + " * " + rn28 + " = " + product);
+
+		assert(product.equals(rn27.multiply(rn28)));
+		
+		rn27 = 
+				new RationalNumber(true, NaturalNumber.zero, new NaturalNumber(1), new NaturalNumber(9));
+		rn28 = 
+				new RationalNumber(true, NaturalNumber.zero, new NaturalNumber(1), new NaturalNumber(7));
+
+		product = 
+				new RationalNumber(true, NaturalNumber.zero, new NaturalNumber(1), new NaturalNumber(7*9));
+
+		System.out.println(rn27 + " * " + rn28 + " = " + product);
+
+		assert(product.equals(rn27.multiply(rn28)));
+
+		rn27 = 
+				new RationalNumber(false, NaturalNumber.zero, new NaturalNumber(1), new NaturalNumber(9));
+		rn28 = 
+				new RationalNumber(false, NaturalNumber.zero, new NaturalNumber(1), new NaturalNumber(7));
+
+		product = 
+				new RationalNumber(true, NaturalNumber.zero, new NaturalNumber(1), new NaturalNumber(7*9));
+
+		System.out.println(rn27 + " * " + rn28 + " = " + product);
+
+		assert(product.equals(rn27.multiply(rn28)));
+
+		
 		assert(!rn.isLargerThan(rn2));
 		assert(rn3.isLargerThan(rn));
 		assert(rn3.isLargerThan(rn2));
