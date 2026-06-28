@@ -106,14 +106,14 @@ public class Matrix<O> implements Cloneable
 		return (O[][])arrayOfValues;
 	}
 	
+	@SuppressWarnings("unchecked")
 	public boolean equals(Object obj)
 	{
 		if (obj == this) return true;
 		
 	    if (!(obj instanceof Matrix)) return false;
-	    
-	    @SuppressWarnings("rawtypes")
-		Matrix other = (Matrix)obj;//TODO: Must be raw?
+
+		Matrix<O> other = (Matrix<O>)obj;//TODO: Must be raw?
 	    try
 	    {
 			if(!(other.getEnclosedType()== this.getEnclosedType()))

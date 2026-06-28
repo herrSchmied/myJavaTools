@@ -172,6 +172,17 @@ public class LinearEquationSolver
 			klon = bubbleSortByLeadingZeros(klon);
 			klon = eraseZeroRows(klon);
 			
+			int leadingZerosLowerRowOld = nrOfLeadingZeros(lowerRowVektor);
+			int leadingZerosLowerRowNew = nrOfLeadingZeros(newRow);
+			if(!(leadingZerosLowerRowOld<leadingZerosLowerRowNew))
+			{
+				String s = "Upper Row: " + upperRowVektor.toString() + "n"
+						+  "Lower Row Old: " + lowerRowVektor.toString() +"\n"
+						+  "Lower Row New: " + newRow.toString();
+				System.out.println(s);
+				assert(false);
+			}
+
 			if(klon.equals(output))throw new MathException("I'm stuck here!");
 
 			if(isInStaggeredForm(klon))return klon;
@@ -203,7 +214,11 @@ public class LinearEquationSolver
 			
 		Matrix<Double> addOn = MatrixRing.scale(factor, rowVektorSource);
 			
-		return MatrixRing.sum(output, addOn);
+		output = MatrixRing.sum(output, addOn);
+		
+		output = output.setValue(kSource, 0, 0.0); //Making sure!! because Value might be prettySmall but not Zero!!
+
+		return output;
 	}
 
 

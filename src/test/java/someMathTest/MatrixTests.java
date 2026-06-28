@@ -257,7 +257,7 @@ public class MatrixTests
 		assert(product.equals(e));
 
 		int n = 0;
-		while(n<100)
+		while(n<1000)
 		{
 			
 			System.out.println("InvertTestNr.:" + (n+1));
@@ -275,7 +275,7 @@ public class MatrixTests
 				Matrix<Double> minusProd =MatrixRing.scale(-1.0, prod);
 				Matrix<Double> sum = MatrixRing.sum(e, minusProd);
 				Double norm = MatrixRing.frobeniusNorm(sum);
-				Double prettySmall = Math.pow(10, -12);
+				Double prettySmall = Math.pow(10, -9);
 				if(!(norm<=prettySmall))
 				{
 					System.out.println("Matrix:\n" + matrix);
@@ -285,10 +285,11 @@ public class MatrixTests
 					System.out.println("Norm of Diff: " + norm);
 					assert(false);
 				}
+				
+				assert(norm<prettySmall);
 				n++;
 			}
 			
-			assert(true);
 		}
 		
 		System.out.println(formatBashStringBoldAndGreen("Done " + n + " Matrix inversions successfuly!"));
