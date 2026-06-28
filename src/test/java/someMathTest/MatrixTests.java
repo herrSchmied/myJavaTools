@@ -275,7 +275,7 @@ public class MatrixTests
 				Matrix<Double> minusProd =MatrixRing.scale(-1.0, prod);
 				Matrix<Double> sum = MatrixRing.sum(e, minusProd);
 				Double norm = MatrixRing.frobeniusNorm(sum);
-				Double prettySmall = Math.pow(10, -9);
+				Double prettySmall = Math.pow(10, -12);
 				if(!(norm<=prettySmall))
 				{
 					System.out.println("Matrix:\n" + matrix);
