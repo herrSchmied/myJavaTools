@@ -1,17 +1,17 @@
 package someMath;
 
+import someMath.exceptions.MathException;
 
-
-public interface AlgebraicField<O>
+public interface AlgebraicField<A>
 {
 
-	public O sum(O o1, O o2);
-	public O multiply(O o1, O o2);
+	public A add(A a1, A a2) throws MathException;
+	public A multiply(A a1, A a2) throws MathException;
 	
-	public O sumInverse(O o);
-	public O multiplyInverse(O o);
+	public A sumInverse(A a1) throws MathException;
+	public A multiplyInverse(A a1) throws MathException;
 	
-	public O sumNeutral();
+	public A sumNeutral();
 	
-	public O multiplyNeutral();
+	public A multiplyNeutral();
 }

@@ -1,61 +1,57 @@
 package someMath;
 
-import java.util.Objects;
+
+import someMath.exceptions.MathException;
 
 
 
-public class ComplexNrDouble
+public class ComplexField<O, T extends AlgebraicField<O>, A extends ComplexNumber<O, T>> implements AlgebraicField<A>
 {
 
-	private final static ComplexNrDouble zero = new ComplexNrDouble(0, 0);
-	private final static ComplexNrDouble one = new ComplexNrDouble(1, 0);
-	private final static ComplexNrDouble i = new ComplexNrDouble(0,1);
-	
-	private final double real;
-	private final double imaginary;
-	
-	public ComplexNrDouble(double real, double imaginary)
+	public ComplexField()
 	{
-		this.real = real;
-		this.imaginary = imaginary;
+		
 	}
-	
-	public double getRealPart() {return real;}
-	
-	public double getImaginaryPart() {return imaginary;}
 
-	public int hashCode()
-	{
-		return Objects.hash(real, imaginary);
-	}
-	
-	public boolean equals(Object obj)
-	{
-		if (obj == this) return true;
-		
-	    if (!(obj instanceof ComplexNrDouble)) return false;
-	    
-	    ComplexNrDouble other = (ComplexNrDouble)obj;
-	    
-	    return ((other.real== this.real)&&(other.imaginary==this.imaginary));
-	}
-	
-	public static ComplexNrDouble getZero()
-	{
-		return zero;
-	}
-	
-	public static ComplexNrDouble getOne()
-	{
-		return one;
-	}
-	
-	public String toString()
+	@Override
+	public A add(A a1, A a2) throws MathException 
 	{
 		
-		if(imaginary<0) return real + " -i" + Math.abs(imaginary);
+		T t = a1.getDummy();
+		O newReal = t.add(a1.getRealPart(), a2.getRealPart());
+		O newImaginary = t.add(a1.getImaginaryPart(), a2.getImaginaryPart());
 		
-		return real + " + i" + imaginary;
+		return (A) new ComplexNumber(newReal, newImaginary, t);
+	}
+
+	@Override
+	public A multiply(A a1, A a2) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public A sumInverse(A a1) throws MathException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public A multiplyInverse(A a1) throws MathException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public A sumNeutral() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public A multiplyNeutral() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 

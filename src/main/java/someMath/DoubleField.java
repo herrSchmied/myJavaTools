@@ -4,6 +4,8 @@ package someMath;
 
 import java.lang.Double;
 
+import someMath.exceptions.MathException;
+
 
 
 public class DoubleField implements AlgebraicField<Double>
@@ -11,30 +13,33 @@ public class DoubleField implements AlgebraicField<Double>
 
 	public DoubleField()
 	{
+		
 	}
 
 	@Override
-	public Double sum(Double o1, Double o2)
+	public Double add(Double a1, Double a2)
 	{
-		return o1 + o2;
+		return a1+a2;
 	}
 
 	@Override
-	public Double multiply(Double o1, Double o2)
+	public Double multiply(Double a1, Double a2)
 	{
-		return o1*o2;
+		return a1*a2;
 	}
 
 	@Override
-	public Double sumInverse(Double o)
+	public Double sumInverse(Double a1) throws MathException
 	{
-		return -1.0*o;
+		return -a1;
 	}
 
 	@Override
-	public Double multiplyInverse(Double o)
+	public Double multiplyInverse(Double a1) throws MathException
 	{
-		return (1/o);
+		if(a1.equals(0.0)) throw new MathException("Zero has no Multiplication inverse!");
+		
+		return (1.0/a1);
 	}
 
 	@Override
@@ -48,4 +53,5 @@ public class DoubleField implements AlgebraicField<Double>
 	{
 		return 1.0;
 	}
+
 }
