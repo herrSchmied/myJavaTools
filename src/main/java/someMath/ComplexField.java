@@ -5,7 +5,7 @@ import someMath.exceptions.MathException;
 
 
 
-public class ComplexField<O, T extends AlgebraicField<O>, A extends ComplexNumber<O, T>> implements AlgebraicField<A>
+public class ComplexField<O, T extends Field<O>, A extends ComplexNumber<O>> implements Field<A>
 {
 
 	public ComplexField()
@@ -16,17 +16,16 @@ public class ComplexField<O, T extends AlgebraicField<O>, A extends ComplexNumbe
 	@Override
 	public A add(A a1, A a2) throws MathException 
 	{
-		
-		T t = a1.getDummy();
+		Field<O> t = MapOfFields.getField(a1.getRealPart().getClass());
 		O newReal = t.add(a1.getRealPart(), a2.getRealPart());
 		O newImaginary = t.add(a1.getImaginaryPart(), a2.getImaginaryPart());
 		
-		return (A) new ComplexNumber(newReal, newImaginary, t);
+		return (A) new ComplexNumber<>(newReal, newImaginary);
 	}
 
 	@Override
-	public A multiply(A a1, A a2) {
-		// TODO Auto-generated method stub
+	public A multiply(A a1, A a2)
+	{
 		return null;
 	}
 

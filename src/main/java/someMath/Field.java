@@ -2,7 +2,7 @@ package someMath;
 
 import someMath.exceptions.MathException;
 
-public interface AlgebraicField<A>
+public interface Field<A>
 {
 
 	public A add(A a1, A a2) throws MathException;

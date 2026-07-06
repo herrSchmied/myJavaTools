@@ -8,7 +8,7 @@ import someMath.exceptions.MathException;
 
 
 
-public class DoubleField implements AlgebraicField<Double>
+public class DoubleField implements Field<Double>
 {
 
 	public DoubleField()
