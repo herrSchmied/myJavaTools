@@ -91,10 +91,12 @@ public class Matrix<O> implements Cloneable
 		}
 	}
 	
+	@SuppressWarnings("unchecked")
 	private O[][] deepCopyOfValueArr()
 	{
+
 		Object [][] arrayOfValues = new Object[columns][rows];
-		
+
 		for(int row=0;row<rows;row++)
 		{
 			for(int col=0;col<columns;col++)
@@ -102,7 +104,7 @@ public class Matrix<O> implements Cloneable
 				arrayOfValues[col][row]= valueArr[col][row];
 			}
 		}
-		
+
 		return (O[][])arrayOfValues;
 	}
 	
@@ -478,6 +480,45 @@ public class Matrix<O> implements Cloneable
 		clone = clone.setRow(rowVektorB, rowA);
 		
 		return clone;
+	}
+
+	public Set<Point> findValues(O o) throws MathException
+	{
+
+		Set<Point> set = new HashSet<>();
+		BiConsumer<Point, O> bic = (p, value)->
+		{
+			if(value.equals(o))set.add(p);
+		};
+	
+		walkThrouMatrix(bic);
+		
+		return set;
+	}
+	
+	public Matrix<O> replaceValues(Set<Point> locations, O replacement) throws MathException
+	{
+
+		Matrix<O> output = this.clone();
+
+		for(Point p: locations)
+		{
+			output = output.setValue(p.x, p.y, replacement);
+		}
+
+		return output;
+	}
+	
+	public Matrix<O> replaceValues(O target, O replacement) throws MathException
+	{
+
+		Matrix<O> output = this.clone();
+
+		Set<Point> locations = findValues(target);
+
+		output = output.replaceValues(locations, replacement);
+
+		return output;
 	}
 
 	//It is important that the values of Type E have a good overwritten toString Method.

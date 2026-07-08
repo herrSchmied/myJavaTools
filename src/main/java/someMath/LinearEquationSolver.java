@@ -1,5 +1,6 @@
 package someMath;
 
+import java.awt.Point;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -213,11 +214,19 @@ public class LinearEquationSolver
 		double factor = -(destValueAtIndexK/sourceValueAtIndexK);
 			
 		Matrix<Double> addOn = MatrixRing.scale(factor, rowVektorSource);
-			
+		
+//		//Finding all Locations that should be Zero!!
+//		Set<Point> locations = rowVektorSource.findValues(sourceValueAtIndexK);
+		
 		output = MatrixRing.sum(output, addOn);
 		
-		output = output.setValue(kSource, 0, 0.0); //Making sure!! because Value might be prettySmall but not Zero!!
-
+//		//Making sure!! because Value might be prettySmall but not Zero!!
+//		//locations are found before addOn is changing output!!
+//		Does not work why??
+//		output = output.replaceValues(locations, 0.0); 
+		
+		//Making sure see comment above. Seems to work
+		output = output.setValue(kSource, 0, 0.0);
 		return output;
 	}
 

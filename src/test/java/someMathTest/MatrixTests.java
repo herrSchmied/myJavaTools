@@ -2,10 +2,12 @@ package someMathTest;
 
 
 
+import java.awt.Point;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
+import java.util.Set;
 
 import org.junit.jupiter.api.Test;
 
@@ -228,7 +230,7 @@ public class MatrixTests
 
 			Double o3 = MatrixStuff.determinant(matrix3);
 		
-			assert(o3.equals(o*o2));
+			assert(Math.abs(o3-o*o2)<Math.pow(10, -11));
 		}
 	}
 
@@ -249,7 +251,7 @@ public class MatrixTests
 		test = test.setValue(1, 2, 1.0);
 		
 		Double d = MatrixStuff.determinant(test);
-		
+
 		Matrix<Double> invertedMatrix = MatrixRing.invert(test);
 		d = MatrixStuff.determinant(invertedMatrix);
 		
@@ -283,6 +285,7 @@ public class MatrixTests
 					System.out.println("Product:\n" + prod);
 					System.out.println("Neutrum:\n" + e);
 					System.out.println("Norm of Diff: " + norm);
+					System.out.println(n);
 					assert(false);
 				}
 				
@@ -323,7 +326,7 @@ public class MatrixTests
 		Matrix<Double> t2 = MatrixRing.transpone(t);
 		assert(detTwoMinus.equals(t2));
 	}
-	
+
 	@Test
 	public void testGluing() throws MathException
 	{
@@ -353,7 +356,22 @@ public class MatrixTests
 
 		assert(top.equals(bottom));
 		assert(toBeAttached.equals(top));
+	}
 
-		
+	@Test
+	public void testFindAndReplaceValues() throws MathException
+	{
+
+		List<Double> list = Arrays.asList(0.0, 0.0, 1.0, 0.0, 1.0, 0.0, 1.0, 0.0, 0.0);
+		Matrix<Double> matrix = new Matrix<>(3, list);
+		Set<Point> locations = matrix.findValues(1.0);
+		matrix = matrix.replaceValues(0.0, 2.0);
+
+		List<Double> list2 = Arrays.asList(2.0, 2.0, 1.0, 2.0, 1.0, 2.0, 1.0, 2.0, 2.0);
+		Matrix<Double> matrix2 = new Matrix<>(3, list2);
+		Set<Point> locations2 = matrix2.findValues(1.0);
+
+		assert(matrix.equals(matrix2));
+		assert(locations2.equals(locations));
 	}
 }
