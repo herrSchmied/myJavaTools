@@ -1,56 +1,91 @@
 package someMath;
 
 
-import someMath.exceptions.MathException;
 
 
 
 public class ComplexField<O, T extends Field<O>, A extends ComplexNumber<O>> implements Field<A>
 {
 
-	public ComplexField()
+	private final Field<O> k;
+
+	public ComplexField(T k)
 	{
-		
+		this.k = k;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public A add(A a1, A a2) throws MathException 
+	public A add(A a1, A a2) throws Exception 
 	{
-		Field<O> t = MapOfFields.getField(a1.getRealPart().getClass());
-		O newReal = t.add(a1.getRealPart(), a2.getRealPart());
-		O newImaginary = t.add(a1.getImaginaryPart(), a2.getImaginaryPart());
+		O newReal = k.add(a1.getRealPart(), a2.getRealPart());
+		O newImaginary = k.add(a1.getImaginaryPart(), a2.getImaginaryPart());
 		
 		return (A) new ComplexNumber<>(newReal, newImaginary);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public A multiply(A a1, A a2)
+	public A multiply(A a1, A a2) throws Exception
 	{
-		return null;
+		O a1Real = a1.getRealPart();
+		O a2Real = a2.getRealPart();
+		O a1Img = a1.getImaginaryPart();
+		O a2Img = a2.getImaginaryPart();
+		O newReal = k.add(k.multiply(a1Real, a2Real), k.sumInverse(k.multiply(a1Img, a2Img)));
+		O newImaginary = k.add(k.multiply(a1Real, a2Img), k.multiply(a1Img, a2Real));
+		
+		return (A) new ComplexNumber<>(newReal, newImaginary);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public A sumInverse(A a1) throws MathException {
-		// TODO Auto-generated method stub
-		return null;
+	public A sumInverse(A a1) throws Exception
+	{
+
+		O newReal = k.sumInverse(a1.getRealPart());
+		O newImaginary = k.sumInverse(a1.getImaginaryPart());
+		
+		return (A) new ComplexNumber<>(newReal, newImaginary);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public A multiplyInverse(A a1) throws MathException {
-		// TODO Auto-generated method stub
-		return null;
+	public A multiplyInverse(A a1) throws Exception
+	{
+
+		O a1Real = a1.getRealPart();
+		O a1Img = a1.getImaginaryPart();
+
+		O amount = k.add(k.multiply(a1Real, a1Real), k.multiply(a1Img, a1Img));
+		O amountInverse = k.multiplyInverse(amount);
+
+		O newReal = k.multiply(a1Real, amountInverse);
+		O newImaginary = k.multiply(k.sumInverse(a1Img), amountInverse);
+
+		return (A) new ComplexNumber<>(newReal, newImaginary);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public A sumNeutral() {
-		// TODO Auto-generated method stub
-		return null;
+	public A sumNeutral() throws Exception
+	{
+
+		O newReal = k.sumNeutral();
+		O newImaginary = k.sumNeutral();
+		
+		return (A) new ComplexNumber<>(newReal, newImaginary);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public A multiplyNeutral() {
-		// TODO Auto-generated method stub
-		return null;
+	public A multiplyNeutral() throws Exception
+	{
+
+		O newReal = k.multiplyNeutral();
+		O newImaginary = k.sumNeutral();
+		
+		return (A) new ComplexNumber<>(newReal, newImaginary);
 	}
 
 

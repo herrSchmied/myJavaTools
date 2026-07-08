@@ -1,17 +1,16 @@
 package someMath;
 
-import someMath.exceptions.MathException;
 
 public interface Field<A>
 {
 
-	public A add(A a1, A a2) throws MathException;
-	public A multiply(A a1, A a2) throws MathException;
+	public A add(A a1, A a2) throws Exception;
+	public A multiply(A a1, A a2) throws Exception;
 	
-	public A sumInverse(A a1) throws MathException;
-	public A multiplyInverse(A a1) throws MathException;
+	public A sumInverse(A a1) throws Exception;
+	public A multiplyInverse(A a1) throws Exception;
 	
-	public A sumNeutral();
+	public A sumNeutral() throws Exception;
 	
-	public A multiplyNeutral();
+	public A multiplyNeutral() throws Exception;
 }

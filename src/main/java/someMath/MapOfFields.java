@@ -13,8 +13,8 @@ public class MapOfFields
 		map.put(Double.class, new DoubleField());
 	}
 
-	public static <O> Field<O> getField(Class<?> clazz)
+	public static <T> Field<T> getField(Class<T> clazz)
 	{
-		return (Field<O>) map.get(clazz);
+		return  (Field<T>) map.get(clazz);
 	}
 }

@@ -13,7 +13,7 @@ public class ComplexNumber<O>
 	{
 
 		if(real==null||imaginary==null) throw new MathException("Null value in Constructor not allowed.");
-		this.k = MapOfFields.getField(real.getClass());
+		this.k = (Field<O>) MapOfFields.getField(real.getClass());
 		this.real = real;
 		this.imaginary = imaginary;
 	}
@@ -30,6 +30,6 @@ public class ComplexNumber<O>
 	
 	public String toString()
 	{
-		return "" + real.toString() + " i*" + imaginary.toString();
+		return "" + real.toString() + " + i*" + imaginary.toString();
 	}
 }

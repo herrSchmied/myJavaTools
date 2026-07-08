@@ -14,16 +14,42 @@ import someMath.exceptions.MathException;
 public class RationalNumber extends Number implements Cloneable, Serializable
 {
 	
-//	public static final RationalNumber zero = 
-//			new RationalNumber(true, NaturalNumber.zero, NaturalNumber.zero, NaturalNumber.one);
-//	public static final RationalNumber one = 
-//			new RationalNumber(true, NaturalNumber.one, NaturalNumber.zero, NaturalNumber.one);
+	public static final RationalNumber zero = new RationalNumber("Zero");
+	public static final RationalNumber one = new RationalNumber('1');
 
 	final boolean sign;
 
 	final NaturalNumber integerPart;
 	final NaturalNumber numerator;
 	final NaturalNumber denominator;
+
+	/**
+	 * Private Constructor for Zero. Does not throw Exceptions.
+	 * @param s
+	 */
+	private RationalNumber(String s)
+	{
+
+		this.sign = true;
+		this.integerPart = NaturalNumber.zero;
+		this.numerator = NaturalNumber.zero;
+		this.denominator = NaturalNumber.one;
+
+	}
+	
+	/**
+	 * Private Constructor for One. Does not throw Exceptions.
+	 * @param s
+	 */
+	private RationalNumber(char s)
+	{
+
+		this.sign = true;
+		this.integerPart = NaturalNumber.one;
+		this.numerator = NaturalNumber.zero;
+		this.denominator = NaturalNumber.one;
+
+	}
 
 	public RationalNumber(boolean sign, NaturalNumber integerPart, NaturalNumber numerator, NaturalNumber denominator) throws NaturalNumberException, MathException
 	{
@@ -32,6 +58,14 @@ public class RationalNumber extends Number implements Cloneable, Serializable
 
 		this.sign = sign;
 		
+		if(numerator.equals(denominator))
+		{
+			this.integerPart = new NaturalNumber(integerPart.intValue()+1);
+			this.numerator = NaturalNumber.zero;
+			this.denominator = NaturalNumber.one;
+			return;
+		}
+
 		if(numerator.equals(NaturalNumber.zero))
 		{
 			this.integerPart = integerPart;
@@ -55,6 +89,16 @@ public class RationalNumber extends Number implements Cloneable, Serializable
 
 		if(denominator.equals(NaturalNumber.zero))throw new MathException("Denominator can't be Zero.");
 
+		if(denominator.equals(numerator))
+		{
+			this.sign = sign;
+			this.integerPart = NaturalNumber.one;
+			this.numerator = NaturalNumber.zero;
+			this.denominator = NaturalNumber.one;
+			
+			return;
+		}
+		
 		this.sign = sign;
 
 		if(numerator.equals(NaturalNumber.zero))
@@ -398,7 +442,7 @@ public class RationalNumber extends Number implements Cloneable, Serializable
 
 			if(!integerPart.equals(NaturalNumber.zero))
 			{
-				s = integerPart.intValue()+s;
+				s = "(" + integerPart.intValue() + " + " + s + ")";
 			}
 		}
 		else
