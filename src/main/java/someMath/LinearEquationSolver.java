@@ -215,15 +215,22 @@ public class LinearEquationSolver
 			
 		Matrix<Double> addOn = MatrixRing.scale(factor, rowVektorSource);
 		
-//		//Finding all Locations that should be Zero!!
-//		Set<Point> locations = rowVektorSource.findValues(sourceValueAtIndexK);
+		//Finding all Locations that should be Zero!!
+		Set<Point> locations = rowVektorSource.findValues(sourceValueAtIndexK);
+		Set<Point> locations2 = rowVektorDest.findValues(destValueAtIndexK);
+		Set<Point> shouldBeZeros = new HashSet<>();
+		
+		for(Point p: locations)
+		{
+			if(locations2.contains(p))shouldBeZeros.add(p);
+		}
 		
 		output = MatrixRing.sum(output, addOn);
 		
-//		//Making sure!! because Value might be prettySmall but not Zero!!
-//		//locations are found before addOn is changing output!!
-//		Does not work why??
-//		output = output.replaceValues(locations, 0.0); 
+		//Making sure!! because Value might be prettySmall but not Zero!!
+		//locations of "should be Zero's" are found before addOn is 
+		//changing output!!
+		output = output.replaceValues(shouldBeZeros, 0.0); 
 		
 		//Making sure see comment above. Seems to work
 		output = output.setValue(kSource, 0, 0.0);
