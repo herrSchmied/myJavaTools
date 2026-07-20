@@ -1,7 +1,9 @@
 package someMath;
 
+import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.BiConsumer;
 
 import someMath.exceptions.MathException;
 
@@ -92,28 +94,94 @@ public class MatrixStuff
 		return new Matrix<O>(rows-1, valueList);
 	}
 	
-	public Matrix<Double> scalarMultiplication(Double o, Matrix<Double> matrix) throws MathException
+	public final <O> Matrix<O> scale(O d, Matrix<O> m) throws MathException
 	{
+
+		Matrix<O> m2 = m.clone();
+		Field<O> k = m.getField();
+
+		int rows = m.getRows();
+		int cols = m.getColumns();
 		
-		int cols = matrix.getColumns();
-		int rows = matrix.getRows();
-		
-		Matrix<Double> klon = matrix.clone();
-		
-		for(int col=0;col<cols;col++)
+		for(int r=0;r<rows;r++)
 		{
-			for(int row=0;row<rows;row++)
+			for(int c=0;c<cols;c++)
 			{
-				
-				Double op = klon.getValue(col, row);
-	
-				
-				Double product = o * op;
-				
-				klon.setValue(col, row, product);
+				O v = m.getValue(c, r);
+				m2 = m2.setValue(c, r, k.multiply(v, d));
 			}
 		}
 		
-		return klon;
+		return m2;
+	}
+	
+
+	public final <O> Matrix<O> invert(Matrix<O> matrix) throws MathException
+	{
+
+		LinearEquationSolver les = new LinearEquationSolver(matrix.getField());
+	
+		if(!matrix.isQuadratic())
+		{
+			System.out.println("Matrix is not quadratic so not invertable.");
+			return null;
+		}
+
+		System.out.println("Inverting Matrix.");
+		
+		Double determinant = MatrixStuff.determinant(matrix);
+		if(determinant.equals(0.0))
+		{
+			System.out.println("Matrix determinant is Zero so not invertable.");
+			return null;
+		}
+		
+		int columns = matrix.getColumns();
+		int rows = columns;
+		
+		Matrix<O> coefficientMatrix = matrix.clone();
+		coefficientMatrix = transpone(coefficientMatrix);
+		Matrix<O> output = new Matrix<>(columns, rows, k.sumNeutral());
+		for(int n=0;n<rows;n++)
+		{
+	
+			System.out.println("Making ExtendedMatrix.");
+			Vektor<Double> rowResults = new Vektor<>(rows, 0.0);
+			rowResults = rowResults.setValue(n, 1.0);
+
+			Matrix<O> extendedCoefficientMatrix = 
+				coefficientMatrix.glueColumnToThisOnTheRight(rowResults);
+
+			Vektor<O> result = les.solve(extendedCoefficientMatrix);
+			//Vektor<Double> doubleResult = les.convertSolutionVektorToExampleVektor(result);
+			output = output.setRow(result, n);				
+		}
+		
+		System.out.println("Inverison Complete.");
+		return output;
+	}
+
+
+	public final <O> O frobeniusNorm (Matrix<O> matrix) throws MathException
+	{
+		
+		Field<O> k = matrix.getField();
+		O output = k.sumNeutral();
+		
+	
+		int rows = matrix.getRows();
+		int cols = matrix.getColumns();
+
+		for(int row=0;row<rows;row++)
+		{
+			for(int col=0;col<cols;col++)
+			{
+				O d = matrix.getValue(col, row);
+				output = k.add(output, k.multiply(d, d));
+			}
+		}	
+		
+		//Remember: I need to get the SQRT of: output!!!!!!!!!!!!
+		return output;
 	}
 }

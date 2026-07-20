@@ -10,15 +10,17 @@ import java.util.Set;
 
 import someMath.exceptions.MathException;
 
-public class LinearEquationSolver
+public class LinearEquationSolver<O>
 {
+
+	private final Field<O> k;
 
 	private List<Integer> erasedIndizies = new ArrayList<>();
 	private static Set<Matrix<Double>> offTheTop = new HashSet<>();
 
-	public LinearEquationSolver()
+	public LinearEquationSolver(Field<O> k)
 	{
-		
+		this.k = k;
 	}
 
 	public Vektor<Double> solve(Matrix<Double> extendedCoefficientMatrix) throws MathException

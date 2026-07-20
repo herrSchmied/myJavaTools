@@ -18,6 +18,7 @@ import someMath.exceptions.MathException;
 public class Matrix<O> implements Cloneable
 {
 
+	private final Field<O> k;
 	private final int rows;
 	private final int columns;
 	private final boolean isQuadratic;
@@ -25,9 +26,10 @@ public class Matrix<O> implements Cloneable
 
 	//In All Related Code first Columns than Rows!!!
 	@SuppressWarnings("unchecked")
-	public Matrix(int columns, int rows, O monoValue)
+	public Matrix(int columns, int rows, O monoValue) throws MathException
 	{
 		
+		this.k = (Field<O>) MapOfFields.getField(monoValue.getClass());
 		this.columns = columns;
 		this.rows = rows;
 		this.isQuadratic = (rows==columns);
@@ -54,6 +56,7 @@ public class Matrix<O> implements Cloneable
 		this.columns = columns;
 		this.rows = valueList.size()/columns;
 		isQuadratic = (rows==columns);
+		this.k = (Field<O>)MapOfFields.getField(valueList.get(0).getClass());
 		
 		Object [][] arrayOfValues = new Object[columns][rows];
 		
@@ -74,7 +77,7 @@ public class Matrix<O> implements Cloneable
 		if(!isRegularArray(valueArr))throw new MathException("Array is not Regular meaning some Elements differ in Dimension despite having the same Position!");
 		this.columns = valueArr.length;
 		this.rows = valueArr[0].length;
-
+		this.k = (Field<O>) MapOfFields.getField(valueArr[0][0].getClass());
 		isQuadratic = (rows==columns);
 		this.valueArr = (O[][]) valueArr;
 	}
@@ -108,58 +111,6 @@ public class Matrix<O> implements Cloneable
 		return (O[][])arrayOfValues;
 	}
 	
-	@SuppressWarnings("unchecked")
-	public boolean equals(Object obj)
-	{
-		if (obj == this) return true;
-		
-	    if (!(obj instanceof Matrix)) return false;
-
-		Matrix<O> other = (Matrix<O>)obj;//TODO: Must be raw?
-	    try
-	    {
-			if(!(other.getEnclosedType()== this.getEnclosedType()))
-			{
-				
-				System.out.println("Matrixes aren't Enclosing same Type.");
-				return false;
-			}
-		}
-	    catch (MathException e)
-	    {
-			e.printStackTrace();
-		}
-	    
-	    
-	    if(other.getRows()!=this.getRows())return false;
-	    if(other.getColumns()!=this.getColumns())return false;
-	    
-	    boolean[] check = new boolean[1];
-	    check[0]= true;
-	    BiConsumer<Point, O> bic=(p, v)->
-	    {
-	    	try
-	    	{
-				if(!other.getValue(p.x, p.y).equals(this.getValue(p.x, p.y)))check[0] = false;
-			}
-	    	catch (MathException e)
-	    	{
-				e.printStackTrace();
-			}
-	    };
-	    
-	    try
-	    {
-			walkThrouMatrix(bic);
-		}
-	    catch (MathException e)
-	    {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	    
-	    return check[0];
-	}
 
 	public Matrix<O> eraseColumn(int eraseCol) throws MathException
 	{
@@ -357,25 +308,6 @@ public class Matrix<O> implements Cloneable
 		return output;
 	}
 
-	public int hashCode()
-	{
-		
-		int [] wert = new int[1];
-		
-		BiConsumer<Point, O> bic = (p, o)->wert[0] += o.hashCode() + p.x + p.y;
-		
-		try
-		{
-			walkThrouMatrix(bic);
-		}
-		catch(MathException e)
-		{
-			e.printStackTrace();
-			throw new RuntimeException("Couldn't walkThru Matrix.");
-		}
-		
-		return Objects.hash(wert[0]);
-	}
 	
 	public boolean isQuadratic() {return isQuadratic;}
 
@@ -519,6 +451,84 @@ public class Matrix<O> implements Cloneable
 		output = output.replaceValues(locations, replacement);
 
 		return output;
+	}
+
+	public Field<O> getField()
+	{
+		return this.k;
+	}
+
+	@SuppressWarnings("unchecked")
+	public boolean equals(Object obj)
+	{
+		if (obj == this) return true;
+		
+	    if (!(obj instanceof Matrix)) return false;
+
+		Matrix<O> other = (Matrix<O>)obj;//TODO: Must be raw?
+	    try
+	    {
+			if(!(other.getEnclosedType()== this.getEnclosedType()))
+			{
+				
+				System.out.println("Matrixes aren't Enclosing same Type.");
+				return false;
+			}
+		}
+	    catch (MathException e)
+	    {
+			e.printStackTrace();
+		}
+	    
+	    
+	    if(other.getRows()!=this.getRows())return false;
+	    if(other.getColumns()!=this.getColumns())return false;
+	    
+	    boolean[] check = new boolean[1];
+	    check[0]= true;
+	    BiConsumer<Point, O> bic=(p, v)->
+	    {
+	    	try
+	    	{
+				if(!other.getValue(p.x, p.y).equals(this.getValue(p.x, p.y)))check[0] = false;
+			}
+	    	catch (MathException e)
+	    	{
+				e.printStackTrace();
+			}
+	    };
+	    
+	    try
+	    {
+			walkThrouMatrix(bic);
+		}
+	    catch (MathException e)
+	    {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	    
+	    return check[0];
+	}
+
+	public int hashCode()
+	{
+		
+		int [] wert = new int[1];
+		
+		BiConsumer<Point, O> bic = (p, o)->wert[0] += o.hashCode() + p.x + p.y;
+		
+		try
+		{
+			walkThrouMatrix(bic);
+		}
+		catch(MathException e)
+		{
+			e.printStackTrace();
+			throw new RuntimeException("Couldn't walkThru Matrix.");
+		}
+		
+		return Objects.hash(wert[0]);
 	}
 
 	//It is important that the values of Type E have a good overwritten toString Method.
