@@ -1,72 +1,71 @@
 package someMath;
 
-import java.awt.Point;
+
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.BiConsumer;
+
 
 import someMath.exceptions.MathException;
 
 public class MatrixStuff
 {
 
-	public static Double determinant(Matrix<Double> matrix) throws MathException
+	public static <O> O determinant(Matrix<O> matrix) throws MathException
 	{
 		if(!matrix.isQuadratic())throw new MathException("Can't compute Determinant of none quadratic Matrix");
 		if(matrix.getRows()==2)return determinantSimpleCase(matrix);
 		
 		int rows = matrix.getRows();
 		
+		Field<O> k = matrix.getField();
+
 		int col = 0;
-		Double sum = 0.0;
+		O sum = k.sumNeutral();
 		
 		for(int row=0;row<rows;row++)
 		{
-			Double m = matrix.getValue(0, row);
+
+			O m = matrix.getValue(0, row);
 			
-			Matrix<Double> subM = subMatrix(0, row, matrix);
-			Double subDet = determinant(subM);
+			Matrix<O> subM = subMatrix(0, row, matrix);
+			O subDet = determinant(subM);
 			
-			Double minusOne = -1.0;
+			O minusOne = k.sumInverse(k.multiplyNeutral());
 			
-			Double o3;
+			O o3;
 			
-			if((row+col)%2==0)o3= subDet * m;
+			if((row+col)%2==0)o3 = k.multiply(subDet, m);
 			else
 			{
-				/*
-				 * operands.clear();
-				 * operands.add(minusOne);
-				 * operands.add(subDet);
-				 * operands.add(m);
-				 */				
-				o3 = minusOne*subDet;
-				o3 = o3* m;
+				o3 = k.multiply(minusOne, subDet);
+				o3 = k.multiply(o3, m);
 			}
 			
-			sum = sum + o3;
+			sum = k.add(sum, o3);
 		}
 		
 		return sum;
 	}
 	
-	public static Double determinantSimpleCase(Matrix<Double> matrix) throws MathException
+	private static <O> O determinantSimpleCase(Matrix<O> matrix) throws MathException
 	{
 		if(!matrix.isQuadratic())throw new MathException("Can't compute Determinant of none quadratic Matrix");
 		if(!(matrix.getRows()==2))throw new MathException("Shouldn't happen!(Matrix got not exactly 2 rows");
 		
 
-		Double o11 = matrix.getValue(0, 0);
-		Double o12 = matrix.getValue(1, 0);
-		Double o21 = matrix.getValue(0, 1);
-		Double o22 = matrix.getValue(1, 1);
+		O o11 = matrix.getValue(0, 0);
+		O o12 = matrix.getValue(1, 0);
+		O o21 = matrix.getValue(0, 1);
+		O o22 = matrix.getValue(1, 1);
 		
-		Double q1 = o11 * o22;
+		Field<O> k = matrix.getField();
+
+		O q1 = k.multiply(o11, o22);
 		
-		Double q2 = o12 * o21;
+		O q2 = k.multiply(o12, o21);
 		
 		
-		Double det = q1 - q2;
+		O det = k.add(q1, k.sumInverse(q2));
 		
 		return det;
 	}
@@ -94,7 +93,7 @@ public class MatrixStuff
 		return new Matrix<O>(rows-1, valueList);
 	}
 	
-	public final <O> Matrix<O> scale(O d, Matrix<O> m) throws MathException
+	public static final <O> Matrix<O> scale(O d, Matrix<O> m) throws MathException
 	{
 
 		Matrix<O> m2 = m.clone();
@@ -116,10 +115,10 @@ public class MatrixStuff
 	}
 	
 
-	public final <O> Matrix<O> invert(Matrix<O> matrix) throws MathException
+	public static final <O> Matrix<O> invert(Matrix<O> matrix) throws MathException
 	{
 
-		LinearEquationSolver les = new LinearEquationSolver(matrix.getField());
+		LinearEquationSolver<O> les = new LinearEquationSolver<>(matrix.getField());
 	
 		if(!matrix.isQuadratic())
 		{
@@ -129,7 +128,7 @@ public class MatrixStuff
 
 		System.out.println("Inverting Matrix.");
 		
-		Double determinant = MatrixStuff.determinant(matrix);
+		O determinant = determinant(matrix);
 		if(determinant.equals(0.0))
 		{
 			System.out.println("Matrix determinant is Zero so not invertable.");
@@ -138,7 +137,8 @@ public class MatrixStuff
 		
 		int columns = matrix.getColumns();
 		int rows = columns;
-		
+		Field<O> k = matrix.getField();
+
 		Matrix<O> coefficientMatrix = matrix.clone();
 		coefficientMatrix = transpone(coefficientMatrix);
 		Matrix<O> output = new Matrix<>(columns, rows, k.sumNeutral());
@@ -146,8 +146,8 @@ public class MatrixStuff
 		{
 	
 			System.out.println("Making ExtendedMatrix.");
-			Vektor<Double> rowResults = new Vektor<>(rows, 0.0);
-			rowResults = rowResults.setValue(n, 1.0);
+			Vektor<O> rowResults = new Vektor<>(rows, k.sumNeutral());
+			rowResults = rowResults.setValue(n, k.multiplyNeutral());
 
 			Matrix<O> extendedCoefficientMatrix = 
 				coefficientMatrix.glueColumnToThisOnTheRight(rowResults);
@@ -161,8 +161,39 @@ public class MatrixStuff
 		return output;
 	}
 
+	public static <O> Matrix<O> transpone(Matrix<O> matrix)
+	{
+		
 
-	public final <O> O frobeniusNorm (Matrix<O> matrix) throws MathException
+		int cols = matrix.getColumns();
+		int rows = matrix.getRows();
+	
+		Matrix<O> transponed;
+		Field<O> k = matrix.getField();
+
+		try
+		{
+			//Remember columns and rows get switched!!
+			transponed = new Matrix<O>(rows, cols, k.sumNeutral());
+			for(int col=0;col<cols;col++)
+			{
+				for(int row=0;row<rows;row++)
+				{
+					O d = matrix.getValue(col, row);
+					transponed = transponed.setValue(row, col, d);
+				}
+			}
+		}
+		catch(MathException e)
+		{
+			e.printStackTrace();
+			throw new RuntimeException("Couldn't initialize matrix transponend");
+		}
+		
+		return transponed;
+	};
+
+	public static final <O> O frobeniusNorm (Matrix<O> matrix) throws MathException
 	{
 		
 		Field<O> k = matrix.getField();

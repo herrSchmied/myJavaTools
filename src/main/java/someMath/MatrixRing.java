@@ -161,34 +161,4 @@ public class MatrixRing<O> implements Ring<Matrix<O>>
 		return new Matrix<>(sideLength, diagonalMOne);
 	}
 
-	public final Matrix<O> transpone(Matrix<O> matrix)
-	{
-		
-
-		int cols = matrix.getColumns();
-		int rows = matrix.getRows();
-	
-		Matrix<O> transponed;
-		try
-		{
-			//Remember columns and rows get switched!!
-			transponed = new Matrix<O>(rows, cols, k.sumNeutral());
-			for(int col=0;col<cols;col++)
-			{
-				for(int row=0;row<rows;row++)
-				{
-					O d = matrix.getValue(col, row);
-					transponed = transponed.setValue(row, col, d);
-				}
-			}
-		}
-		catch(MathException e)
-		{
-			e.printStackTrace();
-			throw new RuntimeException("Couldn't initialize matrix transponend");
-		}
-		
-		return transponed;
-	};
-
 }

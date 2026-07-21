@@ -1,8 +1,6 @@
 package someMath;
 
-
-
-
+import someMath.exceptions.MathException;
 
 public class ComplexField<O, T extends Field<O>, A extends ComplexNumber<O>> implements Field<A>
 {
@@ -16,7 +14,7 @@ public class ComplexField<O, T extends Field<O>, A extends ComplexNumber<O>> imp
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public A add(A a1, A a2) throws Exception 
+	public A add(A a1, A a2) throws MathException 
 	{
 		O newReal = k.add(a1.getRealPart(), a2.getRealPart());
 		O newImaginary = k.add(a1.getImaginaryPart(), a2.getImaginaryPart());
@@ -26,7 +24,7 @@ public class ComplexField<O, T extends Field<O>, A extends ComplexNumber<O>> imp
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public A multiply(A a1, A a2) throws Exception
+	public A multiply(A a1, A a2) throws MathException
 	{
 		O a1Real = a1.getRealPart();
 		O a2Real = a2.getRealPart();
@@ -40,7 +38,7 @@ public class ComplexField<O, T extends Field<O>, A extends ComplexNumber<O>> imp
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public A sumInverse(A a1) throws Exception
+	public A sumInverse(A a1) throws MathException
 	{
 
 		O newReal = k.sumInverse(a1.getRealPart());
@@ -51,7 +49,7 @@ public class ComplexField<O, T extends Field<O>, A extends ComplexNumber<O>> imp
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public A multiplyInverse(A a1) throws Exception
+	public A multiplyInverse(A a1) throws MathException
 	{
 
 		O a1Real = a1.getRealPart();
@@ -68,7 +66,7 @@ public class ComplexField<O, T extends Field<O>, A extends ComplexNumber<O>> imp
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public A sumNeutral() throws Exception
+	public A sumNeutral() throws MathException
 	{
 
 		O newReal = k.sumNeutral();
@@ -79,7 +77,7 @@ public class ComplexField<O, T extends Field<O>, A extends ComplexNumber<O>> imp
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public A multiplyNeutral() throws Exception
+	public A multiplyNeutral() throws MathException
 	{
 
 		O newReal = k.multiplyNeutral();

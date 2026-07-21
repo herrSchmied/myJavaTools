@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
+import someMath.DoubleField;
 import someMath.SmallTools;
 import someMath.Vektor;
 import someMath.Vektorraum;
@@ -35,9 +36,10 @@ public class VectorTests
 	public void scalarProduct() throws MathException
 	{
 		
+		Vektorraum<Double> vr = new Vektorraum<>(3, new DoubleField()); 
 		List<Double> list = Arrays.asList(1.0, 1.0, 1.0);
 		Vektor<Double> vektor = new Vektor<>(list);
-		Double product = Vektorraum.scalarProduct(vektor, vektor);
+		Double product = vr.scalarProduct(vektor, vektor);
 		
 		assert(product.equals(3.0));
 		
@@ -49,6 +51,8 @@ public class VectorTests
 	@Test
 	public void scaleTest() throws MathException
 	{
+
+		Vektorraum<Double> vr = new Vektorraum<>(3, new DoubleField()); 
 
 		Double scale = 1.5;
 		
@@ -65,12 +69,12 @@ public class VectorTests
 		Vektor<Double> scaleCheckVektor = new Vektor<>(list2);
 		System.out.println("scaleCheck:\n" + scaleCheckVektor);
 
-		Vektor<Double> scaledVektor = Vektorraum.scaling(scale, original);
+		Vektor<Double> scaledVektor = vr.scaling(scale, original);
 		System.out.println("scaled:\n" + scaledVektor);
 
 		assert(scaledVektor.equals(scaleCheckVektor));
 
-		Vektor<Double> backToTheOriginal = Vektorraum.scaling((1/scale), scaleCheckVektor);
+		Vektor<Double> backToTheOriginal = vr.scaling((1/scale), scaleCheckVektor);
 		System.out.println("backToTheoriginal:\n" + backToTheOriginal);
 
 		assert(scaledVektor.equals(scaleCheckVektor));

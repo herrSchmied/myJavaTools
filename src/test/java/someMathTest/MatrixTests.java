@@ -25,15 +25,16 @@ public class MatrixTests
 {
 
 
-	MatrixRing ring;
+	MatrixRing<Double> ring;
 	DoubleField dField;
+	Double prettySmall = Math.pow(10, -12);
 
 
 	public void setup(int n) throws MathException
 	{
 
 		dField = new DoubleField();
-		ring = new MatrixRing(n);
+		ring = new MatrixRing<>(n, new DoubleField());
 	}
 
 	@Test
@@ -166,15 +167,15 @@ public class MatrixTests
 		int matrixSideLength = 2;
 		setup(2);//Matrix side length and related stuff.
 		
-		Matrix<Double> zero = ring.getNeutrumMatrixAddition();
+		Matrix<Double> zero = ring.sumNeutral();
 		
-		Matrix<Double> s = MatrixRing.sum(zero, zero);
+		Matrix<Double> s = ring.add(zero, zero);
 		
-		Matrix<Double> one = ring.getNeutrumMatrixMultiplication();
+		Matrix<Double> one = ring.multiplyNeutral();
 		
 		assert(s.equals(zero));
 		
-		Matrix<Double> unchanged = MatrixRing.sum(zero, one);
+		Matrix<Double> unchanged = ring.add(zero, one);
 		assert(one.equals(unchanged));
 		
 		List<Double> listOfValues1 = Arrays.asList(1.0, 1.0, 1.0, 1.0);
@@ -189,8 +190,8 @@ public class MatrixTests
 		List<Double> listOfValues34 = Arrays.asList(3.0, 4.0, 3.0, 4.0);
 		Matrix<Double> zeroDet34 = new Matrix<Double>(matrixSideLength, listOfValues34);
 		
-		Matrix<Double> holder = MatrixRing.sum(zeroDetOne, zeroDetTwo);
-		Matrix<Double> zeroDet = MatrixRing.sum(holder, zeroDetThree);
+		Matrix<Double> holder = ring.add(zeroDetOne, zeroDetTwo);
+		Matrix<Double> zeroDet = ring.add(holder, zeroDetThree);
 		assert(zeroDet34.equals(zeroDet));
 	}
 	
@@ -202,12 +203,12 @@ public class MatrixTests
 		
 		List<Double> listOfValues = Arrays.asList(0.0, 2.0, 1.0, 1.0);
 		Matrix<Double> detTwoMinus = new Matrix<Double>(matrixSideLength, listOfValues);
-		Matrix<Double> neutrumMatrixMultiplication = ring.getNeutrumMatrixMultiplication();
-		Matrix<Double> prod = MatrixRing.multiply(neutrumMatrixMultiplication, detTwoMinus);
+		Matrix<Double> neutrumMatrixMultiplication = ring.multiplyNeutral();
+		Matrix<Double> prod = ring.multiply(neutrumMatrixMultiplication, detTwoMinus);
 
 		assert(prod.equals(detTwoMinus));
 
-		prod = MatrixRing.multiply(detTwoMinus, neutrumMatrixMultiplication);
+		prod = ring.multiply(detTwoMinus, neutrumMatrixMultiplication);
 		assert(prod.equals(detTwoMinus));
 	}
 
@@ -223,7 +224,7 @@ public class MatrixTests
 			List<Double> list2 = createListOfDoubles(9, 10, 0);
 			Matrix<Double> matrix = new Matrix<Double>(l, list);
 			Matrix<Double> matrix2 = new Matrix<Double>(l, list2);
-			Matrix<Double> matrix3 = MatrixRing.multiply(matrix, matrix2);
+			Matrix<Double> matrix3 = ring.multiply(matrix, matrix2);
 
 			Double o = MatrixStuff.determinant(matrix);
 			Double o2 = MatrixStuff.determinant(matrix2);
@@ -241,21 +242,22 @@ public class MatrixTests
 //		//TODO:Something goes wrong when using 3x3 Matrixes???
 		int matrixSideLength = 3;
 		setup(matrixSideLength);//Matrix side length and related stuff.
-		MatrixRing ring2 = new MatrixRing(matrixSideLength);
-		Matrix<Double> e = ring2.getNeutrumMatrixMultiplication();
-		Matrix<Double> e2 = MatrixRing.invert(e);
+		MatrixRing<Double> ring2 = new MatrixRing<>(matrixSideLength, new DoubleField());
+		Matrix<Double> e = ring2.multiplyNeutral();
+		Matrix<Double> e2 = MatrixStuff.invert(e);
 		assert(e2.equals(e));
 		
 		
 		Matrix<Double> test = e.setValue(2, 1, 2.0);
 		test = test.setValue(1, 2, 1.0);
 		
-		Double d = MatrixStuff.determinant(test);
+		Double d1 = MatrixStuff.determinant(test);
 
-		Matrix<Double> invertedMatrix = MatrixRing.invert(test);
-		d = MatrixStuff.determinant(invertedMatrix);
+		Matrix<Double> invertedMatrix = MatrixStuff.invert(test);
+		Double d2 = MatrixStuff.determinant(invertedMatrix);
 		
-		Matrix<Double>  product = MatrixRing.multiply(test, invertedMatrix);
+		assert(1-(d1*d2)<prettySmall);
+		Matrix<Double>  product = ring.multiply(test, invertedMatrix);
 		assert(product.equals(e));
 
 		int n = 0;
@@ -272,12 +274,11 @@ public class MatrixTests
 			if(!determinante.equals(0.0))
 			{
 
-				Matrix<Double> inverted = MatrixRing.invert(matrix);
-				Matrix<Double> prod = MatrixRing.multiply(inverted, matrix);
-				Matrix<Double> minusProd =MatrixRing.scale(-1.0, prod);
-				Matrix<Double> sum = MatrixRing.sum(e, minusProd);
-				Double norm = MatrixRing.frobeniusNorm(sum);
-				Double prettySmall = Math.pow(10, -12);
+				Matrix<Double> inverted = MatrixStuff.invert(matrix);
+				Matrix<Double> prod = ring.multiply(inverted, matrix);
+				Matrix<Double> minusProd = MatrixStuff.scale(-1.0, prod);
+				Matrix<Double> sum = ring.add(e, minusProd);
+				Double norm = MatrixStuff.frobeniusNorm(sum);
 				if(!(norm<=prettySmall))
 				{
 					System.out.println("Matrix:\n" + matrix);
@@ -320,10 +321,10 @@ public class MatrixTests
 		List<Double> listOfValues = Arrays.asList(1.0, 0.0, 0.0, 0.0, 1.0, 3.0, 0.0, 1.0, 1.0);
 		Matrix<Double> detTwoMinus = new Matrix<Double>(matrixSideLength, listOfValues);
 
-		Matrix<Double> t = MatrixRing.transpone(detTwoMinus);
+		Matrix<Double> t = MatrixStuff.transpone(detTwoMinus);
 		assert(!t.equals(detTwoMinus));
 		
-		Matrix<Double> t2 = MatrixRing.transpone(t);
+		Matrix<Double> t2 = MatrixStuff.transpone(t);
 		assert(detTwoMinus.equals(t2));
 	}
 

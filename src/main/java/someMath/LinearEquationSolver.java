@@ -16,18 +16,18 @@ public class LinearEquationSolver<O>
 	private final Field<O> k;
 
 	private List<Integer> erasedIndizies = new ArrayList<>();
-	private static Set<Matrix<Double>> offTheTop = new HashSet<>();
+	private Set<Matrix<O>> offTheTop = new HashSet<>();
 
 	public LinearEquationSolver(Field<O> k)
 	{
 		this.k = k;
 	}
 
-	public Vektor<Double> solve(Matrix<Double> extendedCoefficientMatrix) throws MathException
+	public Vektor<O> solve(Matrix<O> extendedCoefficientMatrix) throws MathException
 	{
 
 		System.out.println("Solving Extendedmatrix.");
-		Matrix<Double> customizable = extendedCoefficientMatrix.clone();
+		Matrix<O> customizable = extendedCoefficientMatrix.clone();
 		int rows = customizable.getRows();
 		int cols = customizable.getColumns();
 
@@ -42,27 +42,26 @@ public class LinearEquationSolver<O>
 		{
 			
 			//calculate the original coefficientMatrix
-			DoubleField dField = new DoubleField();
-			Matrix<Double> coefficientMatrix = new Matrix<>(cols-1, cols-1, 0.0);
+			Matrix<O> coefficientMatrix = new Matrix<>(cols-1, cols-1, k.sumNeutral());
 			for(int col=0;col<cols-1;col++)
 			{
-				Matrix<Double> columnVektor = customizable.getColumn(col);
+				Matrix<O> columnVektor = customizable.getColumn(col);
 				coefficientMatrix = coefficientMatrix.setColumn(columnVektor, col);
 			}
 
-			Double determinant = MatrixStuff.determinant(coefficientMatrix);
-			Matrix<Double> columnVektor = customizable.getColumn(cols-1);
+			O determinant = MatrixStuff.determinant(coefficientMatrix);
+			Matrix<O> columnVektor = customizable.getColumn(cols-1);
 
 			//Check if despite determinant being Zero it is solvable??
-			if(determinant.equals(0.0))
+			if(determinant.equals(k.sumNeutral()))
 			{
 				int n=0;
 				cols = customizable.getColumns();
 				for(int col=0;col<cols-1;col++)
 				{
-					Matrix<Double> switchMatrix = coefficientMatrix.setColumn(columnVektor, col);
-					Double sideDeterminant = MatrixStuff.determinant(switchMatrix);
-					if(sideDeterminant.equals(0.0))n++;
+					Matrix<O> switchMatrix = coefficientMatrix.setColumn(columnVektor, col);
+					O sideDeterminant = MatrixStuff.determinant(switchMatrix);
+					if(sideDeterminant.equals(k.sumNeutral()))n++;
 				}
 
 				if(n<cols-1)
@@ -80,10 +79,10 @@ public class LinearEquationSolver<O>
 		return calculateSolvingVektor(customizable);
 	}
 
-	public Matrix<Double> scrapeOffTheTop(Matrix<Double> extendedCoefficientMatrix) throws MathException
+	public Matrix<O> scrapeOffTheTop(Matrix<O> extendedCoefficientMatrix) throws MathException
 	{
 		
-		Matrix<Double> output = extendedCoefficientMatrix.clone();
+		Matrix<O> output = extendedCoefficientMatrix.clone();
 		
 		int rows = output.getRows();
 		int cols = output.getColumns();
@@ -92,7 +91,7 @@ public class LinearEquationSolver<O>
 		
 		for(int row=0;row<diff;row++)
 		{
-			Matrix<Double> rowVektor = output.getRow(row);
+			Matrix<O> rowVektor = output.getRow(row);
 			output = output.eraseRow(row);
 			offTheTop.add(rowVektor);
 		}
@@ -100,7 +99,7 @@ public class LinearEquationSolver<O>
 		return output;
 	}
 
-	public static boolean isOverDeterministic(Matrix<Double> matrix)
+	public boolean isOverDeterministic(Matrix<O> matrix)
 	{
 		
 		int rows = matrix.getRows();
@@ -109,7 +108,7 @@ public class LinearEquationSolver<O>
 		return (rows>cols-1);
 	}
 	
-	public static boolean isUnderDeterministic(Matrix<Double> matrix)
+	public boolean isUnderDeterministic(Matrix<O> matrix)
 	{
 		int rows = matrix.getRows();
 		int cols = matrix.getColumns();
@@ -118,12 +117,12 @@ public class LinearEquationSolver<O>
 
 	}
 
-	public Matrix<Double> transformCoefficients(Matrix<Double> extendedCoefficientMatrix, int upperRowNr) throws MathException
+	public Matrix<O> transformCoefficients(Matrix<O> extendedCoefficientMatrix, int upperRowNr) throws MathException
 	{
 
 		System.out.println("Transforming Coefficients. upperRowNr: " + upperRowNr);
 
-		Matrix<Double> output = extendedCoefficientMatrix.clone();
+		Matrix<O> output = extendedCoefficientMatrix.clone();
 		
 		if(isInStaggeredForm(output))return output;
 
@@ -137,10 +136,10 @@ public class LinearEquationSolver<O>
 
 		if(lowerRowNr>rows-1)return output;
 
-		Matrix<Double> upperRowVektor = output.getRow(upperRowNr);
+		Matrix<O> upperRowVektor = output.getRow(upperRowNr);
 		int upperRowLeadingZeros = nrOfLeadingZeros(upperRowVektor);
 	
-		Matrix<Double> lowerRowVektor = output.getRow(lowerRowNr);
+		Matrix<O> lowerRowVektor = output.getRow(lowerRowNr);
 		int lowerRowLeadingZeros = nrOfLeadingZeros(lowerRowVektor);
 		
 		if(lowerRowLeadingZeros<upperRowLeadingZeros)
@@ -168,9 +167,9 @@ public class LinearEquationSolver<O>
 
 			System.out.println("Lines of Equal length.");
 
-			Matrix<Double> klon = output.clone();
+			Matrix<O> klon = output.clone();
 
-			Matrix<Double> newRow = makeAtLeastOneExtraLeadingZero(upperRowVektor, lowerRowVektor);
+			Matrix<O> newRow = makeAtLeastOneExtraLeadingZero(upperRowVektor, lowerRowVektor);
 			klon = klon.setRow(newRow, lowerRowNr);
 			klon = bubbleSortByLeadingZeros(klon);
 			klon = eraseZeroRows(klon);
@@ -195,27 +194,28 @@ public class LinearEquationSolver<O>
 		throw new MathException("Should not happen!");			
 	}
 	
-	public Matrix<Double> transformCoefficients(Matrix<Double> extendedCoefficientMatrix) throws MathException
+	public Matrix<O> transformCoefficients(Matrix<O> extendedCoefficientMatrix) throws MathException
 	{
 		return transformCoefficients(extendedCoefficientMatrix, 0);
 	}
 
-	public Matrix<Double> makeAtLeastOneExtraLeadingZero(Matrix<Double> rowVektorSource, Matrix<Double> rowVektorDest) throws MathException
+	public Matrix<O> makeAtLeastOneExtraLeadingZero(Matrix<O> rowVektorSource, Matrix<O> rowVektorDest) throws MathException
 	{
 
-		Matrix<Double> output = rowVektorDest.clone();
+		Matrix<O> output = rowVektorDest.clone();
 
 		int kSource = nrOfLeadingZeros(rowVektorSource);
 		int kDest = nrOfLeadingZeros(output);
 		if(kDest<kSource)throw new MathException("Destination has less leading Zeros than Source.");
 		if(kDest>kSource)return output;
 
-		double sourceValueAtIndexK = rowVektorSource.getValue(kSource, 0);
-		double destValueAtIndexK = output.getValue(kSource, 0);
+		O sourceValueAtIndexK = rowVektorSource.getValue(kSource, 0);
+		O destValueAtIndexK = output.getValue(kSource, 0);
 			
-		double factor = -(destValueAtIndexK/sourceValueAtIndexK);
+		O factor = k.sumInverse(k.multiply(destValueAtIndexK,k.multiplyInverse(sourceValueAtIndexK)));
+
 			
-		Matrix<Double> addOn = MatrixRing.scale(factor, rowVektorSource);
+		Matrix<O> addOn = MatrixStuff.scale(factor, rowVektorSource);
 		
 		//Finding all Locations that should be Zero!!
 		Set<Point> locations = rowVektorSource.findValues(sourceValueAtIndexK);
@@ -227,20 +227,21 @@ public class LinearEquationSolver<O>
 			if(locations2.contains(p))shouldBeZeros.add(p);
 		}
 		
-		output = MatrixRing.sum(output, addOn);
+		MatrixRing<O> ring = new MatrixRing<>(2, k);
+		output = ring.add(output, addOn);
 		
 		//Making sure!! because Value might be prettySmall but not Zero!!
 		//locations of "should be Zero's" are found before addOn is 
 		//changing output!!
-		output = output.replaceValues(shouldBeZeros, 0.0); 
+		output = output.replaceValues(shouldBeZeros, k.sumNeutral()); 
 		
 		//Making sure see comment above. Seems to work
-		output = output.setValue(kSource, 0, 0.0);
+		output = output.setValue(kSource, 0, k.sumNeutral());
 		return output;
 	}
 
 
-	public Vektor<Double> calculateSolvingVektor(Matrix<Double> extendedCoefficientMatrix) throws MathException
+	public Vektor<O> calculateSolvingVektor(Matrix<O> extendedCoefficientMatrix) throws MathException
 	{
 
 		System.out.println("Calculating solving Vektor.");
@@ -248,27 +249,28 @@ public class LinearEquationSolver<O>
 		int rows = extendedCoefficientMatrix.getRows();
 		int cols = extendedCoefficientMatrix.getColumns();
 
-		Map<String, Double> solvedVariables = new HashMap<>();
+		Map<String, O> solvedVariables = new HashMap<>();
 
 		//Backwards!!
 		for(int row=rows-1;row>-1;row--)
 		{
-			Vektor<Double> rowVektor = extendedCoefficientMatrix.getRowAsVektor(row);
+			Vektor<O> rowVektor = extendedCoefficientMatrix.getRowAsVektor(row);
 
 			List<Integer> nonZeroList = nonZeros(rowVektor);
 			if(nonZeroList.isEmpty())throw new MathException("Hey!! Only Zeros here?\n " + rowVektor);
 
-			Double rowResult = rowVektor.getValue(cols-1);
+			O rowResult = rowVektor.getValue(cols-1);
 
 			//Far Left Index is the variable to be unsolved
 			int positionToBeSolved = nonZeroList.get(0);
 			String toBeSolvedVariableName = "x"+positionToBeSolved;
-			Double toBeSolvedVariableCoefficient = rowVektor.getValue(positionToBeSolved);
+			O toBeSolvedVariableCoefficient = rowVektor.getValue(positionToBeSolved);
 			System.out.println("Position: " + positionToBeSolved+". Name: " + toBeSolvedVariableName);
 			if(nonZeroList.size()==1)
 			{
+						
+				O result = k.multiply(rowResult, k.multiplyInverse(toBeSolvedVariableCoefficient));
 
-				Double result = rowResult/toBeSolvedVariableCoefficient;
 				solvedVariables.put(toBeSolvedVariableName, result);
 
 				continue;
@@ -281,26 +283,29 @@ public class LinearEquationSolver<O>
 			{
 
 
-				Double sumOfProducts = 0.0;
+				O sumOfProducts = k.sumNeutral();
 				for(int place: nonZeroList)
 				{
 
 					if(place==positionToBeSolved)continue;
 					//int oldIndex2 = variablesTrackRecord.getOldIndexOf(place+1);
 					String variableName = "x"+place;
-					Double coefficient = rowVektor.getValue(place);
-					Double solvedVariable = solvedVariables.get(variableName);
-					sumOfProducts = sumOfProducts + coefficient*solvedVariable;
+					O coefficient = rowVektor.getValue(place);
+					O solvedVariable = solvedVariables.get(variableName);
+					sumOfProducts = k.add(sumOfProducts, k.multiply(coefficient, solvedVariable));
 				}
-
-				Double result = (rowResult-sumOfProducts)/toBeSolvedVariableCoefficient;
+				
+				O numerator = k.add(rowResult, k.sumInverse(sumOfProducts));
+				O denominator = k.multiplyInverse(toBeSolvedVariableCoefficient);
+				O result = k.multiply(numerator, denominator);
+				
 				solvedVariables.put(toBeSolvedVariableName, result);
 			}
 
 		}
 
 		System.out.println("SolvedVariables: " + solvedVariables);
-		List<Double> values = new ArrayList<>();
+		List<O> values = new ArrayList<>();
 		int s = cols;
 		for(int n=0;n<s;n++)
 		{
@@ -308,13 +313,13 @@ public class LinearEquationSolver<O>
 			String name = "x"+n;
 			if(solvedVariables.containsKey(name))
 			{
-				Double d = solvedVariables.get(name);
+				O d = solvedVariables.get(name);
 				values.add(d);
 			}
 			//else values.add(name);
 		}
 
-		Vektor<Double> solutionVektor = new Vektor<>(values);
+		Vektor<O> solutionVektor = new Vektor<>(values);
 		//System.out.println(solutionVektor);
 		return solutionVektor;
 	}
@@ -342,7 +347,7 @@ public class LinearEquationSolver<O>
 //		return example;
 //	}
 
-	public List<Integer> nonZeros(Vektor<Double> rowVektor) throws MathException
+	public List<Integer> nonZeros(Vektor<O> rowVektor) throws MathException
 	{
 		
 		List<Integer> positions = new ArrayList<>();
@@ -352,17 +357,17 @@ public class LinearEquationSolver<O>
 		//So it goes only up too cols-1!!!
 		for(int row=0;row<rows-1;row++)
 		{
-			Double coefficient = rowVektor.getValue(row);
-			if(!coefficient.equals(0.0))positions.add(row);
+			O coefficient = rowVektor.getValue(row);
+			if(!coefficient.equals(k.sumNeutral()))positions.add(row);
 		}
 		
 		return positions;
 	}
 	
-	public Matrix<Double> shortenMatrix(Matrix<Double> extendedCoefficientMatrix) throws MathException
+	public Matrix<O> shortenMatrix(Matrix<O> extendedCoefficientMatrix) throws MathException
 	{
 
-		Matrix<Double> output = extendedCoefficientMatrix.clone();
+		Matrix<O> output = extendedCoefficientMatrix.clone();
 
 		output = eraseZeroRows(output);
 		output = eraseZeroColumns(output);
@@ -370,10 +375,10 @@ public class LinearEquationSolver<O>
 		return output;
 	}
 
-	public Matrix<Double> eraseZeroRows(Matrix<Double> matrix) throws MathException
+	public Matrix<O> eraseZeroRows(Matrix<O> matrix) throws MathException
 	{
 
-		Matrix<Double> output = matrix.clone();
+		Matrix<O> output = matrix.clone();
 		int rows = output.getRows();
 		
 		for(int row=0;row<rows;row++)
@@ -390,10 +395,10 @@ public class LinearEquationSolver<O>
 		return output;
 	}
 
-	public Matrix<Double> eraseZeroColumns(Matrix<Double> extendedCoefficientMatrix) throws MathException
+	public Matrix<O> eraseZeroColumns(Matrix<O> extendedCoefficientMatrix) throws MathException
 	{
 
-		Matrix<Double> output = extendedCoefficientMatrix.clone();
+		Matrix<O> output = extendedCoefficientMatrix.clone();
 		int cols = output.getColumns();
 
 		//column to erase can not be the Right side of
@@ -413,40 +418,40 @@ public class LinearEquationSolver<O>
 		return output;
 	}
 
-	public static boolean columnContainsOnlyZeros(int column, Matrix<Double> extendedCoefficientMatrix) throws MathException
+	public boolean columnContainsOnlyZeros(int column, Matrix<O> extendedCoefficientMatrix) throws MathException
 	{
 
-		Matrix<Double> columnVektor = extendedCoefficientMatrix.getColumn(column);
+		Matrix<O> columnVektor = extendedCoefficientMatrix.getColumn(column);
 		int rows = columnVektor.getRows();
 
 		for(int row=0;row<rows;row++)
 		{
-			double value = columnVektor.getValue(0, row);
-			if(value!=0.0)return false;
+			O value = columnVektor.getValue(0, row);
+			if(value!=k.sumNeutral())return false;
 		}
 		
 		return true;
 	}
 
-	public static boolean rowContainsOnlyZeros(int row, Matrix<Double> extendedCoefficientMatrix) throws MathException
+	public boolean rowContainsOnlyZeros(int row, Matrix<O> extendedCoefficientMatrix) throws MathException
 	{
 
-		Matrix<Double> rowVektor = extendedCoefficientMatrix.getRow(row);
+		Matrix<O> rowVektor = extendedCoefficientMatrix.getRow(row);
 		int cols = rowVektor.getColumns();
 		
 		for(int col=0;col<cols;col++)
 		{
-			double value = rowVektor.getValue(col, 0);
-			if(value!=0.0)return false;
+			O value = rowVektor.getValue(col, 0);
+			if(value!=k.sumNeutral())return false;
 		}
 		
 		return true;
 	}
 	
-	public static Matrix<Double> bubbleSortByLeadingZeros(Matrix<Double> extendedCoefficientMatrix) throws MathException
+	public Matrix<O> bubbleSortByLeadingZeros(Matrix<O> extendedCoefficientMatrix) throws MathException
 	{
 		int rows = extendedCoefficientMatrix.getRows();
-		Matrix<Double> output = extendedCoefficientMatrix.clone();
+		Matrix<O> output = extendedCoefficientMatrix.clone();
 		if(rows<=1)return output;
 		
 		boolean noSortingHappend = false;
@@ -458,8 +463,8 @@ public class LinearEquationSolver<O>
 			for(int row=0;row<rows-1;row++)
 			{
 
-				Matrix<Double> current = output.getRow(row);
-				Matrix<Double> beneath = output.getRow(row+1);
+				Matrix<O> current = output.getRow(row);
+				Matrix<O> beneath = output.getRow(row+1);
 			
 				int a = nrOfLeadingZeros(current);
 				int b = nrOfLeadingZeros(beneath);
@@ -477,18 +482,18 @@ public class LinearEquationSolver<O>
 		return output;
 	}
 
-	public static boolean isInStaggeredForm(Matrix<Double> extendedCoefficientMatrix) throws MathException
+	public boolean isInStaggeredForm(Matrix<O> extendedCoefficientMatrix) throws MathException
 	{
 		int rows =extendedCoefficientMatrix.getRows();
 		
 		//Starts at 1!
 		for(int row=1;row<rows;row++)
 		{
-			Matrix<Double> rowVektor1 = extendedCoefficientMatrix
+			Matrix<O> rowVektor1 = extendedCoefficientMatrix
 										.getRow(row-1);
 			int k1 = nrOfLeadingZeros(rowVektor1);
 			
-			Matrix<Double> rowVektor2 = extendedCoefficientMatrix
+			Matrix<O> rowVektor2 = extendedCoefficientMatrix
 										.getRow(row);
 			int k2 = nrOfLeadingZeros(rowVektor2);
 			
@@ -499,32 +504,33 @@ public class LinearEquationSolver<O>
 		return true;
 	}
 	
-	public static boolean isRowEchelonForm(Matrix<Double> extendedCoefficientMatrix) throws MathException
+	public boolean isRowEchelonForm(Matrix<O> extendedCoefficientMatrix) throws MathException
 	{
 		
 		int rows = extendedCoefficientMatrix.getRows();
 		int cols = extendedCoefficientMatrix.getColumns();
 		boolean staggered = isInStaggeredForm(extendedCoefficientMatrix);
 		
-		Matrix<Double> topRow = extendedCoefficientMatrix.getRow(0);
+		Matrix<O> topRow = extendedCoefficientMatrix.getRow(0);
 		int topLeadingZeros = nrOfLeadingZeros(topRow);
 		
-		Matrix<Double> bottomRow = extendedCoefficientMatrix.getRow(rows-1);
+		Matrix<O> bottomRow = extendedCoefficientMatrix.getRow(rows-1);
 		int bottomLeadingZeros = nrOfLeadingZeros(bottomRow);
 		
 		
 		return staggered&&(topLeadingZeros==0)&&(bottomLeadingZeros==cols-2);
 	}
 	
-	public static int nrOfLeadingZeros(Matrix<Double> rowVektor) throws MathException
+	public int nrOfLeadingZeros(Matrix<O> rowVektor) throws MathException
 	{
+
 
 		int cols = rowVektor.getColumns();
 		int n=0;
 		for(int col=0;col<cols;col++)
 		{
-			double value = rowVektor.getValue(col, 0);
-			if(value==0.0)n++;
+			O value = rowVektor.getValue(col, 0);
+			if(value == k.sumNeutral())n++;
 			else return n;
 		}
 		

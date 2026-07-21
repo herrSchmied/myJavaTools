@@ -9,54 +9,68 @@ import java.util.List;
 
 import someMath.exceptions.MathException;
 
-public class Vektorraum
+public class Vektorraum<O> //TODO: Interface VectorSpace is coming!!!
 {
 
-	private final Vektor<Double> neutrumVektorAddition;
-
-
-	public static final Vektor<Double> sum(Vektor<Double> v1, Vektor<Double> v2) throws MathException
+	private final Field<O> k;
+	private final Vektor<O> multiplyNeutrum;
+	
+	public Vektorraum(int n, Field<O> k) throws MathException
 	{
+
+		this.k = k;
+		List<O> zeros = new ArrayList<>();
+		for(int m=0;m<n;m++)zeros.add(k.sumNeutral());
+		multiplyNeutrum = new Vektor<>(zeros);
+	}
+
+
+	public final Vektor<O> sum(Vektor<O> v1, Vektor<O> v2) throws MathException
+	{
+		
 		
 		if(v1.getRows()!=v2.getRows()) throw new MathException("Can't add those.");
 		
-		Vektor<Double> sum = v1.clone();
+		Vektor<O> sum = v1.clone();
 		for(int r=0;r<v1.getRows();r++)
 		{
 			
-			Double s = v1.getValue(r)+v2.getValue(r);
+			O s = k.add(v1.getValue(r), v2.getValue(r));
 			sum = sum.setValue(r, s);
 		}
 		
 		return sum;
 	}
 	
-	public static final Vektor<Double> scaling(Double scale, Vektor<Double> toBeScaled) throws MathException
+	public final Vektor<O> scaling(O scale, Vektor<O> toBeScaled) throws MathException
 	{
 
-		Vektor<Double> output = toBeScaled.clone();
+		Vektor<O> output = toBeScaled.clone();
+
 		int rows = toBeScaled.getRows();
 
 		for(int r=0;r<rows;r++)
 		{
-			double oldValue = toBeScaled.getValue(r);
-			double newValue = oldValue*scale;
+			O oldValue = toBeScaled.getValue(r);
+			O newValue = k.multiply(oldValue, scale);
 			output = output.setValue(r, newValue);
 		}
 
 		return output;
 	}
 
-	public static final Double scalarProduct(Vektor<Double> v1, Vektor<Double> v2)
+	public final O scalarProduct(Vektor<O> v1, Vektor<O> v2) throws MathException
 	{
 
 		if(v1.getRows()!=v2.getRows())
 			throw new RuntimeException("These two Vektors have different number of Rows(Dimension).");
 		
+		MatrixRing<O> ring = new MatrixRing<>(2, k);
+
 		try
 		{
-			Matrix<Double> t = MatrixRing.transpone(v1);
-			Matrix<Double> erg = MatrixRing.multiply(t, v2);
+			Matrix<O> t = MatrixStuff.transpone(v1);
+			Matrix<O> erg = ring.multiply(t, v2);
 		
 			return erg.getValue(0, 0);
 		}
@@ -65,13 +79,5 @@ public class Vektorraum
 			e.printStackTrace();
 			throw new RuntimeException("Couldn't multiply those 'Vektors'");
 		}
-	};
-
-	public Vektorraum(int n) throws MathException
-	{
-
-		List<Double> zeros = new ArrayList<>();
-		for(int m=0;m<n;m++)zeros.add(0.0);//DoubleField Neutral of Addition!
-		neutrumVektorAddition = new Vektor<Double>(zeros);
 	}
 }

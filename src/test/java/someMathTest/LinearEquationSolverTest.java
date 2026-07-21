@@ -2,10 +2,9 @@ package someMathTest;
 
 
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-
-import static someMath.LinearEquationSolver.*;
 
 
 import java.util.Arrays;
@@ -15,7 +14,7 @@ import java.util.List;
 import someMath.SmallTools;
 
 import someMath.Matrix;
-import someMath.MatrixRing;
+
 import someMath.Vektor;
 
 import someMath.Vektorraum;
@@ -24,14 +23,25 @@ import someMath.exceptions.MathException;
 
 import someMath.LinearEquationSolver;
 
+import someMath.DoubleField;
+
+
+
 public class LinearEquationSolverTest
 {
 
+	LinearEquationSolver<Double> les;
+
+	@BeforeEach
+	public void setup()
+	{
+		les = new LinearEquationSolver<>(new DoubleField());
+	}
+	
 	@Test
 	public void solvingTest() throws MathException, InterruptedException
 	{
 
-		LinearEquationSolver les = new LinearEquationSolver();
 		
 		Matrix<Double> coefficientMatrix = new Matrix<>(2,2, 0.0);
 		coefficientMatrix = coefficientMatrix.setValue(0, 0, 3.0);
@@ -61,14 +71,15 @@ public class LinearEquationSolverTest
 		 *  solution = |(1/3)  (1/3)|
 		 */
 		
+		Vektorraum<Double> vr = new Vektorraum<>(2, new DoubleField());
 		Double r = 10.0;
 		Vektor<Double> row0 = coefficientMatrix.getRowAsVektor(0);
-		r =rowResults.getValue(0)-Vektorraum.scalarProduct(row0, solution1);
+		r =rowResults.getValue(0)-vr.scalarProduct(row0, solution1);
 		Double prettySmall = Math.pow(1, -12);
 		assert(r<=prettySmall);
 
 		Vektor<Double> row1 = coefficientMatrix.getRowAsVektor(1);
-		r = rowResults.getValue(1)-Vektorraum.scalarProduct(row1, solution1);
+		r = rowResults.getValue(1)-vr.scalarProduct(row1, solution1);
 		assert(r<=prettySmall);
 
 	}
@@ -76,8 +87,6 @@ public class LinearEquationSolverTest
 	@Test
 	public void makeAtLeastOneExtraLeadingZeroTest() throws MathException
 	{
-
-		LinearEquationSolver les = new LinearEquationSolver();
 
 		for(int n=0;n<4;n++)
 		{
@@ -119,13 +128,13 @@ public class LinearEquationSolverTest
 		
 		Matrix<Double> matrix = new Matrix<>(valueArr);
 		
-		assert(isInStaggeredForm(matrix));
-		assert(!isRowEchelonForm(matrix));
+		assert(les.isInStaggeredForm(matrix));
+		assert(!les.isRowEchelonForm(matrix));
 		
 		matrix = new Matrix<>(5, 3, 0.0);
 		
-		assert(!isInStaggeredForm(matrix));
-		assert(!isRowEchelonForm(matrix));
+		assert(!les.isInStaggeredForm(matrix));
+		assert(!les.isRowEchelonForm(matrix));
 		
 		matrix = matrix.setValue(4, 2, 1.0);
 		matrix = matrix.setValue(3, 2, 1.0);
@@ -138,15 +147,13 @@ public class LinearEquationSolverTest
 		matrix = matrix.setValue(1, 0, 1.0);
 		matrix = matrix.setValue(0, 0, 1.0);
 		
-		assert(isInStaggeredForm(matrix));
-		assert(isRowEchelonForm(matrix));
+		assert(les.isInStaggeredForm(matrix));
+		assert(les.isRowEchelonForm(matrix));
 	}
 	
 	@Test
 	public void scrapeOffTheTopTest() throws MathException
 	{
-
-		LinearEquationSolver les = new LinearEquationSolver();
 
 		Double[][] valueArr = new Double[3][3];
 		valueArr[0][0]= 1.0;
@@ -181,8 +188,8 @@ public class LinearEquationSolverTest
 		m2 = les.scrapeOffTheTop(matrix);
 
 		assert(matrix.equals(m2));
-		assert(!isOverDeterministic(matrix));
-		assert(!isUnderDeterministic(matrix));
+		assert(!les.isOverDeterministic(matrix));
+		assert(!les.isUnderDeterministic(matrix));
 
 		//Left side is quadratic now.
 		valueArr = new Double[2][3];
@@ -201,8 +208,8 @@ public class LinearEquationSolverTest
 
 		assert(!matrix.equals(m2));
 
-		assert(!isUnderDeterministic(matrix));
-		assert(isOverDeterministic(matrix));
+		assert(!les.isUnderDeterministic(matrix));
+		assert(les.isOverDeterministic(matrix));
 		
 		Matrix<Double> synthetic = new Matrix<>(cols, rows, 0.0);
 		
@@ -232,11 +239,11 @@ public class LinearEquationSolverTest
 
 		Matrix<Double> matrix = new Matrix<>(valueArr);
 
-		assert(isRowEchelonForm(matrix));
+		assert(les.isRowEchelonForm(matrix));
 		
 		matrix = matrix.switchRows(1, 0);
 		
-		assert(!isRowEchelonForm(matrix));
+		assert(!les.isRowEchelonForm(matrix));
 
 	}
 	
@@ -261,7 +268,7 @@ public class LinearEquationSolverTest
 		
 		assert(!unOrderedOne.equals(matrix));
 		
-		Matrix<Double> output = bubbleSortByLeadingZeros(unOrderedOne);
+		Matrix<Double> output = les.bubbleSortByLeadingZeros(unOrderedOne);
 
 		assert(output.equals(matrix));
 	}
@@ -285,17 +292,17 @@ public class LinearEquationSolverTest
 		Matrix<Double> row0 = matrix.getRow(0);
 		Matrix<Double> row1 = matrix.getRow(1);
 		Matrix<Double> row2 = matrix.getRow(2);
-		assert(nrOfLeadingZeros(row0)==0);
-		assert(nrOfLeadingZeros(row1)==1);
-		assert(nrOfLeadingZeros(row2)==2);
+		assert(les.nrOfLeadingZeros(row0)==0);
+		assert(les.nrOfLeadingZeros(row1)==1);
+		assert(les.nrOfLeadingZeros(row2)==2);
 
 		Matrix<Double> unOrderedOne = matrix.switchRows(1, 0);
 
 		row0 = unOrderedOne.getRow(0);
 		row1 = unOrderedOne.getRow(1);
 		row2 = unOrderedOne.getRow(2);
-		assert(nrOfLeadingZeros(row0)==1);
-		assert(nrOfLeadingZeros(row1)==0);
-		assert(nrOfLeadingZeros(row2)==2);
+		assert(les.nrOfLeadingZeros(row0)==1);
+		assert(les.nrOfLeadingZeros(row1)==0);
+		assert(les.nrOfLeadingZeros(row2)==2);
 	}
 }
