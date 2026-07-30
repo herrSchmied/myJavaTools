@@ -6,6 +6,11 @@ import someMath.exceptions.MathException;
 public class RationalField implements Field<RationalNumber>
 {
 
+	public RationalField()
+	{
+		
+	}
+
 	@Override
 	public RationalNumber add(RationalNumber a1, RationalNumber a2) throws MathException
 	{
@@ -51,7 +56,7 @@ public class RationalField implements Field<RationalNumber>
 		
 		try
 		{
-			if(a1.equals(new RationalNumber(0,1)))return new RationalNumber(0, 1); 
+			if(a1.equals(RationalNumber.zero))return RationalNumber.zero; 
 			return new RationalNumber(!(a1.sign), a1.getIntegerPart(), a1.getNumerator(), a1.getDenominator());
 		}
 		catch (NaturalNumberException | MathException e)
@@ -66,7 +71,7 @@ public class RationalField implements Field<RationalNumber>
 	public RationalNumber multiplyInverse(RationalNumber a1) throws MathException
 	{
 
-		
+		if(a1.equals(RationalNumber.zero)) throw new MathException("Zero has no inverse.");
 		try
 		{
 
@@ -95,5 +100,15 @@ public class RationalField implements Field<RationalNumber>
 	public RationalNumber multiplyNeutral()
 	{
 		return RationalNumber.one;
+	}
+	
+	public int hashCode()
+	{
+		return 2;
+	}
+	
+	public boolean equals(Object other)
+	{		
+	    return (other instanceof RationalField);
 	}
 }

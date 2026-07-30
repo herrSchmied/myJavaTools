@@ -13,6 +13,7 @@ public class MapOfFields
 	static
 	{
 		map.put(Double.class, new DoubleField());
+		map.put(RationalNumber.class, new RationalField());
 	}
 
 	public static <T> Field<T> getField(Class<T> clazz) throws MathException
