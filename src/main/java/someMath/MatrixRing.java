@@ -1,12 +1,10 @@
 package someMath;
 
 
-import java.awt.Point;
 import java.util.ArrayList;
 
 import java.util.List;
 
-import java.util.function.BiConsumer;
 
 
 import someMath.exceptions.MathException;
@@ -105,13 +103,14 @@ public class MatrixRing<O> implements Ring<Matrix<O>>
 	{
 		if(!(r1.getColumns()==r2.getRows()))throw new RuntimeException("Can't multiply those Matrizes.");
 		
-		int rows = r1.getRows();
-		int cols = r2.getColumns();
 		List<O> valueList = new ArrayList<>();
 		Matrix<O> product = null;
 
 		try
 		{
+			int rows = r1.getRows();
+			int cols = r2.getColumns();
+
 			Field<O> k = r1.getField();
 			O addNeutral = k.sumNeutral();
 		
@@ -119,24 +118,23 @@ public class MatrixRing<O> implements Ring<Matrix<O>>
 		
 			product = new Matrix<O>(rows, valueList);
 
-			int s = r1.getColumns();//equal to m2.getRows();
-
-			for(int r=0;r<rows;r++)
+			int s = r1.getColumns();//same as r2.getRows!!
+			for(int row=0;row<rows;row++)
 			{
-				for(int c=0;c<cols;c++)
+				for(int col=0;col<cols;col++)
 				{
 
 					O sum = addNeutral;
 					for(int n=0;n<s;n++)
 					{
 					
-						O o1 = r1.getValue(n, r);
-						O o2 = r2.getValue(c, n);
-						O valueSum = k.add(o1, o2);
+						O o1 = r1.getValue(n, row);
+						O o2 = r2.getValue(col, n);
+						O valueSum = k.multiply(o1, o2);
 						sum = k.add(sum, valueSum);
 					}
 				
-					product = product.setValue(c, r, sum);
+					product = product.setValue(col, row, sum);
 				}
 			}
 		}

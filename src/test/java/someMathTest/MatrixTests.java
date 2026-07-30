@@ -255,7 +255,7 @@ public class MatrixTests
 
 		Matrix<Double> invertedMatrix = MatrixStuff.invert(test);
 		Double d2 = MatrixStuff.determinant(invertedMatrix);
-		
+		System.out.println("Product of determinants: " + (d1*d2));
 		assert(1-(d1*d2)<prettySmall);
 		Matrix<Double>  product = ring.multiply(test, invertedMatrix);
 		assert(product.equals(e));
