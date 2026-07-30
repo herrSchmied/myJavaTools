@@ -176,7 +176,7 @@ public class LinearEquationSolver<O>
 			
 			int leadingZerosLowerRowOld = nrOfLeadingZeros(lowerRowVektor);
 			int leadingZerosLowerRowNew = nrOfLeadingZeros(newRow);
-			if(!(leadingZerosLowerRowOld<leadingZerosLowerRowNew))
+			if(leadingZerosLowerRowOld>=leadingZerosLowerRowNew)
 			{
 				String s = "Upper Row: " + upperRowVektor.toString() + "n"
 						+  "Lower Row Old: " + lowerRowVektor.toString() +"\n"
@@ -205,7 +205,7 @@ public class LinearEquationSolver<O>
 		Matrix<O> output = rowVektorDest.clone();
 
 		int kSource = nrOfLeadingZeros(rowVektorSource);
-		int kDest = nrOfLeadingZeros(output);
+		int kDest = nrOfLeadingZeros(rowVektorDest);
 		if(kDest<kSource)throw new MathException("Destination has less leading Zeros than Source.");
 		if(kDest>kSource)return output;
 
@@ -526,11 +526,13 @@ public class LinearEquationSolver<O>
 
 
 		int cols = rowVektor.getColumns();
+		int rows = rowVektor.getRows();
+		if(rows>1)System.out.println("Warning: Rowvektor has more than one Row!");
 		int n=0;
 		for(int col=0;col<cols;col++)
 		{
 			O value = rowVektor.getValue(col, 0);
-			if(value == k.sumNeutral())n++;
+			if(value.equals(k.sumNeutral()))n++;
 			else return n;
 		}
 		

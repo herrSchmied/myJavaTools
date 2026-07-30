@@ -286,7 +286,7 @@ public class MatrixTests
 					System.out.println("Product:\n" + prod);
 					System.out.println("Neutrum:\n" + e);
 					System.out.println("Norm of Diff: " + norm);
-					System.out.println(n);
+					System.out.println("Nr. of Invert Tests:" + n);
 					assert(false);
 				}
 				
