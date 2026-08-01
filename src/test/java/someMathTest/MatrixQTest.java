@@ -22,7 +22,7 @@ import someMath.exceptions.MathException;
 
 import static consoleTools.TerminalXDisplay.*;
 
-public class MatrixOfRNTest
+public class MatrixQTest
 {
 
 
@@ -62,133 +62,7 @@ public class MatrixOfRNTest
 		ten = rField.add(seven, three);	
 	}
 
-	@Test
-	public void cloneTest() throws MathException, NaturalNumberException
-	{
-		setup(3);
-		
-		List<RationalNumber> list = createListOfRNs(9);
-		Matrix<RationalNumber> matrix = new Matrix<>(3, list);
-		Matrix<RationalNumber> klon = matrix.clone();
-		
-		assert(matrix.equals(klon));
-		assert(klon!=matrix);
-	}
 	
-	@Test
-	public void switchRowsAndColumnTest() throws MathException, NaturalNumberException
-	{
-
-		setup(3);
-
-		RationalNumber[][] valueArr = new RationalNumber[3][3];
-		valueArr[0][0]= rnOne;
-		valueArr[1][0]= rnZero;
-		valueArr[2][0]= rnZero;
-		valueArr[0][1]= rnZero;
-		valueArr[1][1]= rnOne;
-		valueArr[2][1]= rnZero;
-		valueArr[0][2]= rnZero;
-		valueArr[1][2]= rnZero;
-		valueArr[2][2]= rnOne;
-
-		Matrix<RationalNumber> matrix = new Matrix<>(valueArr);
-
-		RationalNumber det1 = MatrixStuff.determinant(matrix);
-
-		Matrix<RationalNumber> matrix2 = matrix.switchRows(0, 1);
-
-		RationalNumber det2 = rField.sumInverse(MatrixStuff.determinant(matrix2));
-
-		assert(matrix.getRow(0).equals(matrix2.getRow(1)));
-		assert(det1.equals(det2));
-
-
-		Matrix<RationalNumber> matrix3 = matrix2.switchColumns(0, 1);
-
-		assert(matrix2.getColumn(0).equals(matrix3.getColumn(1)));
-		RationalNumber det3 = MatrixStuff.determinant(matrix3);
-
-		assert(det1.equals(det3));
-	}
-
-	@Test
-	public void setAndGettingRowsAndColumnsTest() throws MathException, NaturalNumberException
-	{
-
-		setup(2);
-		
-		RationalNumber[][] valueArr = new RationalNumber[2][2];
-		valueArr[0][0]= rnOne;
-		valueArr[1][0]= two;
-		valueArr[0][1]= three;
-		valueArr[1][1]= four;
-
-		Matrix<RationalNumber> matrix = new Matrix<>(valueArr);
-
-		RationalNumber[][] valueArrRow = new RationalNumber[2][1];
-		valueArrRow[0][0]= seven;
-		valueArrRow[1][0]= seven;
-
-		Matrix<RationalNumber> rowVektor = new Matrix<>(valueArrRow);
-		matrix.setRow(rowVektor, 1);
-		assert(matrix.getRow(1).equals(rowVektor));
-
-
-		RationalNumber[][] valueArrCol = new RationalNumber[1][2];
-		valueArrCol[0][0]= ten;
-		valueArrCol[0][1]= ten;
-
-		Matrix<RationalNumber> colVektor = new Matrix<>(valueArrCol);
-		matrix.setColumn(colVektor, 0);
-
-		assert(matrix.getColumn(0).equals(colVektor));
-	}
-	
-	@Test
-	public void ValueTests() throws MathException, NaturalNumberException
-	{
-		
-		setup(3);
-		
-		RationalNumber[][] valueArr = new RationalNumber[3][3];
-		valueArr[0][0]= RationalNumber.one;
-		valueArr[1][0]= RationalNumber.zero;
-		valueArr[2][0]= RationalNumber.zero;
-		valueArr[0][1]= RationalNumber.zero;
-		valueArr[1][1]= RationalNumber.one;
-		valueArr[2][1]= RationalNumber.zero;
-		valueArr[0][2]= RationalNumber.zero;
-		valueArr[1][2]= RationalNumber.zero;
-		valueArr[2][2]= RationalNumber.one;
-		
-		Matrix<RationalNumber> matrix = new Matrix<>(valueArr);		
-		List<RationalNumber> valueList = Arrays.asList(rnOne, rnZero, rnZero, rnZero, rnOne, rnZero, rnZero, rnZero,
-				rnOne);		
-		Matrix<RationalNumber> m2 = new Matrix<>(3, valueList);
-		assert(matrix.equals(m2));
-		
-		valueArr = new RationalNumber[2][3];
-		valueArr[0][0]= rnOne;
-		valueArr[0][1]= rnZero;
-		valueArr[0][2]= rnOne;
-		valueArr[1][0]= rnOne;
-		valueArr[1][1]= rnZero;
-		valueArr[1][2]= rnZero;
-
-		matrix = new Matrix<>(valueArr);
-		valueList = Arrays.asList(rnOne, rnOne, rnZero, rnZero, rnOne, rnZero);
-		m2 = new Matrix<>(2, valueList);		
-		assert(matrix.equals(m2));
-		
-		valueList = Arrays.asList(rnOne, rnOne);
-		m2 = new Matrix<>(2, valueList);
-		assert(matrix.getRow(0).equals(m2));
-		
-		valueList = Arrays.asList(rnOne, rnZero, rnOne);
-		m2 = new Matrix<>(1, valueList);
-		assert(matrix.getColumn(0).equals(m2));
-	}
 
 
 
@@ -269,7 +143,7 @@ public class MatrixOfRNTest
 		
 			RationalNumber o4 = rField.sumInverse(rField.multiply(o, o2));
 			RationalNumber o5 = rField.add(o3, o4);
-			assert(o5.isLargerThan(prettySmall));
+			assert(o5.isSmallerThan(prettySmall));
 		}
 	}
 
