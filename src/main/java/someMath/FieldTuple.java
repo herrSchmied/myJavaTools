@@ -8,7 +8,7 @@ import java.util.Objects;
 
 import someMath.exceptions.MathException;
 
-public class Vektor<O> extends Matrix<O>
+public class FieldTuple<O> extends Matrix<O>
 {
 
 	public static <O> List<O> getDefaultValueList(int n, O defaultValue)
@@ -23,17 +23,17 @@ public class Vektor<O> extends Matrix<O>
 		return list;
 	}
 
-	public Vektor(List<O> valueList) throws MathException
+	public FieldTuple(List<O> valueList) throws MathException
 	{
 		super(1, valueList);
 	}
 	
-	public Vektor(O[][] valueArray) throws MathException
+	public FieldTuple(O[][] valueArray) throws MathException
 	{
 		super(valueArray);
 	}
 	
-	public Vektor(int rows, O defaultValue) throws MathException
+	public FieldTuple(int rows, O defaultValue) throws MathException
 	{
 		super(1, getDefaultValueList(rows, defaultValue));
 	}
@@ -48,7 +48,7 @@ public class Vektor<O> extends Matrix<O>
 		return super.getRows();
 	}
 	
-	public Vektor<O> setValue(int row, O value) throws MathException
+	public FieldTuple<O> setValue(int row, O value) throws MathException
 	{
 
 		if(row>super.getRows()-1||row<0)throw new MathException("Row out of Bounds.");
@@ -66,10 +66,10 @@ public class Vektor<O> extends Matrix<O>
 			list.add(o);
 		}
 
-		return new Vektor<O>(list);
+		return new FieldTuple<O>(list);
 	}
 
-	public Vektor<O> clone()
+	public FieldTuple<O> clone()
 	{
 		
 		O o = null;
@@ -85,12 +85,12 @@ public class Vektor<O> extends Matrix<O>
 		List<O> list = new ArrayList<>();
 		for(int n=0;n<super.getRows();n++)list.add(o);
 		
-		Vektor<O> klon = null;
+		FieldTuple<O> klon = null;
 		
 		try
 		{
 		
-			klon = new Vektor<O>(list);
+			klon = new FieldTuple<O>(list);
 			
 			for(int row=0;row<super.getRows();row++)
 			{
@@ -134,9 +134,11 @@ public class Vektor<O> extends Matrix<O>
 	public boolean equals(Object other)
 	{
 
-		if(!(other instanceof Vektor))return false;
-		Vektor v = (Vektor)other;
+		if(!(other instanceof FieldTuple))return false;
+		FieldTuple v = (FieldTuple)other;
 		if(!(this.getRows()==v.getRows()))return false;
+		if(!(this.getField().equals(v.getField())))return false;
+
 		int rows = this.getRows();
 		
 		try

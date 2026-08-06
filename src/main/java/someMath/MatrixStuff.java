@@ -20,7 +20,7 @@ public class MatrixStuff
 		Field<O> k = matrix.getField();
 
 		int col = 0;
-		O sum = k.sumNeutral();
+		O sum = k.zero();
 		
 		for(int row=0;row<rows;row++)
 		{
@@ -30,7 +30,7 @@ public class MatrixStuff
 			Matrix<O> subM = subMatrix(0, row, matrix);
 			O subDet = determinant(subM);
 			
-			O minusOne = k.sumInverse(k.multiplyNeutral());
+			O minusOne = k.negate(k.one());
 			
 			O o3;
 			
@@ -65,7 +65,7 @@ public class MatrixStuff
 		O q2 = k.multiply(o12, o21);
 		
 		
-		O det = k.add(q1, k.sumInverse(q2));
+		O det = k.add(q1, k.negate(q2));
 		
 		return det;
 	}
@@ -141,18 +141,18 @@ public class MatrixStuff
 
 		Matrix<O> coefficientMatrix = matrix.clone();
 		coefficientMatrix = transpone(coefficientMatrix);
-		Matrix<O> output = new Matrix<>(columns, rows, k.sumNeutral());
+		Matrix<O> output = new Matrix<>(columns, rows, k.zero());
 		for(int n=0;n<rows;n++)
 		{
 	
 			System.out.println("Making ExtendedMatrix.");
-			Vektor<O> rowResults = new Vektor<>(rows, k.sumNeutral());
-			rowResults = rowResults.setValue(n, k.multiplyNeutral());
+			FieldTuple<O> rowResults = new FieldTuple<>(rows, k.zero());
+			rowResults = rowResults.setValue(n, k.one());
 
 			Matrix<O> extendedCoefficientMatrix = 
 				coefficientMatrix.glueColumnToThisOnTheRight(rowResults);
 
-			Vektor<O> result = les.solve(extendedCoefficientMatrix);
+			FieldTuple<O> result = les.solve(extendedCoefficientMatrix);
 			//Vektor<Double> doubleResult = les.convertSolutionVektorToExampleVektor(result);
 			output = output.setRow(result, n);				
 		}
@@ -174,7 +174,7 @@ public class MatrixStuff
 		try
 		{
 			//Remember columns and rows get switched!!
-			transponed = new Matrix<O>(rows, cols, k.sumNeutral());
+			transponed = new Matrix<O>(rows, cols, k.zero());
 			for(int col=0;col<cols;col++)
 			{
 				for(int row=0;row<rows;row++)
@@ -197,7 +197,7 @@ public class MatrixStuff
 	{
 		
 		Field<O> k = matrix.getField();
-		O output = k.sumNeutral();
+		O output = k.zero();
 		
 	
 		int rows = matrix.getRows();

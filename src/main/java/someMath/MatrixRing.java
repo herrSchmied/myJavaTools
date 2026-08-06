@@ -68,7 +68,7 @@ public class MatrixRing<O> implements Ring<Matrix<O>>
 	}
 
 	@Override
-	public Matrix<O> sumInverse(Matrix<O> m) throws MathException
+	public Matrix<O> negate(Matrix<O> m) throws MathException
 	{
 		Matrix<O> output = m.clone();
 		
@@ -81,7 +81,7 @@ public class MatrixRing<O> implements Ring<Matrix<O>>
 			for(int col=0;col<cols;col++)
 			{
 				O o = m.getValue(col, row);
-				O i = k.sumInverse(o);
+				O i = k.negate(o);
 				output = output.setValue(col, row, i);
 			}
 		}
@@ -90,10 +90,10 @@ public class MatrixRing<O> implements Ring<Matrix<O>>
 	}
 
 	@Override
-	public Matrix<O> sumNeutral() throws MathException
+	public Matrix<O> zero() throws MathException
 	{
 		List<O> zeros = new ArrayList<>();
-		for(int m=0;m<sideLength*sideLength;m++)zeros.add(k.sumNeutral());//DoubleField Neutral of addition!
+		for(int m=0;m<sideLength*sideLength;m++)zeros.add(k.zero());//DoubleField Neutral of addition!
 
 		return new Matrix<>(sideLength, zeros);
 	}
@@ -112,7 +112,7 @@ public class MatrixRing<O> implements Ring<Matrix<O>>
 			int cols = r2.getColumns();
 
 			Field<O> k = r1.getField();
-			O addNeutral = k.sumNeutral();
+			O addNeutral = k.zero();
 		
 			for(int n=0;n<rows*cols;n++)valueList.add(addNeutral);
 		
@@ -146,14 +146,14 @@ public class MatrixRing<O> implements Ring<Matrix<O>>
 		return product;
 	}
 	
-	public Matrix<O> multiplyNeutral() throws MathException
+	public Matrix<O> one() throws MathException
 	{
 
 		List<O> diagonalMOne = new ArrayList<>();
 		for(int x=0;x<sideLength;x++)for(int y=0;y<sideLength;y++)
 		{
-			if(x==y)diagonalMOne.add(k.multiplyNeutral());//DoubleField Neutral of multiplication!
-			else diagonalMOne.add(k.sumNeutral());//DoubleField Neutral of addition!
+			if(x==y)diagonalMOne.add(k.one());//DoubleField Neutral of multiplication!
+			else diagonalMOne.add(k.zero());//DoubleField Neutral of addition!
 		}
 
 		return new Matrix<>(sideLength, diagonalMOne);

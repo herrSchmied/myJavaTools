@@ -23,7 +23,7 @@ public class LinearEquationSolver<O>
 		this.k = k;
 	}
 
-	public Vektor<O> solve(Matrix<O> extendedCoefficientMatrix) throws MathException
+	public FieldTuple<O> solve(Matrix<O> extendedCoefficientMatrix) throws MathException
 	{
 
 		System.out.println("Solving Extendedmatrix.");
@@ -42,7 +42,7 @@ public class LinearEquationSolver<O>
 		{
 			
 			//calculate the original coefficientMatrix
-			Matrix<O> coefficientMatrix = new Matrix<>(cols-1, cols-1, k.sumNeutral());
+			Matrix<O> coefficientMatrix = new Matrix<>(cols-1, cols-1, k.zero());
 			for(int col=0;col<cols-1;col++)
 			{
 				Matrix<O> columnVektor = customizable.getColumn(col);
@@ -53,7 +53,7 @@ public class LinearEquationSolver<O>
 			Matrix<O> columnVektor = customizable.getColumn(cols-1);
 
 			//Check if despite determinant being Zero it is solvable??
-			if(determinant.equals(k.sumNeutral()))
+			if(determinant.equals(k.zero()))
 			{
 				int n=0;
 				cols = customizable.getColumns();
@@ -61,7 +61,7 @@ public class LinearEquationSolver<O>
 				{
 					Matrix<O> switchMatrix = coefficientMatrix.setColumn(columnVektor, col);
 					O sideDeterminant = MatrixStuff.determinant(switchMatrix);
-					if(sideDeterminant.equals(k.sumNeutral()))n++;
+					if(sideDeterminant.equals(k.zero()))n++;
 				}
 
 				if(n<cols-1)
@@ -212,7 +212,7 @@ public class LinearEquationSolver<O>
 		O sourceValueAtIndexK = rowVektorSource.getValue(kSource, 0);
 		O destValueAtIndexK = output.getValue(kSource, 0);
 			
-		O factor = k.sumInverse(k.multiply(destValueAtIndexK,k.multiplyInverse(sourceValueAtIndexK)));
+		O factor = k.negate(k.multiply(destValueAtIndexK,k.inverse(sourceValueAtIndexK)));
 
 			
 		Matrix<O> addOn = MatrixStuff.scale(factor, rowVektorSource);
@@ -233,15 +233,15 @@ public class LinearEquationSolver<O>
 		//Making sure!! because Value might be prettySmall but not Zero!!
 		//locations of "should be Zero's" are found before addOn is 
 		//changing output!!
-		output = output.replaceValues(shouldBeZeros, k.sumNeutral()); 
+		output = output.replaceValues(shouldBeZeros, k.zero()); 
 		
 		//Making sure see comment above. Seems to work
-		output = output.setValue(kSource, 0, k.sumNeutral());
+		output = output.setValue(kSource, 0, k.zero());
 		return output;
 	}
 
 
-	public Vektor<O> calculateSolvingVektor(Matrix<O> extendedCoefficientMatrix) throws MathException
+	public FieldTuple<O> calculateSolvingVektor(Matrix<O> extendedCoefficientMatrix) throws MathException
 	{
 
 		System.out.println("Calculating solving Vektor.");
@@ -254,7 +254,7 @@ public class LinearEquationSolver<O>
 		//Backwards!!
 		for(int row=rows-1;row>-1;row--)
 		{
-			Vektor<O> rowVektor = extendedCoefficientMatrix.getRowAsVektor(row);
+			FieldTuple<O> rowVektor = extendedCoefficientMatrix.getRowAsVektor(row);
 
 			List<Integer> nonZeroList = nonZeros(rowVektor);
 			if(nonZeroList.isEmpty())throw new MathException("Hey!! Only Zeros here?\n " + rowVektor);
@@ -269,7 +269,7 @@ public class LinearEquationSolver<O>
 			if(nonZeroList.size()==1)
 			{
 						
-				O result = k.multiply(rowResult, k.multiplyInverse(toBeSolvedVariableCoefficient));
+				O result = k.multiply(rowResult, k.inverse(toBeSolvedVariableCoefficient));
 
 				solvedVariables.put(toBeSolvedVariableName, result);
 
@@ -283,7 +283,7 @@ public class LinearEquationSolver<O>
 			{
 
 
-				O sumOfProducts = k.sumNeutral();
+				O sumOfProducts = k.zero();
 				for(int place: nonZeroList)
 				{
 
@@ -295,8 +295,8 @@ public class LinearEquationSolver<O>
 					sumOfProducts = k.add(sumOfProducts, k.multiply(coefficient, solvedVariable));
 				}
 				
-				O numerator = k.add(rowResult, k.sumInverse(sumOfProducts));
-				O denominator = k.multiplyInverse(toBeSolvedVariableCoefficient);
+				O numerator = k.add(rowResult, k.negate(sumOfProducts));
+				O denominator = k.inverse(toBeSolvedVariableCoefficient);
 				O result = k.multiply(numerator, denominator);
 				
 				solvedVariables.put(toBeSolvedVariableName, result);
@@ -319,7 +319,7 @@ public class LinearEquationSolver<O>
 			//else values.add(name);
 		}
 
-		Vektor<O> solutionVektor = new Vektor<>(values);
+		FieldTuple<O> solutionVektor = new FieldTuple<>(values);
 		//System.out.println(solutionVektor);
 		return solutionVektor;
 	}
@@ -347,7 +347,7 @@ public class LinearEquationSolver<O>
 //		return example;
 //	}
 
-	public List<Integer> nonZeros(Vektor<O> rowVektor) throws MathException
+	public List<Integer> nonZeros(FieldTuple<O> rowVektor) throws MathException
 	{
 		
 		List<Integer> positions = new ArrayList<>();
@@ -358,7 +358,7 @@ public class LinearEquationSolver<O>
 		for(int row=0;row<rows-1;row++)
 		{
 			O coefficient = rowVektor.getValue(row);
-			if(!coefficient.equals(k.sumNeutral()))positions.add(row);
+			if(!coefficient.equals(k.zero()))positions.add(row);
 		}
 		
 		return positions;
@@ -427,7 +427,7 @@ public class LinearEquationSolver<O>
 		for(int row=0;row<rows;row++)
 		{
 			O value = columnVektor.getValue(0, row);
-			if(value!=k.sumNeutral())return false;
+			if(value!=k.zero())return false;
 		}
 		
 		return true;
@@ -442,7 +442,7 @@ public class LinearEquationSolver<O>
 		for(int col=0;col<cols;col++)
 		{
 			O value = rowVektor.getValue(col, 0);
-			if(value!=k.sumNeutral())return false;
+			if(value!=k.zero())return false;
 		}
 		
 		return true;
@@ -532,7 +532,7 @@ public class LinearEquationSolver<O>
 		for(int col=0;col<cols;col++)
 		{
 			O value = rowVektor.getValue(col, 0);
-			if(value.equals(k.sumNeutral()))n++;
+			if(value.equals(k.zero()))n++;
 			else return n;
 		}
 		

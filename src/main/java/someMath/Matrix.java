@@ -174,14 +174,14 @@ public class Matrix<O> implements Cloneable
 		return (Matrix<O>)new Matrix<>(valueArr);
 	}
 
-	public Vektor<O> getColumnAsVektor(int col) throws MathException
+	public FieldTuple<O> getColumnAsVektor(int col) throws MathException
 	{
 
 		if(col>=columns||col<0)throw new MathException("Column out of Bounds.");
 
 		O o = this.getValue(0, 0);
 		int rows = this.getRows();
-		Vektor<O> output = new Vektor<>(rows, o);
+		FieldTuple<O> output = new FieldTuple<>(rows, o);
 		for(int row=0;row<rows;row++)
 		{
 			O value = this.getValue(col, row);
@@ -214,14 +214,14 @@ public class Matrix<O> implements Cloneable
 		return (Matrix<O>)new Matrix<>(valueArr);
 	}
 
-	public Vektor<O> getRowAsVektor(int row) throws MathException
+	public FieldTuple<O> getRowAsVektor(int row) throws MathException
 	{
 
 		if(row>=rows||row<0)throw new MathException("Row out of Bounds.");
 
 		O o = this.getValue(0, 0);
 		int cols = this.getColumns();
-		Vektor<O> output = new Vektor<>(cols, o);
+		FieldTuple<O> output = new FieldTuple<>(cols, o);
 		for(int r=0;r<cols;r++)
 		{
 			O value = this.getValue(r, row);
@@ -248,14 +248,14 @@ public class Matrix<O> implements Cloneable
 		return deepCopyOfValueArr();
 	}
 
-	public Matrix<O> glueColumnToThisOnTheLeft(Vektor<O> columnVektor) throws MathException
+	public Matrix<O> glueColumnToThisOnTheLeft(FieldTuple<O> columnVektor) throws MathException
 	{
 
 		O o = this.getValue(0, 0);
 		Matrix<O> output = new Matrix<>(columns+1, rows, o);
 		for(int col=1;col<columns+1;col++)
 		{
-			Vektor<O> v = this.getColumnAsVektor(col-1);
+			FieldTuple<O> v = this.getColumnAsVektor(col-1);
 			output = output.setColumn(v, col);
 		}
 		output = output.setColumn(columnVektor, 0);
@@ -263,14 +263,14 @@ public class Matrix<O> implements Cloneable
 		return output;
 	}
 	
-	public Matrix<O> glueColumnToThisOnTheRight(Vektor<O> columnVektor) throws MathException
+	public Matrix<O> glueColumnToThisOnTheRight(FieldTuple<O> columnVektor) throws MathException
 	{
 
 		O o = this.getValue(0, 0);
 		Matrix<O> output = new Matrix<>(columns+1, rows, o);
 		for(int col=0;col<columns;col++)
 		{
-			Vektor<O> v = this.getColumnAsVektor(col);
+			FieldTuple<O> v = this.getColumnAsVektor(col);
 			output = output.setColumn(v, col);
 		}
 		output = output.setColumn(columnVektor, columns);
@@ -278,14 +278,14 @@ public class Matrix<O> implements Cloneable
 		return output;
 	}
 	
-	public Matrix<O> glueRowToThisOnTheBottom(Vektor<O> rowVektor) throws MathException
+	public Matrix<O> glueRowToThisOnTheBottom(FieldTuple<O> rowVektor) throws MathException
 	{
 		
 		O o = this.getValue(0, 0);
 		Matrix<O> output = new Matrix<>(columns, rows+1, o);
 		for(int row=0;row<rows-1;row++)
 		{
-			Vektor<O> v = this.getRowAsVektor(row);
+			FieldTuple<O> v = this.getRowAsVektor(row);
 			output = output.setRow(v, row);
 		}
 		output = output.setRow(rowVektor, rows);
@@ -293,14 +293,14 @@ public class Matrix<O> implements Cloneable
 		return output;
 	}
 
-	public Matrix<O> glueRowToThisOnTheTop(Vektor<O> rowVektor) throws MathException
+	public Matrix<O> glueRowToThisOnTheTop(FieldTuple<O> rowVektor) throws MathException
 	{
 		
 		O o = this.getValue(0, 0);
 		Matrix<O> output = new Matrix<>(columns, rows+1, o);
 		for(int row=1;row<rows;row++)
 		{
-			Vektor<O> v = this.getRowAsVektor(row);
+			FieldTuple<O> v = this.getRowAsVektor(row);
 			output = output.setRow(v, row);
 		}
 		output = output.setRow(rowVektor, 0);
@@ -331,7 +331,7 @@ public class Matrix<O> implements Cloneable
 		return new Matrix<O>(valueArrClone);
 	}
 
-	public Matrix<O> setColumn(Vektor<O> columnVektor, int column) throws MathException
+	public Matrix<O> setColumn(FieldTuple<O> columnVektor, int column) throws MathException
 	{
 
 		if(column>=columns||column<0)throw new MathException("Column out of Bounds.");
@@ -359,7 +359,7 @@ public class Matrix<O> implements Cloneable
 		return new Matrix<O>(valueArrClone);
 	}
 	
-	public Matrix<O> setRow(Vektor<O> rowVektor, int row) throws MathException
+	public Matrix<O> setRow(FieldTuple<O> rowVektor, int row) throws MathException
 	{
 		if(row<0)throw new MathException("Row smaller than Zero!?");
 		if(row>=rows)throw new MathException("Row toBig.");
@@ -480,7 +480,7 @@ public class Matrix<O> implements Cloneable
 			e.printStackTrace();
 		}
 	    
-	    
+		if(!(this.getField().equals(other.getField())))return false;
 	    if(other.getRows()!=this.getRows())return false;
 	    if(other.getColumns()!=this.getColumns())return false;
 	    

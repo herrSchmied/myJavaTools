@@ -2,88 +2,82 @@ package someMath;
 
 import someMath.exceptions.MathException;
 
-public class ComplexField<O, T extends Field<O>, A extends ComplexNumber<O>> implements Field<A>
+public final class ComplexField<O> implements Field<ComplexNumber<O>>
 {
 
 	private final Field<O> k;
 
-	public ComplexField(T k)
+	public ComplexField(Field<O> k)
 	{
 		this.k = k;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public A add(A a1, A a2) throws MathException 
+	public ComplexNumber<O> add(ComplexNumber<O> a1, ComplexNumber<O> a2) throws MathException 
 	{
 		O newReal = k.add(a1.getRealPart(), a2.getRealPart());
 		O newImaginary = k.add(a1.getImaginaryPart(), a2.getImaginaryPart());
 		
-		return (A) new ComplexNumber<>(newReal, newImaginary);
+		return new ComplexNumber<>(newReal, newImaginary);
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public A multiply(A a1, A a2) throws MathException
+	public ComplexNumber<O> multiply(ComplexNumber<O> a1, ComplexNumber<O> a2) throws MathException
 	{
 		O a1Real = a1.getRealPart();
 		O a2Real = a2.getRealPart();
 		O a1Img = a1.getImaginaryPart();
 		O a2Img = a2.getImaginaryPart();
-		O newReal = k.add(k.multiply(a1Real, a2Real), k.sumInverse(k.multiply(a1Img, a2Img)));
+		O newReal = k.add(k.multiply(a1Real, a2Real), k.negate(k.multiply(a1Img, a2Img)));
 		O newImaginary = k.add(k.multiply(a1Real, a2Img), k.multiply(a1Img, a2Real));
 		
-		return (A) new ComplexNumber<>(newReal, newImaginary);
+		return new ComplexNumber<>(newReal, newImaginary);
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public A sumInverse(A a1) throws MathException
+	public ComplexNumber<O> negate(ComplexNumber<O> a1) throws MathException
 	{
 
-		O newReal = k.sumInverse(a1.getRealPart());
-		O newImaginary = k.sumInverse(a1.getImaginaryPart());
+		O newReal = k.negate(a1.getRealPart());
+		O newImaginary = k.negate(a1.getImaginaryPart());
 		
-		return (A) new ComplexNumber<>(newReal, newImaginary);
+		return new ComplexNumber<>(newReal, newImaginary);
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public A multiplyInverse(A a1) throws MathException
+	public ComplexNumber<O> inverse(ComplexNumber<O> a1) throws MathException
 	{
 
 		O a1Real = a1.getRealPart();
 		O a1Img = a1.getImaginaryPart();
 
 		O amount = k.add(k.multiply(a1Real, a1Real), k.multiply(a1Img, a1Img));
-		O amountInverse = k.multiplyInverse(amount);
+		O amountInverse = k.inverse(amount);
 
 		O newReal = k.multiply(a1Real, amountInverse);
-		O newImaginary = k.multiply(k.sumInverse(a1Img), amountInverse);
+		O newImaginary = k.multiply(k.negate(a1Img), amountInverse);
 
-		return (A) new ComplexNumber<>(newReal, newImaginary);
+		return new ComplexNumber<>(newReal, newImaginary);
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public A sumNeutral() throws MathException
+	public ComplexNumber<O> zero() throws MathException
 	{
 
-		O newReal = k.sumNeutral();
-		O newImaginary = k.sumNeutral();
+		O newReal = k.zero();
+		O newImaginary = k.zero();
 		
-		return (A) new ComplexNumber<>(newReal, newImaginary);
+		return new ComplexNumber<>(newReal, newImaginary);
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public A multiplyNeutral() throws MathException
+	public ComplexNumber<O> one() throws MathException
 	{
 
-		O newReal = k.multiplyNeutral();
-		O newImaginary = k.sumNeutral();
+		O newReal = k.one();
+		O newImaginary = k.zero();
 		
-		return (A) new ComplexNumber<>(newReal, newImaginary);
+		return new ComplexNumber<>(newReal, newImaginary);
 	}
 
 

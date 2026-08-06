@@ -15,7 +15,6 @@ import someMath.SmallTools;
 
 import someMath.Matrix;
 
-import someMath.Vektor;
 
 import someMath.Vektorraum;
 
@@ -24,6 +23,7 @@ import someMath.exceptions.MathException;
 import someMath.LinearEquationSolver;
 
 import someMath.DoubleField;
+import someMath.FieldTuple;
 
 
 
@@ -53,7 +53,7 @@ public class LinearEquationSolverTest
 		 *  coefficient Matrix = | 3.0  1.0 |
 		 *  					 | 1.0  3.0 |
 		 */
-		Vektor<Double> rowResults = new Vektor<>(2, 1.0);
+		FieldTuple<Double> rowResults = new FieldTuple<>(2, 1.0);
 		
 		/*
 		 *  rowResults = | 1.0  1.0 |
@@ -66,19 +66,19 @@ public class LinearEquationSolverTest
 		 *  					          | 1.0  3.0  1.0 |
 		 */
 
-		Vektor<Double> solution1 = les.solve(extendedCoefficientMatrix);
+		FieldTuple<Double> solution1 = les.solve(extendedCoefficientMatrix);
 		/*
 		 *  solution = |(1/3)  (1/3)|
 		 */
 		
 		Vektorraum<Double> vr = new Vektorraum<>(2, new DoubleField());
 		Double r = 10.0;
-		Vektor<Double> row0 = coefficientMatrix.getRowAsVektor(0);
+		FieldTuple<Double> row0 = coefficientMatrix.getRowAsVektor(0);
 		r =rowResults.getValue(0)-vr.scalarProduct(row0, solution1);
 		Double prettySmall = Math.pow(1, -12);
 		assert(r<=prettySmall);
 
-		Vektor<Double> row1 = coefficientMatrix.getRowAsVektor(1);
+		FieldTuple<Double> row1 = coefficientMatrix.getRowAsVektor(1);
 		r = rowResults.getValue(1)-vr.scalarProduct(row1, solution1);
 		assert(r<=prettySmall);
 

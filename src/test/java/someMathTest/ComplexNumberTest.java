@@ -22,7 +22,7 @@ public class ComplexNumberTest
 	public void test() throws Exception
 	{
 
-		ComplexField<Double, DoubleField, ComplexNumber<Double>> cf = new ComplexField<>(new DoubleField());
+		ComplexField<Double> cf = new ComplexField<>(new DoubleField());
 
 		ComplexNumber<Double> c1 = new ComplexNumber<>(1.0, 2.0);
 		ComplexNumber<Double> c2 = new ComplexNumber<>(1.0, 2.0);

@@ -12,11 +12,11 @@ import java.util.Set;
 import org.junit.jupiter.api.Test;
 
 import someMath.DoubleField;
+import someMath.FieldTuple;
 import someMath.Matrix;
 import someMath.MatrixRing;
 import someMath.MatrixStuff;
 import someMath.SmallTools;
-import someMath.Vektor;
 import someMath.exceptions.MathException;
 
 import static consoleTools.TerminalXDisplay.*;
@@ -167,11 +167,11 @@ public class MatrixTests
 		int matrixSideLength = 2;
 		setup(2);//Matrix side length and related stuff.
 		
-		Matrix<Double> zero = ring.sumNeutral();
+		Matrix<Double> zero = ring.zero();
 		
 		Matrix<Double> s = ring.add(zero, zero);
 		
-		Matrix<Double> one = ring.multiplyNeutral();
+		Matrix<Double> one = ring.one();
 		
 		assert(s.equals(zero));
 		
@@ -203,7 +203,7 @@ public class MatrixTests
 		
 		List<Double> listOfValues = Arrays.asList(0.0, 2.0, 1.0, 1.0);
 		Matrix<Double> detTwoMinus = new Matrix<Double>(matrixSideLength, listOfValues);
-		Matrix<Double> neutrumMatrixMultiplication = ring.multiplyNeutral();
+		Matrix<Double> neutrumMatrixMultiplication = ring.one();
 		Matrix<Double> prod = ring.multiply(neutrumMatrixMultiplication, detTwoMinus);
 
 		assert(prod.equals(detTwoMinus));
@@ -243,7 +243,7 @@ public class MatrixTests
 		int matrixSideLength = 3;
 		setup(matrixSideLength);//Matrix side length and related stuff.
 		MatrixRing<Double> ring2 = new MatrixRing<>(matrixSideLength, new DoubleField());
-		Matrix<Double> e = ring2.multiplyNeutral();
+		Matrix<Double> e = ring2.one();
 		Matrix<Double> e2 = MatrixStuff.invert(e);
 		assert(e2.equals(e));
 		
@@ -332,28 +332,28 @@ public class MatrixTests
 	public void testGluing() throws MathException
 	{
 
-		Vektor<Double> toBeAttached = new Vektor<>(Arrays.asList(1.0, 2.0, 3.0));
+		FieldTuple<Double> toBeAttached = new FieldTuple<>(Arrays.asList(1.0, 2.0, 3.0));
 		List<Double> list = Arrays.asList(0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
 		Matrix<Double> toBeAttachedTo = new Matrix<>(2, list);
 
 		toBeAttachedTo = toBeAttachedTo.glueColumnToThisOnTheRight(toBeAttached);
 		toBeAttachedTo = toBeAttachedTo.glueColumnToThisOnTheLeft(toBeAttached);
 
-		Vektor<Double> left = toBeAttachedTo.getColumnAsVektor(0);
+		FieldTuple<Double> left = toBeAttachedTo.getColumnAsVektor(0);
 		int cols = toBeAttachedTo.getColumns();
-		Vektor<Double> right = toBeAttachedTo.getColumnAsVektor(cols-1);
+		FieldTuple<Double> right = toBeAttachedTo.getColumnAsVektor(cols-1);
 
 		assert(left.equals(right));
 		assert(toBeAttached.equals(left));
 		
-		toBeAttached = new Vektor<>(Arrays.asList(1.0, 2.0, 3.0, 4.0));
+		toBeAttached = new FieldTuple<>(Arrays.asList(1.0, 2.0, 3.0, 4.0));
 		
 		toBeAttachedTo = toBeAttachedTo.glueRowToThisOnTheTop(toBeAttached);
 		toBeAttachedTo = toBeAttachedTo.glueRowToThisOnTheBottom(toBeAttached);
 
-		Vektor<Double> top = toBeAttachedTo.getRowAsVektor(0);
+		FieldTuple<Double> top = toBeAttachedTo.getRowAsVektor(0);
 		int rows = toBeAttachedTo.getRows();
-		Vektor<Double> bottom = toBeAttachedTo.getRowAsVektor(rows-1);
+		FieldTuple<Double> bottom = toBeAttachedTo.getRowAsVektor(rows-1);
 
 		assert(top.equals(bottom));
 		assert(toBeAttached.equals(top));

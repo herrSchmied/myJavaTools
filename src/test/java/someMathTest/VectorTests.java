@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 
 import someMath.DoubleField;
 import someMath.SmallTools;
-import someMath.Vektor;
+import someMath.FieldTuple;
 import someMath.Vektorraum;
 import someMath.exceptions.MathException;
 
@@ -38,7 +38,7 @@ public class VectorTests
 		
 		Vektorraum<Double> vr = new Vektorraum<>(3, new DoubleField()); 
 		List<Double> list = Arrays.asList(1.0, 1.0, 1.0);
-		Vektor<Double> vektor = new Vektor<>(list);
+		FieldTuple<Double> vektor = new FieldTuple<>(list);
 		Double product = vr.scalarProduct(vektor, vektor);
 		
 		assert(product.equals(3.0));
@@ -57,7 +57,7 @@ public class VectorTests
 		Double scale = 1.5;
 		
 		List<Double> list = createListOfDoubles(3,0,9);
-		Vektor<Double> original = new Vektor<>(list);
+		FieldTuple<Double> original = new FieldTuple<>(list);
 		System.out.println("original:\n" + original);
 
 		Double value0 = list.get(0);
@@ -66,15 +66,15 @@ public class VectorTests
 		
 		List<Double> list2 = 
 				Arrays.asList(value0*scale, value1*scale, value2*scale);
-		Vektor<Double> scaleCheckVektor = new Vektor<>(list2);
+		FieldTuple<Double> scaleCheckVektor = new FieldTuple<>(list2);
 		System.out.println("scaleCheck:\n" + scaleCheckVektor);
 
-		Vektor<Double> scaledVektor = vr.scaling(scale, original);
+		FieldTuple<Double> scaledVektor = vr.scaling(scale, original);
 		System.out.println("scaled:\n" + scaledVektor);
 
 		assert(scaledVektor.equals(scaleCheckVektor));
 
-		Vektor<Double> backToTheOriginal = vr.scaling((1/scale), scaleCheckVektor);
+		FieldTuple<Double> backToTheOriginal = vr.scaling((1/scale), scaleCheckVektor);
 		System.out.println("backToTheoriginal:\n" + backToTheOriginal);
 
 		assert(scaledVektor.equals(scaleCheckVektor));
@@ -93,9 +93,9 @@ public class VectorTests
 	public void cloneTest() throws MathException
 	{
 		List<Double> list = Arrays.asList(1.0, 2.0, 3.0);
-		Vektor<Double> original = new Vektor<>(list);
+		FieldTuple<Double> original = new FieldTuple<>(list);
 		
-		Vektor<Double> clone = original.clone();
+		FieldTuple<Double> clone = original.clone();
 		
 		assert(!(clone==original));
 		assert(clone.equals(original));

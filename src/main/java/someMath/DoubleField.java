@@ -4,11 +4,12 @@ package someMath;
 
 import java.lang.Double;
 
+
 import someMath.exceptions.MathException;
 
 
 
-public class DoubleField implements Field<Double>
+public final class DoubleField implements Field<Double>
 {
 
 	public DoubleField()
@@ -29,13 +30,13 @@ public class DoubleField implements Field<Double>
 	}
 
 	@Override
-	public Double sumInverse(Double a1) throws MathException
+	public Double negate(Double a1) throws MathException
 	{
 		return -a1;
 	}
 
 	@Override
-	public Double multiplyInverse(Double a1) throws MathException
+	public Double inverse(Double a1) throws MathException
 	{
 		if(a1.equals(0.0)) throw new MathException("Zero has no Multiplication inverse!");
 		
@@ -43,15 +44,26 @@ public class DoubleField implements Field<Double>
 	}
 
 	@Override
-	public Double sumNeutral()
+	public Double zero()
 	{
 		return 0.0;
 	}
 
 	@Override
-	public Double multiplyNeutral()
+	public Double one()
 	{
 		return 1.0;
 	}
+	
+	public int hashCode()
+	{
+		return DoubleField.class.hashCode();
+	}
+	
+	public boolean equals(Object other)
+	{	
+	    return other instanceof DoubleField;
+	}
+
 
 }

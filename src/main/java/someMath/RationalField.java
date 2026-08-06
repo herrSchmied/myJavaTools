@@ -1,9 +1,11 @@
 package someMath;
 
+import java.util.Objects;
+
 import javafx.util.Pair;
 import someMath.exceptions.MathException;
 
-public class RationalField implements Field<RationalNumber>
+public final class RationalField implements Field<RationalNumber>
 {
 
 	public RationalField()
@@ -51,7 +53,7 @@ public class RationalField implements Field<RationalNumber>
 	}
 
 	@Override
-	public RationalNumber sumInverse(RationalNumber a1) throws MathException
+	public RationalNumber negate(RationalNumber a1) throws MathException
 	{
 		
 		try
@@ -68,7 +70,7 @@ public class RationalField implements Field<RationalNumber>
 	}
 
 	@Override
-	public RationalNumber multiplyInverse(RationalNumber a1) throws MathException
+	public RationalNumber inverse(RationalNumber a1) throws MathException
 	{
 
 		if(a1.equals(RationalNumber.zero)) throw new MathException("Zero has no inverse.");
@@ -91,20 +93,20 @@ public class RationalField implements Field<RationalNumber>
 	}
 
 	@Override
-	public RationalNumber sumNeutral() throws MathException
+	public RationalNumber zero() throws MathException
 	{
 		return RationalNumber.zero;
 	}
 
 	@Override
-	public RationalNumber multiplyNeutral()
+	public RationalNumber one()
 	{
 		return RationalNumber.one;
 	}
 	
 	public int hashCode()
 	{
-		return 2;
+		return Objects.hash(RationalNumber.zero, RationalNumber.one);
 	}
 	
 	public boolean equals(Object other)

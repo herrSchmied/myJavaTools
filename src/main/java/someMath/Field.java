@@ -2,16 +2,7 @@ package someMath;
 
 import someMath.exceptions.MathException;
 
-public interface Field<A>
-{
-
-	public A add(A a1, A a2) throws MathException;
-	public A multiply(A a1, A a2) throws MathException;
-	
-	public A sumInverse(A a1) throws MathException;
-	public A multiplyInverse(A a1) throws MathException;
-	
-	public A sumNeutral() throws MathException;
-	
-	public A multiplyNeutral() throws MathException;
+public interface Field<A> extends Ring<A>
+{	
+	public A inverse(A a1) throws MathException;
 }

@@ -73,11 +73,11 @@ public class MatrixQTest
 		int matrixSideLength = 2;
 		setup(2);//Matrix side length and related stuff.
 		
-		Matrix<RationalNumber> zero = ring.sumNeutral();
+		Matrix<RationalNumber> zero = ring.zero();
 		
 		Matrix<RationalNumber> s = ring.add(zero, zero);
 		
-		Matrix<RationalNumber> one = ring.multiplyNeutral();
+		Matrix<RationalNumber> one = ring.one();
 		
 		assert(s.equals(zero));
 		
@@ -109,7 +109,7 @@ public class MatrixQTest
 		
 		List<RationalNumber> listOfValues = Arrays.asList(rnZero, two, rnOne, rnOne);
 		Matrix<RationalNumber> detTwoMinus = new Matrix<RationalNumber>(matrixSideLength, listOfValues);
-		Matrix<RationalNumber> neutrumMatrixMultiplication = ring.multiplyNeutral();
+		Matrix<RationalNumber> neutrumMatrixMultiplication = ring.one();
 		Matrix<RationalNumber> prod = ring.multiply(neutrumMatrixMultiplication, detTwoMinus);
 
 		assert(prod.equals(detTwoMinus));
@@ -130,6 +130,7 @@ public class MatrixQTest
 			List<RationalNumber> list = createListOfRNs(9);
 			List<RationalNumber> list2 = createListOfRNs(9);
 			Matrix<RationalNumber> matrix = new Matrix<RationalNumber>(l, list);
+
 			@SuppressWarnings("unchecked")
 			Field<O> k = (Field<O>) matrix.getField();
 			assert(new RationalField().equals(rField));
@@ -141,7 +142,7 @@ public class MatrixQTest
 
 			RationalNumber o3 = MatrixStuff.determinant(matrix3);
 		
-			RationalNumber o4 = rField.sumInverse(rField.multiply(o, o2));
+			RationalNumber o4 = rField.negate(rField.multiply(o, o2));
 			RationalNumber o5 = rField.add(o3, o4);
 			assert(o5.isSmallerThan(prettySmall));
 		}
@@ -155,7 +156,7 @@ public class MatrixQTest
 		int matrixSideLength = 3;
 		setup(matrixSideLength);//Matrix side length and related stuff.
 		MatrixRing<RationalNumber> ring2 = new MatrixRing<>(matrixSideLength, new RationalField());
-		Matrix<RationalNumber> e = ring2.multiplyNeutral();
+		Matrix<RationalNumber> e = ring2.one();
 		Matrix<RationalNumber> e2 = MatrixStuff.invert(e);
 		assert(e2.equals(e));
 		
@@ -169,7 +170,7 @@ public class MatrixQTest
 		RationalNumber d2 = MatrixStuff.determinant(invertedMatrix);
 		RationalNumber d3 = rField.multiply(d1, d2);
 		System.out.println("Product of determinants: " + d3);
-		RationalNumber d4 = rField.sumInverse(d3);
+		RationalNumber d4 = rField.negate(d3);
 		RationalNumber d5 = rField.add(rnOne, d4);
 		assert(d5.isSmallerThan(prettySmall));
 		
@@ -192,7 +193,7 @@ public class MatrixQTest
 
 				Matrix<RationalNumber> inverted = MatrixStuff.invert(matrix);
 				Matrix<RationalNumber> prod = ring.multiply(inverted, matrix);
-				RationalNumber minusOne = rField.sumInverse(rnOne);
+				RationalNumber minusOne = rField.negate(rnOne);
 				Matrix<RationalNumber> minusProd = MatrixStuff.scale(minusOne, prod);
 				Matrix<RationalNumber> sum = ring.add(e, minusProd);
 				RationalNumber norm = MatrixStuff.frobeniusNorm(sum);

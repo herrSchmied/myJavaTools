@@ -13,25 +13,25 @@ public class Vektorraum<O> //TODO: Interface VectorSpace is coming!!!
 {
 
 	private final Field<O> k;
-	private final Vektor<O> multiplyNeutrum;
+	private final FieldTuple<O> multiplyNeutrum;
 	
 	public Vektorraum(int n, Field<O> k) throws MathException
 	{
 
 		this.k = k;
 		List<O> zeros = new ArrayList<>();
-		for(int m=0;m<n;m++)zeros.add(k.sumNeutral());
-		multiplyNeutrum = new Vektor<>(zeros);
+		for(int m=0;m<n;m++)zeros.add(k.zero());
+		multiplyNeutrum = new FieldTuple<>(zeros);
 	}
 
 
-	public final Vektor<O> sum(Vektor<O> v1, Vektor<O> v2) throws MathException
+	public final FieldTuple<O> sum(FieldTuple<O> v1, FieldTuple<O> v2) throws MathException
 	{
 		
 		
 		if(v1.getRows()!=v2.getRows()) throw new MathException("Can't add those.");
 		
-		Vektor<O> sum = v1.clone();
+		FieldTuple<O> sum = v1.clone();
 		for(int r=0;r<v1.getRows();r++)
 		{
 			
@@ -42,10 +42,10 @@ public class Vektorraum<O> //TODO: Interface VectorSpace is coming!!!
 		return sum;
 	}
 	
-	public final Vektor<O> scaling(O scale, Vektor<O> toBeScaled) throws MathException
+	public final FieldTuple<O> scaling(O scale, FieldTuple<O> toBeScaled) throws MathException
 	{
 
-		Vektor<O> output = toBeScaled.clone();
+		FieldTuple<O> output = toBeScaled.clone();
 
 		int rows = toBeScaled.getRows();
 
@@ -59,7 +59,7 @@ public class Vektorraum<O> //TODO: Interface VectorSpace is coming!!!
 		return output;
 	}
 
-	public final O scalarProduct(Vektor<O> v1, Vektor<O> v2) throws MathException
+	public final O scalarProduct(FieldTuple<O> v1, FieldTuple<O> v2) throws MathException
 	{
 
 		if(v1.getRows()!=v2.getRows())
