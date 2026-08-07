@@ -15,23 +15,24 @@ public class NaturalNumber extends Number implements Cloneable, Serializable
 	private static final long serialVersionUID = 1L;
 
 	
-	public final Integer numberCore;
+	public final Long numberCore;
+	public static final Long max = (long)2*Integer.MAX_VALUE;
 
 	/*Remember:*/
 	//Extra private Constructor with out a possible Exception. For this two static Constants.
 	public static final NaturalNumber zero = new NaturalNumber("0");
 	public static final NaturalNumber one = new NaturalNumber("1");
 	
-	public NaturalNumber(Integer numberCore) throws NaturalNumberException
+	public NaturalNumber(Long numberCore) throws NaturalNumberException
 	{
 		if(numberCore<0)throw new NaturalNumberException("Can't work with negative Integers.");
-
+		if(numberCore>max)throw new NaturalNumberException("Value for Constructor to big.");
 		this.numberCore = numberCore;
 	}
 	
 	private NaturalNumber(String s)
 	{
-		this.numberCore = Integer.parseInt(s);
+		this.numberCore = Long.parseLong(s);
 	}
 	
 	public NaturalNumber add(NaturalNumber nn) throws NaturalNumberException
@@ -44,17 +45,17 @@ public class NaturalNumber extends Number implements Cloneable, Serializable
 		return new NaturalNumber(numberCore*nn.getNumberCore());
 	}
 
-	public boolean isGreaterThen(NaturalNumber n)
+	public boolean isBiggerThan(NaturalNumber n)
 	{
 		return numberCore>n.numberCore;
 	}
 	
-	public boolean isSmallerThen(NaturalNumber n)
+	public boolean isSmallerThan(NaturalNumber n)
 	{
 		return numberCore<n.numberCore;
 	}
 
-	public Integer getNumberCore()
+	public Long getNumberCore()
 	{
 		return numberCore;
 	}

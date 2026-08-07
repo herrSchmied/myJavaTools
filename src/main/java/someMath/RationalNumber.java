@@ -189,8 +189,9 @@ public class RationalNumber extends Number implements Cloneable, Serializable
 
 	public RationalNumber(int intNumerator, int intDenominator) throws MathException, NaturalNumberException
 	{
+
 		if(intDenominator==0)throw new MathException("Denominator can't be Zero.");
-		
+		if(Math.abs(intNumerator)>NaturalNumber.max)throw new MathException("");
 		if(intNumerator==0)
 		{
 			this.sign = true;
@@ -350,32 +351,37 @@ public class RationalNumber extends Number implements Cloneable, Serializable
 	
 	public boolean isLargerThan(RationalNumber rn) throws NaturalNumberException, MathException
 	{
-		
+
 		if(this.equals(rn))return false;
+
+		if(rn.equals(zero))return sign;
+		
+		if(this.equals(zero))return !rn.sign;
 		
 		if(sign&&!(rn.getSign()))return true;
 		if(!(sign)&&rn.getSign())return false;
 		
+		
+		NaturalNumber newNum1 = numerator.multiply(rn.getDenominator());
+		NaturalNumber newNum2 = rn.getNumerator().multiply(denominator);
+
 		if(sign&&rn.getSign())
 		{
-			if(integerPart.isGreaterThen(rn.getIntegerPart()))return true;
-			if(integerPart.isSmallerThen(rn.getIntegerPart()))return false;
 			
-			NaturalNumber newNum1 = numerator.multiply(rn.getDenominator());
-			NaturalNumber newNum2 = rn.getNumerator().multiply(denominator);
-			
-			return (newNum1.isGreaterThen(newNum2));
+			if(integerPart.isBiggerThan(rn.getIntegerPart()))return true;
+			if(integerPart.isSmallerThan(rn.getIntegerPart()))return false;
+
+			return (newNum1.isBiggerThan(newNum2));
 		}
+		
+
 		
 		if(!(sign)&&!(rn.getSign()))
 		{
-			if(integerPart.isGreaterThen(rn.getIntegerPart()))return false;
-			if(integerPart.isSmallerThen(rn.getIntegerPart()))return true;
-			
-			NaturalNumber newNum1 = numerator.multiply(rn.getDenominator());
-			NaturalNumber newNum2 = rn.getNumerator().multiply(denominator);
-			
-			return (newNum1.isSmallerThen(newNum2));
+			if(integerPart.isBiggerThan(rn.getIntegerPart()))return false;
+			if(integerPart.isSmallerThan(rn.getIntegerPart()))return true;
+						
+			return (newNum1.isSmallerThan(newNum2));
 		}
 
 		

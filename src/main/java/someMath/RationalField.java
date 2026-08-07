@@ -18,7 +18,7 @@ public final class RationalField implements Field<RationalNumber>
 	{
 		
 		RationalNumber a3;
-		
+
 		try
 		{
 			a3 = a1.add(a2);

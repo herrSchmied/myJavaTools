@@ -93,7 +93,8 @@ public class ExactPeriode
 			yearsPlus = new NaturalNumber(yearsPlus.numberCore-max.numberCore);
 		}
 		
-		newToLDT = this.toLDT.plusYears(yearsPlus.getNumberCore().longValue());
+		//TODO: It's all because of New NaturalNumbers don't need longValue()
+		newToLDT = this.toLDT.plusYears(yearsPlus.getNumberCore());
 		
 		return new ExactPeriode(fromLDT, newToLDT);
 	}

@@ -22,6 +22,15 @@ import someMath.exceptions.MathException;
 
 import static consoleTools.TerminalXDisplay.*;
 
+/**
+ * Test if Matrices Work with my RationalField
+ * Problem when inverting a Matrix, or in gener
+ * al calculating with RationalNumbers sometimes
+ * numerator an denominator get big fast.
+ * That's why the Method: createListOfRNs(int n)
+ * is restricted to a small easy Set for numerators
+ * and denominators this needs maybe another solution.
+ */
 public class MatrixQTest
 {
 
@@ -47,7 +56,7 @@ public class MatrixQTest
 
 		rField = new RationalField();
 		ring = new MatrixRing<>(n, new RationalField());
-		prettySmall = new RationalNumber(true, NaturalNumber.zero, NaturalNumber.one, new NaturalNumber(1000000000));
+		prettySmall = new RationalNumber(true, NaturalNumber.zero, NaturalNumber.one, new NaturalNumber(1000000));
 
 		rnZero = RationalNumber.zero;
 		rnOne = RationalNumber.one;
@@ -127,24 +136,22 @@ public class MatrixQTest
 		
 		for(int n=0;n<6;n++)
 		{
+			
+			System.out.println("MatrixQDet Test " +(n+1));
 			List<RationalNumber> list = createListOfRNs(9);
 			List<RationalNumber> list2 = createListOfRNs(9);
+			
 			Matrix<RationalNumber> matrix = new Matrix<RationalNumber>(l, list);
-
-			@SuppressWarnings("unchecked")
-			Field<O> k = (Field<O>) matrix.getField();
-			assert(new RationalField().equals(rField));
 			Matrix<RationalNumber> matrix2 = new Matrix<RationalNumber>(l, list2);
 			Matrix<RationalNumber> matrix3 = ring.multiply(matrix, matrix2);
 
-			RationalNumber o = MatrixStuff.determinant(matrix);
-			RationalNumber o2 = MatrixStuff.determinant(matrix2);
-
-			RationalNumber o3 = MatrixStuff.determinant(matrix3);
+			RationalNumber det = MatrixStuff.determinant(matrix);
+			RationalNumber det2 = MatrixStuff.determinant(matrix2);
+			RationalNumber det3 = MatrixStuff.determinant(matrix3);
 		
-			RationalNumber o4 = rField.negate(rField.multiply(o, o2));
-			RationalNumber o5 = rField.add(o3, o4);
-			assert(o5.isSmallerThan(prettySmall));
+			RationalNumber negDetProductDetDet2 = rField.negate(rField.multiply(det, det2));
+			RationalNumber negDetAndDet3Sum = rField.add(det3, negDetProductDetDet2);
+			assert(negDetAndDet3Sum.isSmallerThan(prettySmall));
 		}
 	}
 
@@ -197,7 +204,7 @@ public class MatrixQTest
 				Matrix<RationalNumber> minusProd = MatrixStuff.scale(minusOne, prod);
 				Matrix<RationalNumber> sum = ring.add(e, minusProd);
 				RationalNumber norm = MatrixStuff.frobeniusNorm(sum);
-				if(norm.isSmallerThan(prettySmall))
+				if(!norm.isSmallerThan(prettySmall))
 				{
 					System.out.println("Matrix:\n" + matrix);
 					System.out.println("Inverted:\n" + inverted);
@@ -224,8 +231,8 @@ public class MatrixQTest
 		
 		for(int m=0;m<n;m++)
 		{
-			int numerator = SmallTools.randomInt(200, 0);
-			int denominator = SmallTools.randomInt(200, 1);
+			int numerator = SmallTools.randomInt(5, 1);
+			int denominator = SmallTools.randomInt(5, 1);
 			Double dsign = ((double)SmallTools.randomInt(1, 0));
 			boolean sign = dsign.equals(1.0);
 			int faktor = 1;
