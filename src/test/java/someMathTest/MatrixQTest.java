@@ -9,7 +9,7 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 
 
-import someMath.Field;
+
 import someMath.Matrix;
 import someMath.MatrixRing;
 import someMath.MatrixStuff;
@@ -56,7 +56,7 @@ public class MatrixQTest
 
 		rField = new RationalField();
 		ring = new MatrixRing<>(n, new RationalField());
-		prettySmall = new RationalNumber(true, NaturalNumber.zero, NaturalNumber.one, new NaturalNumber(1000000));
+		prettySmall = new RationalNumber(true, NaturalNumber.zero, NaturalNumber.one, new NaturalNumber((long)1000000));
 
 		rnZero = RationalNumber.zero;
 		rnOne = RationalNumber.one;

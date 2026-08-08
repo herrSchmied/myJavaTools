@@ -6,23 +6,18 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 
-
 import java.util.Arrays;
 import java.util.List;
 
 
 import someMath.SmallTools;
-
+import someMath.VecFieldTupStuff;
+import someMath.VectorSpaceForFieldTuples;
 import someMath.Matrix;
-
-
-import someMath.Vektorraum;
-
 import someMath.exceptions.MathException;
-
 import someMath.LinearEquationSolver;
-
 import someMath.DoubleField;
+import someMath.Field;
 import someMath.FieldTuple;
 
 
@@ -71,15 +66,16 @@ public class LinearEquationSolverTest
 		 *  solution = |(1/3)  (1/3)|
 		 */
 		
-		Vektorraum<Double> vr = new Vektorraum<>(2, new DoubleField());
+	
+		VecFieldTupStuff<Double> vft = new VecFieldTupStuff<>(new DoubleField());
 		Double r = 10.0;
 		FieldTuple<Double> row0 = coefficientMatrix.getRowAsVektor(0);
-		r =rowResults.getValue(0)-vr.scalarProduct(row0, solution1);
+		r =rowResults.getValue(0)-vft.scalarProduct(row0, solution1);
 		Double prettySmall = Math.pow(1, -12);
 		assert(r<=prettySmall);
 
 		FieldTuple<Double> row1 = coefficientMatrix.getRowAsVektor(1);
-		r = rowResults.getValue(1)-vr.scalarProduct(row1, solution1);
+		r = rowResults.getValue(1)-vft.scalarProduct(row1, solution1);
 		assert(r<=prettySmall);
 
 	}

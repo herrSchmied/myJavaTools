@@ -11,7 +11,6 @@ import java.util.*;
 import javafx.util.Pair;
 import someMath.exceptions.MathException;
 
-import static consoleTools.TerminalXDisplay.*;
 
 
 public class SmallTools

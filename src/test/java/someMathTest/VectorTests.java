@@ -7,13 +7,15 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 
 import someMath.DoubleField;
-import someMath.SmallTools;
 import someMath.FieldTuple;
-import someMath.Vektorraum;
+import someMath.VecFieldTupStuff;
+import someMath.VectorSpaceForFieldTuples;
 import someMath.exceptions.MathException;
 
 public class VectorTests
 {
+	
+	Double prettySmall = Math.pow(10, -6);
 
 	//Not capable of cast to Integer without loss.
 	//It' different than in the other class(MatrixTests)
@@ -36,10 +38,10 @@ public class VectorTests
 	public void scalarProduct() throws MathException
 	{
 		
-		Vektorraum<Double> vr = new Vektorraum<>(3, new DoubleField()); 
 		List<Double> list = Arrays.asList(1.0, 1.0, 1.0);
 		FieldTuple<Double> vektor = new FieldTuple<>(list);
-		Double product = vr.scalarProduct(vektor, vektor);
+		VecFieldTupStuff<Double> vfts = new VecFieldTupStuff<>(new DoubleField());
+		Double product = vfts.scalarProduct(vektor, vektor);
 		
 		assert(product.equals(3.0));
 		
@@ -52,7 +54,7 @@ public class VectorTests
 	public void scaleTest() throws MathException
 	{
 
-		Vektorraum<Double> vr = new Vektorraum<>(3, new DoubleField()); 
+		VectorSpaceForFieldTuples<Double, FieldTuple<Double>> vft = new VectorSpaceForFieldTuples<>(new DoubleField());
 
 		Double scale = 1.5;
 		
@@ -69,20 +71,20 @@ public class VectorTests
 		FieldTuple<Double> scaleCheckVektor = new FieldTuple<>(list2);
 		System.out.println("scaleCheck:\n" + scaleCheckVektor);
 
-		FieldTuple<Double> scaledVektor = vr.scaling(scale, original);
+		FieldTuple<Double> scaledVektor = vft.scalarMultiplication(scale, original);
 		System.out.println("scaled:\n" + scaledVektor);
 
 		assert(scaledVektor.equals(scaleCheckVektor));
 
-		FieldTuple<Double> backToTheOriginal = vr.scaling((1/scale), scaleCheckVektor);
+		FieldTuple<Double> backToTheOriginal = vft.scalarMultiplication((1.0/scale), scaleCheckVektor);
 		System.out.println("backToTheoriginal:\n" + backToTheOriginal);
 
 		assert(scaledVektor.equals(scaleCheckVektor));
 		assert(backToTheOriginal.equals(original));
 		
-		assert(backToTheOriginal.getValue(0).equals(original.getValue(0)));
-		assert(backToTheOriginal.getValue(1).equals(original.getValue(1)));
-		assert(backToTheOriginal.getValue(2).equals(original.getValue(2)));
+		assert(Math.abs(backToTheOriginal.getValue(0)-original.getValue(0))<prettySmall);
+		assert(Math.abs(backToTheOriginal.getValue(1)-original.getValue(1))<prettySmall);
+		assert(Math.abs(backToTheOriginal.getValue(2)-original.getValue(2))<prettySmall);
 		assert(scaledVektor.getValue(0).equals(value0*scale));
 		assert(scaledVektor.getValue(1).equals(value1*scale));
 		assert(scaledVektor.getValue(2).equals(value2*scale));

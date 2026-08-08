@@ -60,7 +60,7 @@ public class RationalNumber extends Number implements Cloneable, Serializable
 		
 		if(numerator.equals(denominator))
 		{
-			this.integerPart = new NaturalNumber(integerPart.intValue()+1);
+			this.integerPart = new NaturalNumber((long)(integerPart.intValue()+1));
 			this.numerator = NaturalNumber.zero;
 			this.denominator = NaturalNumber.one;
 			return;
@@ -144,7 +144,7 @@ public class RationalNumber extends Number implements Cloneable, Serializable
 		if(intNumerator==0)
 		{
 			this.sign = intIntegerPart>=0;
-			this.integerPart = new NaturalNumber(Math.abs(intIntegerPart));
+			this.integerPart = new NaturalNumber((long)Math.abs(intIntegerPart));
 			this.numerator = NaturalNumber.zero;
 			this.denominator = NaturalNumber.one;
 			return;
@@ -154,8 +154,8 @@ public class RationalNumber extends Number implements Cloneable, Serializable
 		{
 			
 			this.sign=fracSign;
-			NaturalNumber nnNum = new NaturalNumber(Math.abs(intNumerator));
-			NaturalNumber nnDenom = new NaturalNumber(Math.abs(intDenominator));
+			NaturalNumber nnNum = new NaturalNumber((long)Math.abs(intNumerator));
+			NaturalNumber nnDenom = new NaturalNumber((long)Math.abs(intDenominator));
 			List<NaturalNumber> list = shorten(nnNum, nnDenom);
 			this.integerPart = list.get(0);
 			this.numerator = list.get(1);
@@ -178,8 +178,8 @@ public class RationalNumber extends Number implements Cloneable, Serializable
 		boolean bothSmallerZero = ((!intSign)&&(!fracSign));
 		
 		this.sign = (!(sameSign&&bothSmallerZero))&&(newNum>=0);
-		NaturalNumber nnNum = new NaturalNumber(Math.abs(newNum));
-		NaturalNumber nnDenom = new NaturalNumber(Math.abs(newDenom));
+		NaturalNumber nnNum = new NaturalNumber((long)Math.abs(newNum));
+		NaturalNumber nnDenom = new NaturalNumber((long)Math.abs(newDenom));
 		List<NaturalNumber> list = shorten(nnNum, nnDenom);
 		this.integerPart = list.get(0);
 		this.numerator = list.get(1);
@@ -211,8 +211,8 @@ public class RationalNumber extends Number implements Cloneable, Serializable
 
 			int intDenominator2 = Math.abs(intDenominator);
 
-			NaturalNumber nnNum = new NaturalNumber(Math.abs(intNumerator2));
-			NaturalNumber nnDenom = new NaturalNumber(Math.abs(intDenominator2));
+			NaturalNumber nnNum = new NaturalNumber((long)Math.abs(intNumerator2));
+			NaturalNumber nnDenom = new NaturalNumber((long)Math.abs(intDenominator2));
 			List<NaturalNumber> list = shorten(nnNum, nnDenom);
 
 			this.integerPart = list.get(0);
@@ -226,7 +226,7 @@ public class RationalNumber extends Number implements Cloneable, Serializable
 	public RationalNumber(int integerPart) throws NaturalNumberException
 	{
 		this.sign = integerPart>=0;
-		this.integerPart = new NaturalNumber(Math.abs(integerPart));
+		this.integerPart = new NaturalNumber((long)Math.abs(integerPart));
 		this.numerator = NaturalNumber.zero;
 		this.denominator = NaturalNumber.one;
 	}
@@ -254,9 +254,9 @@ public class RationalNumber extends Number implements Cloneable, Serializable
 			numerator2 = numerator2-newDenominator;
 		}
 			
-		output.add(new NaturalNumber(cnt));
-		output.add(new NaturalNumber(numerator2));
-		output.add(new NaturalNumber(newDenominator));
+		output.add(new NaturalNumber((long)cnt));
+		output.add(new NaturalNumber((long)numerator2));
+		output.add(new NaturalNumber((long)newDenominator));
 			
 		return output;
 	}
@@ -325,8 +325,8 @@ public class RationalNumber extends Number implements Cloneable, Serializable
 		Pair<Integer, Integer> other = rn.getAsOneFrac();
 		
 		boolean productSign = (this.sign==rn.sign);
-		NaturalNumber nnNum = new NaturalNumber(here.getKey()*other.getKey());
-		NaturalNumber nnDenom = new NaturalNumber(here.getValue()*other.getValue());
+		NaturalNumber nnNum = new NaturalNumber((long)(here.getKey()*other.getKey()));
+		NaturalNumber nnDenom = new NaturalNumber((long)(here.getValue()*other.getValue()));
 		
 		return new RationalNumber(productSign, nnNum, nnDenom);
 	}

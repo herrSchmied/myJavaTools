@@ -1,23 +1,28 @@
 package consolToolsTest;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
+
 
 import java.awt.Color;
 import java.awt.Point;
-import java.io.ByteArrayInputStream;
-import java.time.LocalDateTime;
+
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+
 import org.junit.jupiter.api.Test;
 
-import consoleTools.InputArgumentException;
-import consoleTools.InputStreamSession;
+
 import consoleTools.TerminalTableDisplay;
+
+
 import javafx.util.Pair;
+
+
 import someMath.exceptions.ConsoleToolsException;
+
+
 
 public class TestingConsoleTools
 {

@@ -6,7 +6,7 @@ import java.time.format.DateTimeFormatter;
 import org.junit.jupiter.api.Test;
 
 import allgemein.ExactPeriode;
-import someMath.NaturalNumber;
+
 import someMath.NaturalNumberException;
 
 public class ExactPeriodeTest
