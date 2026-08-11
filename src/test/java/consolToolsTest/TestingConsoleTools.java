@@ -2,9 +2,14 @@ package consolToolsTest;
 
 
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 import java.awt.Color;
 import java.awt.Point;
 
+import java.io.IOException;
+
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
@@ -13,10 +18,10 @@ import java.util.Set;
 
 import org.junit.jupiter.api.Test;
 
-
+import consoleTools.InputArgumentException;
+import consoleTools.InputStreamSession;
 import consoleTools.TerminalTableDisplay;
-
-
+import consoleTools.TestInputReader;
 import javafx.util.Pair;
 
 
@@ -43,21 +48,28 @@ public class TestingConsoleTools
 		System.out.println(ttd);
 	}
 
-//	@Test
-//	public void InputStreamSessionTest()
-//	{
-//		
-//		LocalDateTime yesterday = LocalDateTime.now().minusDays(1);
-//		
-//		String data = InputStreamSession.translateTimeToAnswerString(yesterday);
-//		
-//		ByteArrayInputStream bais = new ByteArrayInputStream(data.getBytes());
-//
-//		InputStreamSession iss = new InputStreamSession(bais);
-//		
-//		InputArgumentException iae = assertThrows(InputArgumentException.class, ()->
-//		{
-//			iss.getDateTimeInOneLine("DateTime please.", LocalDateTime.now(), LocalDateTime.now().plusMinutes(1));
-//		});
-//	}
+	@Test
+	public void InputStreamSessionTest() throws IOException
+	{
+		
+
+	    LocalDateTime yesterday =
+	            LocalDateTime.now().minusDays(1);
+
+	    String data =
+	            InputStreamSession.translateTimeToAnswerString(yesterday);
+
+	    TestInputReader testInput =
+	            new TestInputReader(data);
+
+	    InputStreamSession iss =
+	            new InputStreamSession(testInput);
+
+	    assertThrows(InputArgumentException.class, () ->
+	        iss.getDateTimeInOneLine(
+	            "DateTime please.",
+	            LocalDateTime.now(),
+	            LocalDateTime.now().plusMinutes(1)
+	        )
+	    );	}
 }

@@ -2,7 +2,7 @@ package consoleTools;
 
 import java.io.IOException;
 import java.io.InputStream;
-
+import java.nio.file.Path;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -12,11 +12,12 @@ import java.time.Year;
 import java.util.AbstractMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Scanner;
+
 
 import allgemein.LittleTimeTools;
 
-public class InputStreamSession
+
+public class InputStreamSession implements AutoCloseable
 {
 
 	public static final Map<String, Month> monthMap = Map.ofEntries(
@@ -87,69 +88,104 @@ public class InputStreamSession
 	 * running JVM. 
 	 */
 	
-	private final Scanner scanner; 
 
-	public InputStreamSession(InputStream is)
+	private final InputReader inputReader;
+
+	public InputStreamSession(InputStream is, Path historyFile)
+	            throws IOException
+	{    
+		this(new JLineInputReader(is, historyFile));
+    }
+
+	// Constructor used by tests
+	public InputStreamSession(InputReader inputReader)
 	{
-		scanner = new Scanner(is);
+		this.inputReader = inputReader;
 	}
-	
+
+	private String readLine(String question)
+	{
+		return inputReader.readLine(question);
+	}
+    
+	@Override
+	public void close() throws IOException
+	{
+	        inputReader.close();    
+	}
+
 	public boolean getYesOrNo(String qPhrase) throws IOException, InputArgumentException
 	{
 
-		System.out.println(qPhrase);
-		String answer = scanner.nextLine();
-		String s = answer.toLowerCase().trim();
+	    String answer = readLine(qPhrase);
+
+	    String s = answer.toLowerCase().trim();
+
+	    if (s.equals(ja + "") || s.equals(yes))
+	        return true;
+
+	    if (s.equals(nein + "") || s.equals(no))
+	        return false;
+
+	    throw new InputArgumentException(dontUnderstandTheAnswer);
 		
-		if(s.equals(ja+"")||s.equals(yes)) return true;
-		if(s.equals(nein+"")||s.equals(no)) return false;
-		
-		throw new InputArgumentException(dontUnderstandTheAnswer);
 	}
-	
+
 	public String getString(String qPhrase)
 	{
-	
-		System.out.println(qPhrase);
-		String s = scanner.nextLine();
-		
-		return s;
+	    return readLine(qPhrase);
 	}
 
 	public int getNrInput(String qPhrase, int startOfValideInput, int range) throws InputArgumentException
 	{
 		
-		int max = startOfValideInput+range;
-		
-		System.out.println(qPhrase);
-		String s = scanner.nextLine();
-		
-		int n = 0;
-		if(s.trim().matches("[0-9]+"))n=Integer.parseInt(s.trim());
-		else throw new InputArgumentException(noNumber);
-		
-		if(n>=startOfValideInput&&n<=max) return n;
-		else throw new InputArgumentException(answerOutOfBounds);
-	}
-	
-	public String getAnswerOutOfList(String phrase, List<String> answerList) throws IOException, InputArgumentException
-	{
+	    int max = startOfValideInput + range;
 
-		if(answerList.isEmpty()||answerList.contains(null))throw new IllegalArgumentException(answerListBad);
-		
-		int size = answerList.size();
-		
-		System.out.println(phrase);
-		for(int n=1;n<size+1;n++)
-		{
-			System.out.println(n + ".) " + answerList.get(n-1));
-		}
-		
-		int n = getNrInput(chooseANumber, minNrForOutOfList, size);
-		if(n>size||n<0) throw new InputArgumentException(answerOutOfBounds);
-		return answerList.get(n-1);
+	    String s = readLine(qPhrase);
+
+	    int n;
+
+	    try
+	    {
+	    	n = Integer.parseInt(s.trim());
+	    	
+		    if (n >= startOfValideInput && n <= max)
+		        return n;
+
+	        throw new InputArgumentException(answerOutOfBounds);
+
+	    }
+	    catch(NumberFormatException nfexc)
+	    {
+	    	throw new InputArgumentException(noNumber);
+	    }
 	}
 	
+	public String getAnswerOutOfList(String phrase,List<String> answerList)
+	        throws IOException, InputArgumentException
+	{
+	    if (answerList.isEmpty() || answerList.contains(null))
+	        throw new IllegalArgumentException(answerListBad);
+
+	    int size = answerList.size();
+
+	    System.out.println(phrase);
+
+	    for (int n = 1; n < size + 1; n++)
+	    {
+	        System.out.println(n + ".) " + answerList.get(n - 1));
+	    }
+
+	    int n = getNrInput(
+	            chooseANumber,
+	            minNrForOutOfList,
+	            size);
+
+	    if (n > size || n < 0)
+	        throw new InputArgumentException(answerOutOfBounds);
+
+	    return answerList.get(n - 1);
+	}	
 	
 	public LocalDate getDate(String qPhrase, LocalDate begin, LocalDate end) throws IOException, InputArgumentException
 	{

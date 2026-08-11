@@ -8,9 +8,11 @@ import org.junit.jupiter.api.BeforeEach;
 
 import consoleTools.InputArgumentException;
 import consoleTools.InputStreamSession;
+import consoleTools.TestInputReader;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -33,30 +35,30 @@ public class InputTests
 	}
 	
 	@Test
-	public void testGetString() 
+	public void testGetString() throws IOException 
 	{
 		
-		String gruß = "Hi";
-		ByteArrayInputStream is = new ByteArrayInputStream(gruß.getBytes());
-		InputStreamSession inTaker = new InputStreamSession(is);
+		String gruss = "Hi u";
+		TestInputReader testInput = new TestInputReader(gruss);
+		InputStreamSession inTaker = new InputStreamSession(testInput);
 
 		String greetings = inTaker.getString("Hi u");
 		
-		assert(greetings.equals(gruß));
+		assert(greetings.equals(gruss));
+		inTaker.close();
 	}
 	
 	@Test
-	public void testGetDateTime() throws InputArgumentException
+	public void testGetDateTime() throws InputArgumentException, IOException
 	{
 		int hour = 0;
 		int minute = 0;
 		int year = 2;
 		int month = 1;
 		int day = 6;
-		String lines = hour+"\n"+minute+"\n"+year+"\n"+month+"\n"+day+"\n";
-		
-		ByteArrayInputStream is = new ByteArrayInputStream(lines.getBytes());
-		InputStreamSession inTaker = new InputStreamSession(is);
+		String data = hour+"\n"+minute+"\n"+year+"\n"+month+"\n"+day+"\n";
+		TestInputReader testInput = new TestInputReader(data);
+		InputStreamSession inTaker = new InputStreamSession(testInput);
 
 		LocalDateTime ldt;
 		try
@@ -68,23 +70,27 @@ public class InputTests
 		{
 			e.printStackTrace();
 		}
+		
+		inTaker.close();
 	}
 
 	@Test
-	public void testGetDateTimeInOneLine() throws InputArgumentException
+	public void testGetDateTimeInOneLine() throws InputArgumentException, IOException
 	{
 
 		String year = "0002";
 		String month = "JAN";
 		int day = 6;
-		String lines = "0" + day + month + year + "T" + "00" + ":" + "00"+ "\n";
+		String data = "0" + day + month + year + "T" + "00" + ":" + "00"+ "\n";
+
+		TestInputReader testInput = new TestInputReader(data);
 		
-		ByteArrayInputStream is = new ByteArrayInputStream(lines.getBytes());
-		InputStreamSession inTaker = new InputStreamSession(is);
+		InputStreamSession inTaker = new InputStreamSession(testInput);
 
 		LocalDateTime ldt;
 		ldt = inTaker.getDateTimeInOneLine("hi", ancient, ancient.plusDays(8));
 		assert(ldt.isAfter(ancient)&&ldt.isBefore(ancient.plusDays(8)));
+		inTaker.close();
 	}
 
 }
