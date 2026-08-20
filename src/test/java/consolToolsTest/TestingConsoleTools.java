@@ -71,5 +71,6 @@ public class TestingConsoleTools
 	            LocalDateTime.now(),
 	            LocalDateTime.now().plusMinutes(1)
 	        )
-	    );	}
+	    );
+	}
 }

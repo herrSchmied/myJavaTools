@@ -389,7 +389,7 @@ public class InputStreamSession implements AutoCloseable
 		String minStr = "" + minute;
 		if(minute<10) minStr = "0" + minute;
 		
-		return dayStr + monthStr + year + "T" + hourStr + ":" + minStr +"\n";
+		return dayStr + monthStr + year + "T" + hourStr + ":" + minStr;
 
 	}
 

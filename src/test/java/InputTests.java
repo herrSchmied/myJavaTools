@@ -51,13 +51,12 @@ public class InputTests
 	@Test
 	public void testGetDateTime() throws InputArgumentException, IOException
 	{
-		int hour = 0;
-		int minute = 0;
-		int year = 2;
-		int month = 1;
-		int day = 6;
-		String data = hour+"\n"+minute+"\n"+year+"\n"+month+"\n"+day+"\n";
-		TestInputReader testInput = new TestInputReader(data);
+		String hour = "0";
+		String minute = "0";
+		String year = "2";
+		String month = "1";
+		String day = "6";
+		TestInputReader testInput = new TestInputReader(hour, minute, year, month, day);
 		InputStreamSession inTaker = new InputStreamSession(testInput);
 
 		LocalDateTime ldt;
@@ -81,7 +80,7 @@ public class InputTests
 		String year = "0002";
 		String month = "JAN";
 		int day = 6;
-		String data = "0" + day + month + year + "T" + "00" + ":" + "00"+ "\n";
+		String data = "0" + day + month + year + "T" + "00" + ":" + "00";
 
 		TestInputReader testInput = new TestInputReader(data);
 		

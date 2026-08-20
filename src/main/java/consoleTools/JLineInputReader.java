@@ -8,13 +8,15 @@ import org.jline.reader.LineReaderBuilder;
 import org.jline.terminal.Terminal;
 import org.jline.terminal.TerminalBuilder;
 
-public class JLineInputReader implements InputReader {
+public class JLineInputReader implements InputReader
+{
 
     private final Terminal terminal;
     private final LineReader reader;
 
     public JLineInputReader(InputStream is, Path historyFile)
-            throws IOException {
+            throws IOException
+    {
 
         terminal = TerminalBuilder.builder()
                 .streams(is, System.out)
@@ -29,12 +31,14 @@ public class JLineInputReader implements InputReader {
     }
 
     @Override
-    public String readLine(String prompt) {
+    public String readLine(String prompt)
+    {
         return reader.readLine(prompt);
     }
 
     @Override
-    public void close() throws IOException {
+    public void close() throws IOException
+    {
         reader.getHistory().save();
         terminal.close();
     }
