@@ -91,10 +91,10 @@ public class InputStreamSession implements AutoCloseable
 
 	private final InputReader inputReader;
 
-	public InputStreamSession(InputStream is, Path historyFile)
+	public InputStreamSession(Path historyFile)
 	            throws IOException
 	{    
-		this(new JLineInputReader(is, historyFile));
+		this(new JLineInputReader(historyFile));
     }
 
 	// Constructor used by tests
@@ -105,7 +105,7 @@ public class InputStreamSession implements AutoCloseable
 
 	private String readLine(String question)
 	{
-		return inputReader.readLine(question);
+		return inputReader.readLine(question + ": ");
 	}
     
 	@Override

@@ -14,12 +14,12 @@ public class JLineInputReader implements InputReader
     private final Terminal terminal;
     private final LineReader reader;
 
-    public JLineInputReader(InputStream is, Path historyFile)
+    public JLineInputReader(Path historyFile)
             throws IOException
     {
 
         terminal = TerminalBuilder.builder()
-                .streams(is, System.out)
+                .system(true)
                 .build();
 
         reader = LineReaderBuilder.builder()
