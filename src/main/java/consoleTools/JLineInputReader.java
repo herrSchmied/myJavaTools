@@ -30,6 +30,16 @@ public class JLineInputReader implements InputReader
                 .build();
     }
 
+    public Terminal getTerminal()
+    {
+    	return terminal;
+    }
+
+    public LineReader getReader()
+    {
+    	return reader;
+    }
+
     @Override
     public String readLine(String prompt)
     {
