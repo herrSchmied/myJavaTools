@@ -16,7 +16,7 @@ public class EratosthenesSiebTest
 	public void testPrimes() throws MathException
 	{
 		EratosthenesSieb es = new EratosthenesSieb(1000);
-		List<Integer> primeList = es.getPrimeList();
+		List<Long> primeList = es.getPrimeList();
 		assert(primeList.get(0)==2);
 		
 		

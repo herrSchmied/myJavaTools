@@ -1,6 +1,7 @@
 package CollectionTools;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
@@ -18,6 +19,42 @@ import someMath.exceptions.MathException;
 
 public class CollectionManipulation 
 {
+
+	public static <O> O[] append(O[] first, O[] second)
+	{
+		   O[] result = Arrays.copyOf(first, first.length + second.length);
+
+		    System.arraycopy(
+		        second, 0,
+		        result, first.length,
+		        second.length
+		    );
+
+		    return result;
+	}
+
+	public static <O> int arraySmallestIndexOf(O o, O[] orray) throws MathException
+	{
+
+		int len = orray.length;
+		
+		for(int n=0;n<len;n++)
+		{
+			O o2 = orray[n];
+			if(o2.equals(o))return n;
+		}
+
+		throw new MathException("Array does not contain that");
+	}
+
+	
+	public static <O> boolean arrayContainsValue(O o, O[] orray)
+	{
+
+		for(O toBeTested: orray)if(toBeTested.equals(o))return true;
+
+		return false;
+	}
 
 	public static boolean isRegularArray(Object array)
 	{

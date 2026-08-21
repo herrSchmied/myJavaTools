@@ -25,7 +25,7 @@ public class PrimeListSaveTest
 		assert(primeList.size()==10);
 		
 		EratosthenesSieb sieb = new EratosthenesSieb(10);
-		List<Integer> primeList2 = sieb.getPrimeList();
+		List<Long> primeList2 = sieb.getPrimeList();
 		
 		System.out.println(primeList);
 		System.out.println(primeList2);

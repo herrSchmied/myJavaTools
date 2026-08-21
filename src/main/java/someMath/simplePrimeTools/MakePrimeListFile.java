@@ -13,10 +13,11 @@ public class MakePrimeListFile
 
 	public MakePrimeListFile(int n, String path) throws MathException, IOException
 	{
+
 		if(n>200000)throw new MathException("Prime Scope to large.");
 		EratosthenesSieb eSieb = new EratosthenesSieb(n);
-		
-		List<Integer> primeList = eSieb.getPrimeList();
+
+		List<Long> primeList = eSieb.getPrimeList();
 
 		saveObject(path, primeList);
 	}
