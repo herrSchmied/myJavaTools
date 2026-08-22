@@ -20,6 +20,7 @@ public class PrimeListSaveTest
 		String path = "someResources/pList";
 		new MakePrimeListFile(10, path);
 		
+		@SuppressWarnings("unchecked")
 		List<Integer> primeList = (List<Integer>) TextAndObjSaveAndLoad.loadObject(path);
 		
 		assert(primeList.size()==10);

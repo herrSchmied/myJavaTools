@@ -3,7 +3,9 @@ package someMath.simplePrimeTools;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import static CollectionTools.CollectionManipulation.*;
 import fileShortCuts.TextAndObjSaveAndLoad;
@@ -19,8 +21,8 @@ import java.nio.file.Path;
 public class ToolsForSmallPrimes
 {
 
-	List<Integer> primeList;
-	int largestPrime =2;
+	List<Long> primeList;
+	long largestPrime =2;
 	String primeListPathStr;
 	int maxPrimeNr;
 
@@ -45,7 +47,7 @@ public class ToolsForSmallPrimes
 			try
 			{
 
-				primeList = (List<Integer>)TextAndObjSaveAndLoad.loadObject(primeListPathStr);
+				primeList = (List<Long>)TextAndObjSaveAndLoad.loadObject(primeListPathStr);
 				Collections.sort(primeList);
 				largestPrime = primeList.get(maxPrimeNr-1);
 
@@ -69,7 +71,7 @@ public class ToolsForSmallPrimes
 	private void setupAndLoad() throws ClassNotFoundException, IOException, MathException
 	{
 		new MakePrimeListFile(maxPrimeNr, primeListPathStr);
-		primeList = (List<Integer>)TextAndObjSaveAndLoad.loadObject(primeListPathStr);
+		primeList = (List<Long>)TextAndObjSaveAndLoad.loadObject(primeListPathStr);
 		Collections.sort(primeList);
 		largestPrime = primeList.get(maxPrimeNr-1);
 	}
@@ -99,13 +101,18 @@ public class ToolsForSmallPrimes
 		Long[] primesNew = new Long[0];
 		Long[] exponentNew = new Long[0];
 		List<Long> smallerThanPrimes = primesSmallerThen(squareRoot);
+		boolean repeat = true;
 		for(long possibleFactor: smallerThanPrimes)
 		{
+			
+			if(!repeat)break;
 			if(toBeFactored%possibleFactor!=0)continue;
 			else
 			{
-				long otherFactor = toBeFactored/possibleFactor;
-				Pair<Long[],Long[]> factorsOne = factorize(possibleFactor);
+				
+				long factor = possibleFactor;
+				long otherFactor = toBeFactored/factor;
+				Pair<Long[],Long[]> factorsOne = factorize(factor);
 				Long[] pList1 = factorsOne.getKey();
 				Long[] exList1 = factorsOne.getValue();
 				
@@ -113,60 +120,68 @@ public class ToolsForSmallPrimes
 				Long[] pList2 = factorsTwo.getKey();
 				Long[] exList2 = factorsTwo.getValue();
 				
-				Long[] biggerArr = pList1;
-				Long[] biggerArrEx = exList1;
-				Long[] smallerArr = pList2;
-				Long[] smallerArrEx = exList2;
+				
+				Set<Long> onlyInpList1 = valuesNotShared(pList1, pList2);
+				Set<Long> onlyInpList2 = valuesNotShared(pList2, pList1);
+				Set<Long> inBothLists = valuesShared(pList1, pList2);
 
-				if(pList2.length>pList1.length)
-				{
-					biggerArr = pList2;
-					biggerArrEx = exList2;
-					smallerArr = pList1;
-					smallerArrEx = exList1;
-				}
-
-				for(int n=0;n<biggerArr.length;n++)
-				{
-					long prime = biggerArr[n];
 					
-					if(arrayContainsValue(prime, pList2))
-					{
-						int indexPrime1 = arraySmallestIndexOf(prime, biggerArr);
-						long exponentPrime1 = biggerArrEx[indexPrime1];
+				for(long prime: inBothLists)
+				{
+					int indexPrime1 = arraySmallestIndexOf(prime, pList1);
+					long exponentPrime1 = exList1[indexPrime1];
 						
-						int indexPrime2 = arraySmallestIndexOf(prime, smallerArr);
-						long exponentPrime2 = smallerArrEx[indexPrime2];
+					int indexPrime2 = arraySmallestIndexOf(prime, pList2);
+					long exponentPrime2 = exList2[indexPrime2];
 						
-						Long[] primeSingelton = new Long[1];
-						primeSingelton[0] = prime;
-						Long[] exponentSingelton = new Long[1];
-						exponentSingelton[0] = exponentPrime1 + exponentPrime2;
+					Long[] primeSingelton = new Long[1];
+					primeSingelton[0] = prime;
+					Long[] exponentSingelton = new Long[1];
+					exponentSingelton[0] = exponentPrime1 + exponentPrime2;
 						
-						primesNew = append(primesNew, primeSingelton);
-						exponentNew = append(exponentNew, exponentSingelton);
+					primesNew = append(primesNew, primeSingelton);
+					exponentNew = append(exponentNew, exponentSingelton);
 
-					}
-					else
-					{
-						
-						int index = arraySmallestIndexOf(prime, biggerArr);
-						long exponent = biggerArrEx[index];
-						
-						Long[] primeSingelton = new Long[1];
-						primeSingelton[0] = prime;
-						Long[] exponentSingelton = new Long[1];
-						exponentSingelton[0] = exponent;
-						
-						primesNew = append(primesNew, primeSingelton);
-						exponentNew = append(exponentNew, exponentSingelton);
-
-					}
 				}
+				
+
+				for(long prime: onlyInpList1)
+				{
+			
+					int index = arraySmallestIndexOf(prime, pList1);
+					long exponent = exList1[index];
+					
+					Long[] primeSingelton = new Long[1];
+					primeSingelton[0] = prime;
+					Long[] exponentSingelton = new Long[1];
+					exponentSingelton[0] = exponent;
+						
+					primesNew = append(primesNew, primeSingelton);
+					exponentNew = append(exponentNew, exponentSingelton);
+
+				}
+					
+				
+				for(long prime: onlyInpList2)
+				{
+					int index = arraySmallestIndexOf(prime, pList2);
+					long exponent = exList2[index];
+						
+					Long[] primeSingelton = new Long[1];
+					primeSingelton[0] = prime;
+					Long[] exponentSingelton = new Long[1];
+					exponentSingelton[0] = exponent;
+					
+					primesNew = append(primesNew, primeSingelton);
+					exponentNew = append(exponentNew, exponentSingelton);
+					
+				}
+				
+				repeat = false;
 			}
 		}
 
-		return new Pair(primesNew, exponentNew);
+		return new Pair<>(primesNew, exponentNew);
 	}
 	
 	public List<Long> primesSmallerThen(long n)throws MathException
@@ -176,18 +191,39 @@ public class ToolsForSmallPrimes
 		List<Long> smallerThanPrimes = new ArrayList<>();
 		if(n<=2)return smallerThanPrimes;
 
-		int m = 0;
-		while(true)
+		long k = 0;
+		for(int m=0;k<n;m++)
 		{
-
-			long k = primeList.get(m);
-			if(k<n)
-			{
-				smallerThanPrimes.add(k);
-			}
-			else break;
+			k = primeList.get(m);
+			smallerThanPrimes.add(k);
 		}
 
 		return smallerThanPrimes;
 	}
+	
+	public <O> Set<O> valuesNotShared(O[] origin, O[] other)
+	{
+		
+		Set<O> notSharedValues = new HashSet<>();
+		for(O o: origin)
+		{
+			if(!arrayContainsValue(o, other))notSharedValues.add(o);
+		}
+		
+		return notSharedValues;
+	}
+	
+	public <O> Set<O> valuesShared(O[] origin, O[] other)
+	{
+		
+		Set<O> sharedValues = new HashSet<>();
+		for(O o: origin)
+		{
+			if(arrayContainsValue(o, other))sharedValues.add(o);
+		}
+		
+		return sharedValues;
+	}
+
+	
 }
