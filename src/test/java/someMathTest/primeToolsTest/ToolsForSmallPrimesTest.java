@@ -13,7 +13,7 @@ public class ToolsForSmallPrimesTest
 {
 	
 	@Test
-	public void testFactorization() throws ClassNotFoundException, MathException, IOException
+	public void testFactorization() throws ClassNotFoundException, MathException, IOException, InterruptedException
 	{
 
 		ToolsForSmallPrimes tfsp = new ToolsForSmallPrimes("someResources/testPrimes", 2000);
@@ -29,15 +29,28 @@ public class ToolsForSmallPrimesTest
 			Long[] exponents = pair.getValue();
 			
 			Long erg = (long) 1;
+			String s = "";
 			for(int k=0;k<len;k++)
 			{
 				
 				Long prime = primes[k];
 				Long ex = exponents[k];
 				erg = (long) (erg * Math.pow(prime, ex));
+				if(ex!=1)
+				{
+					if(k>0)s = s + "*(" + prime + "**" + ex + ")";
+					else s = s + "(" + prime + "**" + ex + ")";
+				}
+				else
+				{
+					if(k>0)s = s + "*(" + prime + ")";
+					else s = s + "(" + prime + ")";
+
+				}
 			}
-			
+			System.out.println(zufi + " = " + s);
 			assert(erg.equals(zufi));
 		}
+		Thread.sleep(1000);
 	}
 }

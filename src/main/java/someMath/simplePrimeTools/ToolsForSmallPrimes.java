@@ -95,7 +95,7 @@ public class ToolsForSmallPrimes
 			return new Pair<>(primeBase, primeExponent);
 		}
 		
-		if(toBeFactored>largestPrime*largestPrime)throw new MathException("Exceeds factorization Scope.");
+		if(toBeFactored>largestPrime)throw new MathException("Exceeds factorization Scope.");
 		long squareRoot = (long)( Math.sqrt((double)toBeFactored) + 1);
 
 		Long[] primesNew = new Long[0];
