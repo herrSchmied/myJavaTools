@@ -3,7 +3,7 @@ package someMath.simplePrimeTools;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashSet;
+
 import java.util.List;
 import java.util.Set;
 
@@ -21,10 +21,10 @@ import java.nio.file.Path;
 public class ToolsForSmallPrimes
 {
 
-	List<Long> primeList;
-	long largestPrime =2;
-	String primeListPathStr;
-	int maxPrimeNr;
+	private List<Long> primeList;
+	private long largestPrime;
+	private final String primeListPathStr;
+	private final int maxPrimeNr;
 
 	@SuppressWarnings("unchecked")
 	public ToolsForSmallPrimes(String pathStr, int maxPrimeNr) throws MathException, IOException, ClassNotFoundException
@@ -76,7 +76,7 @@ public class ToolsForSmallPrimes
 		largestPrime = primeList.get(maxPrimeNr-1);
 	}
 
-	public boolean isPrime(int n) throws MathException
+	public boolean isPrime(long n) throws MathException
 	{
 
 		if(n>largestPrime)throw new MathException("Exceeds this prime Scope.");
@@ -200,30 +200,24 @@ public class ToolsForSmallPrimes
 
 		return smallerThanPrimes;
 	}
-	
-	public <O> Set<O> valuesNotShared(O[] origin, O[] other)
+
+	public List<Long> getPrimeList()
 	{
-		
-		Set<O> notSharedValues = new HashSet<>();
-		for(O o: origin)
-		{
-			if(!arrayContainsValue(o, other))notSharedValues.add(o);
-		}
-		
-		return notSharedValues;
-	}
-	
-	public <O> Set<O> valuesShared(O[] origin, O[] other)
-	{
-		
-		Set<O> sharedValues = new HashSet<>();
-		for(O o: origin)
-		{
-			if(arrayContainsValue(o, other))sharedValues.add(o);
-		}
-		
-		return sharedValues;
+		return primeList;
 	}
 
-	
+	public long getLargestPrime()
+	{
+		return largestPrime;
+	}
+
+	public String getPrimeListPathStr()
+	{
+		return primeListPathStr;
+	}
+
+	public int getMaxPrimeNr()
+	{
+		return maxPrimeNr;
+	}
 }

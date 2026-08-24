@@ -1,5 +1,7 @@
 package CollectionTools;
 
+import static CollectionTools.CollectionManipulation.arrayContainsValue;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -19,6 +21,30 @@ import someMath.exceptions.MathException;
 
 public class CollectionManipulation 
 {
+
+	public static <O> Set<O> valuesNotShared(O[] origin, O[] other)
+	{
+		
+		Set<O> notSharedValues = new HashSet<>();
+		for(O o: origin)
+		{
+			if(!arrayContainsValue(o, other))notSharedValues.add(o);
+		}
+		
+		return notSharedValues;
+	}
+	
+	public static <O> Set<O> valuesShared(O[] origin, O[] other)
+	{
+		
+		Set<O> sharedValues = new HashSet<>();
+		for(O o: origin)
+		{
+			if(arrayContainsValue(o, other))sharedValues.add(o);
+		}
+		
+		return sharedValues;
+	}
 
 	public static <O> O[] append(O[] first, O[] second)
 	{
