@@ -85,105 +85,109 @@ public class ToolsForSmallPrimes
 	
 	public Pair<Long[],Long[]> factorize(long toBeFactored)throws MathException
 	{
-		
-		if(primeList.contains(toBeFactored))
-		{
-			Long[] primeBase = new Long[1];
-			primeBase[0] = toBeFactored;
-			Long[] primeExponent = new Long[1];
-			primeExponent[0] = (long) 1;
-			return new Pair<>(primeBase, primeExponent);
-		}
-		
-		if(toBeFactored>largestPrime)throw new MathException("Exceeds factorization Scope.");
-		long squareRoot = (long)( Math.sqrt((double)toBeFactored) + 1);
 
 		Long[] primesNew = new Long[0];
 		Long[] exponentNew = new Long[0];
-		List<Long> smallerThanPrimes = primesSmallerThen(squareRoot);
-		boolean repeat = true;
-		for(long possibleFactor: smallerThanPrimes)
+
+		Long factor = findFactor(toBeFactored);
+		if(factor.equals(toBeFactored))
 		{
+
+			Long[] primeSingleton = new Long[1];
+			primeSingleton[0]= factor;
+			primesNew = append(primesNew, primeSingleton);
 			
-			if(!repeat)break;
-			if(toBeFactored%possibleFactor!=0)continue;
-			else
-			{
+			Long[]exponent = new Long[1];
+			exponent[0]= (long)1;
+			exponentNew = append(exponentNew, exponent);
+			return new Pair<>(primesNew, exponentNew);
+		}
+
+		long otherFactor = toBeFactored/factor;
+		Pair<Long[],Long[]> factorsOne = factorize(factor);
+		Long[] pList1 = factorsOne.getKey();
+		Long[] exList1 = factorsOne.getValue();
 				
-				long factor = possibleFactor;
-				long otherFactor = toBeFactored/factor;
-				Pair<Long[],Long[]> factorsOne = factorize(factor);
-				Long[] pList1 = factorsOne.getKey();
-				Long[] exList1 = factorsOne.getValue();
-				
-				Pair<Long[],Long[]> factorsTwo = factorize(otherFactor);
-				Long[] pList2 = factorsTwo.getKey();
-				Long[] exList2 = factorsTwo.getValue();
+		Pair<Long[],Long[]> factorsTwo = factorize(otherFactor);
+		Long[] pList2 = factorsTwo.getKey();
+		Long[] exList2 = factorsTwo.getValue();
 				
 				
-				Set<Long> onlyInpList1 = valuesNotShared(pList1, pList2);
-				Set<Long> onlyInpList2 = valuesNotShared(pList2, pList1);
-				Set<Long> inBothLists = valuesShared(pList1, pList2);
+		Set<Long> onlyInpList1 = valuesNotShared(pList1, pList2);
+		Set<Long> onlyInpList2 = valuesNotShared(pList2, pList1);
+		Set<Long> inBothLists = valuesShared(pList1, pList2);
 
 					
-				for(long prime: inBothLists)
-				{
-					int indexPrime1 = arraySmallestIndexOf(prime, pList1);
-					long exponentPrime1 = exList1[indexPrime1];
-						
-					int indexPrime2 = arraySmallestIndexOf(prime, pList2);
-					long exponentPrime2 = exList2[indexPrime2];
-						
-					Long[] primeSingelton = new Long[1];
-					primeSingelton[0] = prime;
-					Long[] exponentSingelton = new Long[1];
-					exponentSingelton[0] = exponentPrime1 + exponentPrime2;
-						
-					primesNew = append(primesNew, primeSingelton);
-					exponentNew = append(exponentNew, exponentSingelton);
-
-				}
+		for(long prime: inBothLists)
+		{
+			int indexPrime1 = arraySmallestIndexOf(prime, pList1);
+			long exponentPrime1 = exList1[indexPrime1];
+					
+			int indexPrime2 = arraySmallestIndexOf(prime, pList2);
+			long exponentPrime2 = exList2[indexPrime2];
+					
+			Long[] primeSingelton = new Long[1];
+			primeSingelton[0] = prime;
+			Long[] exponentSingelton = new Long[1];
+			exponentSingelton[0] = exponentPrime1 + exponentPrime2;
+					
+			primesNew = append(primesNew, primeSingelton);
+			exponentNew = append(exponentNew, exponentSingelton);
+		}
 				
 
-				for(long prime: onlyInpList1)
-				{
-			
-					int index = arraySmallestIndexOf(prime, pList1);
-					long exponent = exList1[index];
-					
-					Long[] primeSingelton = new Long[1];
-					primeSingelton[0] = prime;
-					Long[] exponentSingelton = new Long[1];
-					exponentSingelton[0] = exponent;
+		for(long prime: onlyInpList1)
+		{
+		
+			int index = arraySmallestIndexOf(prime, pList1);
+			long exponent = exList1[index];
+				
+			Long[] primeSingelton = new Long[1];
+			primeSingelton[0] = prime;
+			Long[] exponentSingelton = new Long[1];
+			exponentSingelton[0] = exponent;
 						
-					primesNew = append(primesNew, primeSingelton);
-					exponentNew = append(exponentNew, exponentSingelton);
+			primesNew = append(primesNew, primeSingelton);
+			exponentNew = append(exponentNew, exponentSingelton);
 
-				}
+		}
 					
 				
-				for(long prime: onlyInpList2)
-				{
-					int index = arraySmallestIndexOf(prime, pList2);
-					long exponent = exList2[index];
-						
-					Long[] primeSingelton = new Long[1];
-					primeSingelton[0] = prime;
-					Long[] exponentSingelton = new Long[1];
-					exponentSingelton[0] = exponent;
-					
-					primesNew = append(primesNew, primeSingelton);
-					exponentNew = append(exponentNew, exponentSingelton);
-					
-				}
+		for(long prime: onlyInpList2)
+		{
+			int index = arraySmallestIndexOf(prime, pList2);
+			long exponent = exList2[index];
 				
-				repeat = false;
-			}
+			Long[] primeSingelton = new Long[1];
+			primeSingelton[0] = prime;
+			Long[] exponentSingelton = new Long[1];
+			exponentSingelton[0] = exponent;
+				
+			primesNew = append(primesNew, primeSingelton);
+			exponentNew = append(exponentNew, exponentSingelton);
 		}
 
 		return new Pair<>(primesNew, exponentNew);
 	}
 	
+	private Long findFactor(Long toBeFactored) throws MathException
+	{
+		if(toBeFactored>largestPrime)throw new MathException("Exceeds factorization Scope.");
+		if(primeList.contains(toBeFactored))return toBeFactored;
+		
+		long squareRoot = (long)( Math.sqrt((double)toBeFactored) + 1);
+
+		List<Long> smallerThanPrimes = primesSmallerThen(squareRoot);
+		
+		for(long possibleFactor: smallerThanPrimes)
+		{
+			if(toBeFactored%possibleFactor!=0)continue;
+			else return possibleFactor;
+		}
+
+		return (long)toBeFactored;
+	}
+
 	public List<Long> primesSmallerThen(long n)throws MathException
 	{
 		

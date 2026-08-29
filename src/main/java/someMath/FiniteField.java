@@ -12,15 +12,12 @@ public class FiniteField implements Field<Long>
 {
 
 	private final int nrOfElements;
-	private final List<Long> primeList;
 	
 	public FiniteField(int nrOfElements, Path primeListFilePath) throws ClassNotFoundException, MathException, IOException
 	{
 
 		ToolsForSmallPrimes tfsp = new ToolsForSmallPrimes(primeListFilePath.toString(), 2000);
 		if(nrOfElements>tfsp.getLargestPrime())throw new MathException("Nr of Elements exceeds largestPrime given by TFSP Object.");
-
-		this.primeList = tfsp.getPrimeList();
 
 		Pair<Long[], Long[]> primeFactors = tfsp.factorize(nrOfElements);
 
@@ -35,13 +32,13 @@ public class FiniteField implements Field<Long>
 	@Override
 	public Long add(Long r1, Long r2) throws MathException
 	{
-		return reduce(r1+r2);
+		return reduce(reduce(r1)+reduce(r2));
 	}
 
 	@Override
 	public Long multiply(Long r1, Long r2) throws MathException
 	{
-		return reduce(r1*r2);
+		return reduce(reduce(r1)*reduce(r2));
 	}
 
 	@Override
