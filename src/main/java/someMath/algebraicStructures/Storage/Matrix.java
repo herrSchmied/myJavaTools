@@ -1,4 +1,4 @@
-package someMath;
+package someMath.algebraicStructures.Storage;
 
 import java.awt.Point;
 import java.util.*;
@@ -6,7 +6,8 @@ import java.util.function.BiConsumer;
 
 import static CollectionTools.CollectionManipulation.*;
 
-
+import someMath.StringManipulation;
+import someMath.AlgebraicStructures.Interfaces.Field;
 import someMath.exceptions.MathException;
 
 
@@ -18,7 +19,7 @@ import someMath.exceptions.MathException;
 public class Matrix<O> implements Cloneable
 {
 
-	private final Field<O> k;
+	private final Field<O, Integer> k;
 	private final int rows;
 	private final int columns;
 	private final boolean isQuadratic;
@@ -29,7 +30,7 @@ public class Matrix<O> implements Cloneable
 	public Matrix(int columns, int rows, O monoValue) throws MathException
 	{
 		
-		this.k = (Field<O>) MapOfFields.getField(monoValue.getClass());
+		this.k = (Field<O, Integer>) MapOfFields.getField(monoValue.getClass());
 		this.columns = columns;
 		this.rows = rows;
 		this.isQuadratic = (rows==columns);
@@ -56,7 +57,7 @@ public class Matrix<O> implements Cloneable
 		this.columns = columns;
 		this.rows = valueList.size()/columns;
 		isQuadratic = (rows==columns);
-		this.k = (Field<O>)MapOfFields.getField(valueList.get(0).getClass());
+		this.k = (Field<O, Integer>)MapOfFields.getField(valueList.get(0).getClass());
 		
 		Object [][] arrayOfValues = new Object[columns][rows];
 		
@@ -77,7 +78,7 @@ public class Matrix<O> implements Cloneable
 		if(!isRegularArray(valueArr))throw new MathException("Array is not Regular meaning some Elements differ in Dimension despite having the same Position!");
 		this.columns = valueArr.length;
 		this.rows = valueArr[0].length;
-		this.k = (Field<O>) MapOfFields.getField(valueArr[0][0].getClass());
+		this.k = (Field<O, Integer>) MapOfFields.getField(valueArr[0][0].getClass());
 		isQuadratic = (rows==columns);
 		this.valueArr = (O[][]) valueArr;
 	}
@@ -453,7 +454,7 @@ public class Matrix<O> implements Cloneable
 		return output;
 	}
 
-	public Field<O> getField()
+	public Field<O, Integer> getField()
 	{
 		return this.k;
 	}

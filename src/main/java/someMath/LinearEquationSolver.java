@@ -8,17 +8,22 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import someMath.AlgebraicStructures.Interfaces.Field;
+import someMath.algebraicStructures.MatrixRing;
+import someMath.algebraicStructures.Storage.FieldTuple;
+import someMath.algebraicStructures.Storage.Matrix;
+import someMath.algebraicStructures.operations.MatrixStuff;
 import someMath.exceptions.MathException;
 
 public class LinearEquationSolver<O>
 {
 
-	private final Field<O> k;
+	private final Field<O, Integer> k;
 
 	private List<Integer> erasedIndizies = new ArrayList<>();
 	private Set<Matrix<O>> offTheTop = new HashSet<>();
 
-	public LinearEquationSolver(Field<O> k)
+	public LinearEquationSolver(Field<O, Integer> k)
 	{
 		this.k = k;
 	}

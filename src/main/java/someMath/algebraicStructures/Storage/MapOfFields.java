@@ -1,16 +1,19 @@
-package someMath;
+package someMath.algebraicStructures.Storage;
 
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import someMath.AlgebraicStructures.Interfaces.Field;
+import someMath.algebraicStructures.DoubleField;
+import someMath.algebraicStructures.RationalField;
 import someMath.exceptions.MathException;
 
 public class MapOfFields
 {
 
-	private static  Map<Class<?>, Field<?>> map = new HashMap<>();
+	private static  Map<Class<?>, Field<?,Integer>> map = new HashMap<>();
 
 	static
 	{
@@ -26,12 +29,12 @@ public class MapOfFields
 	}
 
 	@SuppressWarnings("unchecked")
-	public static <T> Field<T> getField(Class<T> clazz) throws MathException
+	public static <T> Field<T, Integer> getField(Class<T> clazz) throws MathException
 	{
 		if(!map.keySet().contains(clazz))
 			throw new MathException("Field for this class non existend.");
 		
-		return  (Field<T>) map.get(clazz);
+		return  (Field<T, Integer>) map.get(clazz);
 	}
 	
 	@SuppressWarnings("rawtypes")

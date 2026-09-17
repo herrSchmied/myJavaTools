@@ -1,13 +1,16 @@
-package someMath;
+package someMath.algebraicStructures;
 
+import someMath.AlgebraicStructures.Interfaces.Field;
+import someMath.AlgebraicStructures.Interfaces.VectorSpace;
+import someMath.algebraicStructures.Storage.FieldTuple;
 import someMath.exceptions.MathException;
 
 public class VectorSpaceForFieldTuples<K, V extends FieldTuple<K>> implements VectorSpace<K, V>
 {
 
-	private final Field<K> k;
+	private final Field<K, Integer> k;
 	
-	public VectorSpaceForFieldTuples(Field<K> k)
+	public VectorSpaceForFieldTuples(Field<K, Integer> k)
 	{
 		this.k = k;
 	}

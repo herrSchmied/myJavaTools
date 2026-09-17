@@ -1,15 +1,15 @@
-package someMath;
+package someMath.algebraicStructures;
 
 
 
 import java.lang.Double;
 
-
+import someMath.AlgebraicStructures.Interfaces.Field;
 import someMath.exceptions.MathException;
 
 
 
-public final class DoubleField implements Field<Double>
+public final class DoubleField implements Field<Double, Integer>
 {
 
 	public DoubleField()
@@ -63,6 +63,18 @@ public final class DoubleField implements Field<Double>
 	public boolean equals(Object other)
 	{	
 	    return other instanceof DoubleField;
+	}
+
+	@Override
+	public boolean isAmbiguous()
+	{
+		return false;
+	}
+
+	@Override
+	public Integer distinguisher()
+	{
+		return null;
 	}
 
 

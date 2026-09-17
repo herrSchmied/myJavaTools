@@ -1,10 +1,13 @@
-package someMath;
+package someMath.algebraicStructures.operations;
 
 
 import java.util.ArrayList;
 import java.util.List;
 
-
+import someMath.LinearEquationSolver;
+import someMath.AlgebraicStructures.Interfaces.Field;
+import someMath.algebraicStructures.Storage.FieldTuple;
+import someMath.algebraicStructures.Storage.Matrix;
 import someMath.exceptions.MathException;
 
 public class MatrixStuff
@@ -17,7 +20,7 @@ public class MatrixStuff
 		
 		int rows = matrix.getRows();
 		
-		Field<O> k = matrix.getField();
+		Field<O, Integer> k = matrix.getField();
 
 		int col = 0;
 		O sum = k.zero();
@@ -58,7 +61,7 @@ public class MatrixStuff
 		O o21 = matrix.getValue(0, 1);
 		O o22 = matrix.getValue(1, 1);
 		
-		Field<O> k = matrix.getField();
+		Field<O, Integer> k = matrix.getField();
 
 		O q1 = k.multiply(o11, o22);
 		
@@ -97,7 +100,7 @@ public class MatrixStuff
 	{
 
 		Matrix<O> m2 = m.clone();
-		Field<O> k = m.getField();
+		Field<O, Integer> k = m.getField();
 
 		int rows = m.getRows();
 		int cols = m.getColumns();
@@ -137,7 +140,7 @@ public class MatrixStuff
 		
 		int columns = matrix.getColumns();
 		int rows = columns;
-		Field<O> k = matrix.getField();
+		Field<O, Integer> k = matrix.getField();
 
 		Matrix<O> coefficientMatrix = matrix.clone();
 		coefficientMatrix = transpone(coefficientMatrix);
@@ -169,7 +172,7 @@ public class MatrixStuff
 		int rows = matrix.getRows();
 	
 		Matrix<O> transponed;
-		Field<O> k = matrix.getField();
+		Field<O, Integer> k = matrix.getField();
 
 		try
 		{
@@ -196,7 +199,7 @@ public class MatrixStuff
 	public static final <O> O frobeniusNorm (Matrix<O> matrix) throws MathException
 	{
 		
-		Field<O> k = matrix.getField();
+		Field<O, Integer> k = matrix.getField();
 		O output = k.zero();
 		
 	

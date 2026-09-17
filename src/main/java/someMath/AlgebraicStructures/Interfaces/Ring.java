@@ -1,8 +1,8 @@
-package someMath;
+package someMath.AlgebraicStructures.Interfaces;
 
 import someMath.exceptions.MathException;
 
-public interface Ring<R>
+public interface Ring<R, O>
 {
 
 	public R add(R r1, R r2) throws MathException;
@@ -12,4 +12,7 @@ public interface Ring<R>
 	
 	public R zero() throws MathException;
 	public R one() throws MathException;
+	
+	public boolean isAmbiguous();
+	public O distinguisher();
 }

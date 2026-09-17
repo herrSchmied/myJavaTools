@@ -1,24 +1,25 @@
-package someMath;
+package someMath.algebraicStructures;
 
 
 import java.util.ArrayList;
 
 import java.util.List;
 
-
-
+import someMath.AlgebraicStructures.Interfaces.Field;
+import someMath.AlgebraicStructures.Interfaces.Ring;
+import someMath.algebraicStructures.Storage.Matrix;
 import someMath.exceptions.MathException;
 
 
 
-public class MatrixRing<O> implements Ring<Matrix<O>>
+public class MatrixRing<O> implements Ring<Matrix<O>, Integer>
 {
-	
+
 	private final int sideLength;
-	private final Field<O> k;
+	private final Field<O, Integer> k;
 
 
-	public MatrixRing(int n, Field<O> k) throws MathException
+	public MatrixRing(int n, Field<O, Integer> k) throws MathException
 	{
 
 		if(n<1)throw new MathException("Minmal side length is 1.");
@@ -37,7 +38,7 @@ public class MatrixRing<O> implements Ring<Matrix<O>>
 		int rows = r1.getRows();
 		int cols = r1.getColumns();
 		
-		Field<O> k = r1.getField();
+		Field<O, Integer> k = r1.getField();
 		Matrix<O> sum = r1.clone();
 		
 		for(int col=0;col<cols;col++)
@@ -111,7 +112,7 @@ public class MatrixRing<O> implements Ring<Matrix<O>>
 			int rows = r1.getRows();
 			int cols = r2.getColumns();
 
-			Field<O> k = r1.getField();
+			Field<O, Integer> k = r1.getField();
 			O addNeutral = k.zero();
 		
 			for(int n=0;n<rows*cols;n++)valueList.add(addNeutral);
@@ -157,6 +158,20 @@ public class MatrixRing<O> implements Ring<Matrix<O>>
 		}
 
 		return new Matrix<>(sideLength, diagonalMOne);
+	}
+
+
+	@Override
+	public boolean isAmbiguous()
+	{
+		return true;
+	}
+
+
+	@Override
+	public Integer distinguisher()
+	{
+		return sideLength;
 	}
 
 }

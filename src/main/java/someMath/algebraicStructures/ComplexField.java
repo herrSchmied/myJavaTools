@@ -1,13 +1,15 @@
-package someMath;
+package someMath.algebraicStructures;
 
+import someMath.AlgebraicStructures.Interfaces.Field;
+import someMath.algebraicStructures.Storage.ComplexNumber;
 import someMath.exceptions.MathException;
 
-public final class ComplexField<O> implements Field<ComplexNumber<O>>
+public final class ComplexField<O> implements Field<ComplexNumber<O>, Integer>
 {
 
-	private final Field<O> k;
+	private final Field<O, Integer> k;
 
-	public ComplexField(Field<O> k)
+	public ComplexField(Field<O, Integer> k)
 	{
 		this.k = k;
 	}
@@ -80,6 +82,17 @@ public final class ComplexField<O> implements Field<ComplexNumber<O>>
 		return new ComplexNumber<>(newReal, newImaginary);
 	}
 
+	@Override
+	public boolean isAmbiguous()
+	{
+		return false;
+	}
+
+	@Override
+	public Integer distinguisher()
+	{
+		return null;
+	}
 
 	/*
 	///Written with capital Letter because of Math Standards.

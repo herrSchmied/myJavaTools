@@ -4,14 +4,10 @@ package someMathTest;
 
 import org.junit.jupiter.api.Test;
 
-
-import someMath.ComplexField;
-
-import someMath.ComplexNumber;
-
-import someMath.DoubleField;
-
-import someMath.MapOfFields;
+import someMath.algebraicStructures.ComplexField;
+import someMath.algebraicStructures.DoubleField;
+import someMath.algebraicStructures.Storage.ComplexNumber;
+import someMath.algebraicStructures.Storage.MapOfFields;
 
 
 

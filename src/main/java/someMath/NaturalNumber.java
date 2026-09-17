@@ -5,6 +5,8 @@ package someMath;
 import java.io.Serializable;
 import java.util.Objects;
 
+import someMath.exceptions.NaturalNumberException;
+
 
 
 //Even so it implements addition, subtraction, multiplication and division this is

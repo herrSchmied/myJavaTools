@@ -8,16 +8,14 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
-
-
-import someMath.Matrix;
-import someMath.MatrixRing;
-import someMath.MatrixStuff;
 import someMath.NaturalNumber;
 import someMath.NaturalNumberException;
-import someMath.RationalField;
-import someMath.RationalNumber;
 import someMath.SmallTools;
+import someMath.algebraicStructures.MatrixRing;
+import someMath.algebraicStructures.RationalField;
+import someMath.algebraicStructures.Storage.Matrix;
+import someMath.algebraicStructures.Storage.RationalNumber;
+import someMath.algebraicStructures.operations.MatrixStuff;
 import someMath.exceptions.MathException;
 
 import static consoleTools.TerminalXDisplay.*;

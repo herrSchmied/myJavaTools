@@ -11,14 +11,14 @@ import java.util.List;
 
 
 import someMath.SmallTools;
-import someMath.VecFieldTupStuff;
-import someMath.VectorSpaceForFieldTuples;
-import someMath.Matrix;
+import someMath.AlgebraicStructures.Interfaces.Field;
+import someMath.algebraicStructures.DoubleField;
+import someMath.algebraicStructures.VectorSpaceForFieldTuples;
+import someMath.algebraicStructures.Storage.FieldTuple;
+import someMath.algebraicStructures.Storage.Matrix;
+import someMath.algebraicStructures.operations.VecFieldTupStuff;
 import someMath.exceptions.MathException;
 import someMath.LinearEquationSolver;
-import someMath.DoubleField;
-import someMath.Field;
-import someMath.FieldTuple;
 
 
 

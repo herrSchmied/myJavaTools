@@ -11,12 +11,12 @@ import java.util.Set;
 
 import org.junit.jupiter.api.Test;
 
-import someMath.DoubleField;
-import someMath.FieldTuple;
-import someMath.Matrix;
-import someMath.MatrixRing;
-import someMath.MatrixStuff;
 import someMath.SmallTools;
+import someMath.algebraicStructures.DoubleField;
+import someMath.algebraicStructures.MatrixRing;
+import someMath.algebraicStructures.Storage.FieldTuple;
+import someMath.algebraicStructures.Storage.Matrix;
+import someMath.algebraicStructures.operations.MatrixStuff;
 import someMath.exceptions.MathException;
 
 import static consoleTools.TerminalXDisplay.*;

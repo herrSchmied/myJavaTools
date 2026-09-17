@@ -1,13 +1,15 @@
-package someMath;
+package someMath.algebraicStructures.operations;
 
+import someMath.AlgebraicStructures.Interfaces.Field;
+import someMath.algebraicStructures.Storage.FieldTuple;
 import someMath.exceptions.MathException;
 
 public class VecFieldTupStuff <K>
 {
 	
-	private final Field<K> k;
+	private final Field<K, Integer> k;
 
-	public VecFieldTupStuff(Field<K> k)
+	public VecFieldTupStuff(Field<K, Integer> k)
 	{
 		this.k = k;
 	}

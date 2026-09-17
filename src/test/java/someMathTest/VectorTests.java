@@ -6,10 +6,10 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
-import someMath.DoubleField;
-import someMath.FieldTuple;
-import someMath.VecFieldTupStuff;
-import someMath.VectorSpaceForFieldTuples;
+import someMath.algebraicStructures.DoubleField;
+import someMath.algebraicStructures.VectorSpaceForFieldTuples;
+import someMath.algebraicStructures.Storage.FieldTuple;
+import someMath.algebraicStructures.operations.VecFieldTupStuff;
 import someMath.exceptions.MathException;
 
 public class VectorTests

@@ -1,4 +1,4 @@
-package someMath;
+package someMath.algebraicStructures.Storage;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -6,8 +6,9 @@ import java.util.List;
 import java.util.Objects;
 
 import javafx.util.Pair;
-import someMath.exceptions.MathException;
-
+import someMath.NaturalNumber;
+import someMath.SmallTools;
+import someMath.exceptions.*;
 
 
 @SuppressWarnings("serial")

@@ -1,11 +1,14 @@
-package someMath;
+package someMath.algebraicStructures;
 
 import java.util.Objects;
 
 import javafx.util.Pair;
-import someMath.exceptions.MathException;
+import someMath.AlgebraicStructures.Interfaces.Field;
+import someMath.algebraicStructures.Storage.RationalNumber;
+import someMath.exceptions.*;
 
-public final class RationalField implements Field<RationalNumber>
+
+public class RationalField implements Field<RationalNumber, Integer>
 {
 
 	public RationalField()
@@ -112,5 +115,23 @@ public final class RationalField implements Field<RationalNumber>
 	public boolean equals(Object other)
 	{		
 	    return (other instanceof RationalField);
+	}
+
+	@Override
+	public boolean isAmbiguous()
+	{
+		return false;
+	}
+
+	@Override
+	public Integer distinguish()
+	{
+		return null;
+	}
+
+	@Override
+	public Integer distinguisher() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

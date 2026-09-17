@@ -1,14 +1,17 @@
-package someMath;
+package someMath.algebraicStructures;
 
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.List;
+
 
 import javafx.util.Pair;
+import someMath.AlgebraicStructures.Interfaces.Field;
 import someMath.exceptions.MathException;
 import someMath.simplePrimeTools.ToolsForSmallPrimes;
 
-public class FiniteField implements Field<Long>
+
+
+public class FiniteField implements Field<Long, Character>
 {
 
 	private final int nrOfElements;
@@ -77,5 +80,17 @@ public class FiniteField implements Field<Long>
 	public Long reduce(Long l)
 	{
 		return l%nrOfElements;
+	}
+
+	@Override
+	public boolean isAmbiguous()
+	{
+		return true;
+	}
+
+	@Override
+	public Integer distinguisher()
+	{
+		return nrOfElements;
 	}
 }

@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import someMath.NaturalNumber;
 import someMath.NaturalNumberException;
-import someMath.RationalNumber;
+import someMath.algebraicStructures.Storage.RationalNumber;
 import someMath.exceptions.MathException;
 
 
