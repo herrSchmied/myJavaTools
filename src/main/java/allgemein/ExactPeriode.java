@@ -7,7 +7,7 @@ import java.time.temporal.ChronoUnit;
 
 import javafx.util.Pair;
 import someMath.NaturalNumber;
-import someMath.NaturalNumberException;
+import someMath.exceptions.NaturalNumberException;
 
 
 /**

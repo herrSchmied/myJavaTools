@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 
 import allgemein.ExactPeriode;
 
-import someMath.NaturalNumberException;
+import someMath.exceptions.NaturalNumberException;
 
 public class ExactPeriodeTest
 {

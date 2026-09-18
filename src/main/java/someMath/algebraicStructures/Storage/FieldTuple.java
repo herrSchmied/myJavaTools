@@ -134,7 +134,7 @@ public class FieldTuple<O> extends Matrix<O>
 	{
 
 		if(!(other instanceof FieldTuple))return false;
-		FieldTuple v = (FieldTuple)other;
+		FieldTuple<O> v = (FieldTuple<O>)other;
 		if(!(this.getRows()==v.getRows()))return false;
 		if(!(this.getField().equals(v.getField())))return false;
 

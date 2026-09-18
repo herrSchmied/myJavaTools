@@ -11,7 +11,7 @@ import someMath.simplePrimeTools.ToolsForSmallPrimes;
 
 
 
-public class FiniteField implements Field<Long, Character>
+public class FiniteField implements Field<Long, Integer>
 {
 
 	private final int nrOfElements;

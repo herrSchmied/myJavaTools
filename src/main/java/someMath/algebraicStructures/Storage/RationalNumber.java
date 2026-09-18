@@ -52,7 +52,7 @@ public class RationalNumber extends Number implements Cloneable, Serializable
 
 	}
 
-	public RationalNumber(boolean sign, NaturalNumber integerPart, NaturalNumber numerator, NaturalNumber denominator) throws NaturalNumberException, MathException
+	public RationalNumber(boolean sign, NaturalNumber integerPart, NaturalNumber numerator, NaturalNumber denominator) throws MathException, NaturalNumberException
 	{
 
 		if(denominator.equals(NaturalNumber.zero))throw new MathException("Denominator can't be Zero.");
@@ -85,7 +85,7 @@ public class RationalNumber extends Number implements Cloneable, Serializable
 		}
 	}
 	
-	public RationalNumber(boolean sign, NaturalNumber numerator, NaturalNumber denominator) throws NaturalNumberException, MathException
+	public RationalNumber(boolean sign, NaturalNumber numerator, NaturalNumber denominator) throws MathException, NaturalNumberException
 	{
 
 		if(denominator.equals(NaturalNumber.zero))throw new MathException("Denominator can't be Zero.");
@@ -262,7 +262,7 @@ public class RationalNumber extends Number implements Cloneable, Serializable
 		return output;
 	}
 	
-	public RationalNumber add(RationalNumber rn) throws NaturalNumberException, MathException
+	public RationalNumber add(RationalNumber rn)throws MathException, NaturalNumberException
 	{
 
 		if(this.sign==rn.sign)
@@ -320,7 +320,7 @@ public class RationalNumber extends Number implements Cloneable, Serializable
 		}
 	}
 	
-	public RationalNumber multiply(RationalNumber rn) throws NaturalNumberException, MathException
+	public RationalNumber multiply(RationalNumber rn) throws MathException, NaturalNumberException
 	{
 		Pair<Integer, Integer> here = getAsOneFrac();
 		Pair<Integer, Integer> other = rn.getAsOneFrac();
@@ -340,17 +340,17 @@ public class RationalNumber extends Number implements Cloneable, Serializable
 		return new Pair<Integer, Integer>(newNum, denominator.intValue());
 	}
 
-	public RationalNumber getFrac() throws NaturalNumberException, MathException
+	public RationalNumber getFrac() throws MathException, NaturalNumberException
 	{
 		return new RationalNumber(this.sign, numerator, denominator);
 	}
 	
-	public RationalNumber getAmount() throws NaturalNumberException, MathException
+	public RationalNumber getAmount() throws MathException, NaturalNumberException
 	{
 		return new RationalNumber(true, integerPart, numerator, denominator);
 	}
 	
-	public boolean isLargerThan(RationalNumber rn) throws NaturalNumberException, MathException
+	public boolean isLargerThan(RationalNumber rn) throws MathException, NaturalNumberException
 	{
 
 		if(this.equals(rn))return false;
@@ -389,7 +389,7 @@ public class RationalNumber extends Number implements Cloneable, Serializable
 		throw new MathException("Should not happen.");
 	}
 	
-	public boolean isSmallerThan(RationalNumber rn) throws NaturalNumberException, MathException
+	public boolean isSmallerThan(RationalNumber rn) throws MathException, NaturalNumberException
 	{
 		if(this.equals(rn))return false;
 		
@@ -471,7 +471,7 @@ public class RationalNumber extends Number implements Cloneable, Serializable
 			rn = new RationalNumber(this.sign, this.integerPart, this.numerator, this.denominator);
 			return rn;
 		}
-		catch(NaturalNumberException | MathException e)
+		catch( MathException | NaturalNumberException e)
 		{
 			e.printStackTrace();
 			throw new RuntimeException("Should not happen");

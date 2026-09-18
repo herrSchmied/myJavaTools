@@ -9,7 +9,7 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 
 import someMath.NaturalNumber;
-import someMath.NaturalNumberException;
+import someMath.exceptions.NaturalNumberException;
 import someMath.SmallTools;
 import someMath.algebraicStructures.MatrixRing;
 import someMath.algebraicStructures.RationalField;

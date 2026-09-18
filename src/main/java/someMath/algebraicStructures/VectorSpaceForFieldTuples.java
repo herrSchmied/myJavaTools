@@ -38,7 +38,7 @@ public class VectorSpaceForFieldTuples<K, V extends FieldTuple<K>> implements Ve
 
 		int l = v1.getRows();
 		
-		FieldTuple<K> v3 = new FieldTuple(l, k.one());
+		FieldTuple<K> v3 = new FieldTuple<>(l, k.one());
 		
 		for(int n=0;n<l;n++)
 		{

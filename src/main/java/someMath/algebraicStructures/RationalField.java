@@ -27,7 +27,7 @@ public class RationalField implements Field<RationalNumber, Integer>
 			a3 = a1.add(a2);
 			return a3;
 		}
-		catch (NaturalNumberException | MathException e)
+		catch (MathException | NaturalNumberException e)
 		{
 			// 
 			e.printStackTrace();
@@ -47,7 +47,7 @@ public class RationalField implements Field<RationalNumber, Integer>
 			a3 = a1.multiply(a2);
 			return a3;
 		}
-		catch (NaturalNumberException | MathException e)
+		catch (MathException | NaturalNumberException e)
 		{
 			// 
 			e.printStackTrace();
@@ -62,7 +62,7 @@ public class RationalField implements Field<RationalNumber, Integer>
 		try
 		{
 			if(a1.equals(RationalNumber.zero))return RationalNumber.zero; 
-			return new RationalNumber(!(a1.sign), a1.getIntegerPart(), a1.getNumerator(), a1.getDenominator());
+			return new RationalNumber(!(a1.getSign()), a1.getIntegerPart(), a1.getNumerator(), a1.getDenominator());
 		}
 		catch (NaturalNumberException | MathException e)
 		{
@@ -81,12 +81,12 @@ public class RationalField implements Field<RationalNumber, Integer>
 		{
 
 			int one = 1;
-			if(!a1.sign)one = -1;
+			if(!a1.getSign())one = -1;
 			Pair<Integer, Integer> pair = a1.getAsOneFrac();
 
 			return new RationalNumber(one*pair.getValue(), pair.getKey());
 		}
-		catch (NaturalNumberException | MathException e)
+		catch (MathException | NaturalNumberException e)
 		{
 			// 
 			e.printStackTrace();
@@ -117,6 +117,7 @@ public class RationalField implements Field<RationalNumber, Integer>
 	    return (other instanceof RationalField);
 	}
 
+
 	@Override
 	public boolean isAmbiguous()
 	{
@@ -124,14 +125,8 @@ public class RationalField implements Field<RationalNumber, Integer>
 	}
 
 	@Override
-	public Integer distinguish()
+	public Integer distinguisher()
 	{
-		return null;
-	}
-
-	@Override
-	public Integer distinguisher() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 }
