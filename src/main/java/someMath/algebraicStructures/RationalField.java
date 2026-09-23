@@ -3,7 +3,7 @@ package someMath.algebraicStructures;
 import java.util.Objects;
 
 import javafx.util.Pair;
-import someMath.AlgebraicStructures.Interfaces.Field;
+import someMath.algebraicStructures.Interfaces.Field;
 import someMath.algebraicStructures.Storage.RationalNumber;
 import someMath.exceptions.*;
 

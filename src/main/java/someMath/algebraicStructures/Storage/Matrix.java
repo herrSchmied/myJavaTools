@@ -7,7 +7,7 @@ import java.util.function.BiConsumer;
 import static CollectionTools.CollectionManipulation.*;
 
 import someMath.StringManipulation;
-import someMath.AlgebraicStructures.Interfaces.Field;
+import someMath.algebraicStructures.Interfaces.Field;
 import someMath.exceptions.MathException;
 
 

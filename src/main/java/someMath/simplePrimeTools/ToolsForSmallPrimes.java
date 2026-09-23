@@ -24,6 +24,7 @@ public class ToolsForSmallPrimes
 	private List<Long> primeList;
 	private long largestPrime;
 	private final String primeListPathStr;
+	private final int defaultMaxPrimeNr = 20000;
 	private final int maxPrimeNr;
 
 	@SuppressWarnings("unchecked")
@@ -49,14 +50,15 @@ public class ToolsForSmallPrimes
 
 				primeList = (List<Long>)TextAndObjSaveAndLoad.loadObject(primeListPathStr);
 				Collections.sort(primeList);
-				largestPrime = primeList.get(maxPrimeNr-1);
 
-				if(primeList.size()<20000)
+				if(primeList.size()<defaultMaxPrimeNr)
 				{
 					System.out.println("Primelist a bit a bit short.");
 					System.out.println("Making a new One. Wait a bit");
 					setupAndLoad();
 				}
+				
+				largestPrime = primeList.get(defaultMaxPrimeNr-1);
 			}
 			catch(Exception e)
 			{
@@ -70,7 +72,7 @@ public class ToolsForSmallPrimes
 	@SuppressWarnings("unchecked")
 	private void setupAndLoad() throws ClassNotFoundException, IOException, MathException
 	{
-		new MakePrimeListFile(maxPrimeNr, primeListPathStr);
+		new MakePrimeListFile(defaultMaxPrimeNr, primeListPathStr);
 		primeList = (List<Long>)TextAndObjSaveAndLoad.loadObject(primeListPathStr);
 		Collections.sort(primeList);
 		largestPrime = primeList.get(maxPrimeNr-1);
@@ -196,9 +198,10 @@ public class ToolsForSmallPrimes
 		if(n<=2)return smallerThanPrimes;
 
 		long k = 0;
-		for(int m=0;k<n;m++)
+		for(int m=0;m<primeList.size();m++)
 		{
 			k = primeList.get(m);
+			if(k>=n)break;
 			smallerThanPrimes.add(k);
 		}
 

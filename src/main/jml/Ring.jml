@@ -1,0 +1,94 @@
+package someMath.algebraicStructures.Interfaces;
+
+import someMath.exceptions.MathException;
+
+public interface Ring<R, O>
+{
+    //@ public normal_behavior
+    //@   ensures \result != null;
+    //@   spec_pure
+    public R add(R r1, R r2) throws MathException;
+
+    //@ public normal_behavior
+    //@   ensures \result != null;
+    //@   spec_pure
+    public R multiply(R r1, R r2) throws MathException;
+
+    //@ public normal_behavior
+    //@   ensures \result != null;
+    //@   spec_pure
+    public R negate(R r1) throws MathException;
+
+    //@ public normal_behavior
+    //@   ensures \result != null;
+    //@   spec_pure
+    public R zero() throws MathException;
+
+    //@ public normal_behavior
+    //@   ensures \result != null;
+    //@   spec_pure
+    public R one() throws MathException;
+
+    //@ public normal_behavior
+    //@   spec_pure
+    public boolean isAmbiguous();
+
+    //@ public normal_behavior
+    //@   spec_pure
+    public O distinguisher();
+
+
+    /* =========================================================
+       RING AXIOMS
+       ========================================================= */
+
+    // Addition is commutative
+    //@ public invariant
+    //@   (\forall R a, b;
+    //@       a != null && b != null;
+    //@       add(a,b).equals(add(b,a)));
+
+    // Addition is associative
+    //@ public invariant
+    //@   (\forall R a, b, c;
+    //@       a != null && b != null && c != null;
+    //@       add(add(a,b),c).equals(add(a,add(b,c))));
+
+    // Zero is additive identity
+    //@ public invariant
+    //@   (\forall R a;
+    //@       a != null;
+    //@       add(a,zero()).equals(a));
+
+    // Negation gives additive inverse
+    //@ public invariant
+    //@   (\forall R a;
+    //@       a != null;
+    //@       add(a,negate(a)).equals(zero()));
+
+    // Multiplication is commutative
+    //@ public invariant
+    //@   (\forall R a, b;
+    //@       a != null && b != null;
+    //@       multiply(a,b).equals(multiply(b,a)));
+
+    // Multiplication is associative
+    //@ public invariant
+    //@   (\forall R a, b, c;
+    //@       a != null && b != null && c != null;
+    //@       multiply(multiply(a,b),c)
+    //@         .equals(multiply(a,multiply(b,c))));
+
+    // One is multiplicative identity
+    //@ public invariant
+    //@   (\forall R a;
+    //@       a != null;
+    //@       multiply(a,one()).equals(a));
+
+    // Multiplication distributes over addition
+    //@ public invariant
+    //@   (\forall R a, b, c;
+    //@       a != null && b != null && c != null;
+    //@       multiply(a,add(b,c))
+    //@         .equals(add(multiply(a,b),multiply(a,c))));
+}

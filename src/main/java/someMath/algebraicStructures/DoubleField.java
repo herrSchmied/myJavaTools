@@ -4,7 +4,7 @@ package someMath.algebraicStructures;
 
 import java.lang.Double;
 
-import someMath.AlgebraicStructures.Interfaces.Field;
+import someMath.algebraicStructures.Interfaces.Field;
 import someMath.exceptions.MathException;
 
 

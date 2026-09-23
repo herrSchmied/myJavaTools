@@ -5,7 +5,7 @@ import java.nio.file.Path;
 
 
 import javafx.util.Pair;
-import someMath.AlgebraicStructures.Interfaces.Field;
+import someMath.algebraicStructures.Interfaces.Field;
 import someMath.exceptions.MathException;
 import someMath.simplePrimeTools.ToolsForSmallPrimes;
 
@@ -22,12 +22,8 @@ public class FiniteField implements Field<Long, Integer>
 		ToolsForSmallPrimes tfsp = new ToolsForSmallPrimes(primeListFilePath.toString(), 2000);
 		if(nrOfElements>tfsp.getLargestPrime())throw new MathException("Nr of Elements exceeds largestPrime given by TFSP Object.");
 
-		Pair<Long[], Long[]> primeFactors = tfsp.factorize(nrOfElements);
-
-		Long[] primes = primeFactors.getKey();
-		if(primes.length!=1)throw new MathException("Finite Field with that Nr. of Elements is "
-				+ "not possible. It needs to be a prime as basis raised by an integer bigger or"
-				+ " equal One.");
+		if(!tfsp.isPrime(nrOfElements))throw new MathException("Finite Field with that Nr. of Elements is "
+				+ "not possible. It needs to be a Prime.");
 		
 		this.nrOfElements = nrOfElements;
 	}

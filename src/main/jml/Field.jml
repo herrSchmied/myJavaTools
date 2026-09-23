@@ -1,0 +1,23 @@
+package someMath;
+
+import someMath.exceptions.MathException;
+
+public interface Field<A, O> extends Ring<A, O>
+{
+    //@ public normal_behavior
+    //@   ensures \result != null;
+    //@   spec_pure
+    public A inverse(A a) throws MathException;
+
+
+    /* =========================================================
+       FIELD AXIOM
+       ========================================================= */
+
+    // Every non-zero element has a multiplicative inverse.
+    //@ public invariant
+    //@   (\forall A a;
+    //@       a != null &&
+    //@       !a.equals(zero());
+    //@       multiply(a,inverse(a)).equals(one()));
+}

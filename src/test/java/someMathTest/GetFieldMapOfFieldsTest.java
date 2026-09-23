@@ -4,9 +4,9 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 import org.junit.jupiter.api.Test;
 
-import someMath.AlgebraicStructures.Interfaces.Field;
 import someMath.algebraicStructures.DoubleField;
 import someMath.algebraicStructures.RationalField;
+import someMath.algebraicStructures.Interfaces.Field;
 import someMath.algebraicStructures.Storage.MapOfFields;
 import someMath.algebraicStructures.Storage.RationalNumber;
 import someMath.exceptions.MathException;

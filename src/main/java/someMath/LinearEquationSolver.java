@@ -8,8 +8,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import someMath.AlgebraicStructures.Interfaces.Field;
 import someMath.algebraicStructures.MatrixRing;
+import someMath.algebraicStructures.Interfaces.Field;
 import someMath.algebraicStructures.Storage.FieldTuple;
 import someMath.algebraicStructures.Storage.Matrix;
 import someMath.algebraicStructures.operations.MatrixStuff;

@@ -1,6 +1,6 @@
 package someMath.algebraicStructures;
 
-import someMath.AlgebraicStructures.Interfaces.Field;
+import someMath.algebraicStructures.Interfaces.Field;
 import someMath.algebraicStructures.Storage.ComplexNumber;
 import someMath.exceptions.MathException;
 

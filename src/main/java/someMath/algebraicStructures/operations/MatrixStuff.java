@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import someMath.LinearEquationSolver;
-import someMath.AlgebraicStructures.Interfaces.Field;
+import someMath.algebraicStructures.Interfaces.Field;
 import someMath.algebraicStructures.Storage.FieldTuple;
 import someMath.algebraicStructures.Storage.Matrix;
 import someMath.exceptions.MathException;

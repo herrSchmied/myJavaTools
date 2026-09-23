@@ -1,4 +1,4 @@
-package someMath.AlgebraicStructures.Interfaces;
+package someMath.algebraicStructures.Interfaces;
 
 import someMath.exceptions.MathException;
 

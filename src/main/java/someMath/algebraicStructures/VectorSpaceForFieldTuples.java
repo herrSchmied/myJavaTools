@@ -1,7 +1,7 @@
 package someMath.algebraicStructures;
 
-import someMath.AlgebraicStructures.Interfaces.Field;
-import someMath.AlgebraicStructures.Interfaces.VectorSpace;
+import someMath.algebraicStructures.Interfaces.Field;
+import someMath.algebraicStructures.Interfaces.VectorSpace;
 import someMath.algebraicStructures.Storage.FieldTuple;
 import someMath.exceptions.MathException;
 

@@ -1,7 +1,6 @@
 package consoleTools;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.nio.file.Path;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -80,14 +79,7 @@ public class InputStreamSession implements AutoCloseable
 	final static String datePlease = "Date Please.";
 	
 	final static String dateTimeOutOfBounds = "Date out of Bounds.";
-	
-	/*
-	 * I do not close scanner in any input Method. Because
-	 * it's tied to System.in. If i would System.in would
-	 * be closed to and never be opened again in the 
-	 * running JVM. 
-	 */
-	
+
 
 	private final InputReader inputReader;
 

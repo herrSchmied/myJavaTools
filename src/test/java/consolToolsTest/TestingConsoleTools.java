@@ -72,5 +72,7 @@ public class TestingConsoleTools
 	            LocalDateTime.now().plusMinutes(1)
 	        )
 	    );
+	    
+	    iss.close();
 	}
 }

@@ -1,0 +1,56 @@
+package someMath;
+
+public class FiniteField implements Field<Integer, Integer> {
+
+    //@ public represents isElement(x) = 0 <= x && x < p;
+
+    //@ public invariant p > 1;
+
+    //@ public normal_behavior
+    //@   requires isElement(a) && isElement(b);
+    //@   ensures isElement(\result);
+    //@   ensures \result == (a + b) % p;
+    //@   spec_pure
+    public Integer add(Integer a, Integer b);
+
+    //@ public normal_behavior
+    //@   requires isElement(a) && isElement(b);
+    //@   ensures isElement(\result);
+    //@   ensures \result == (a * b) % p;
+    //@   spec_pure
+    public Integer multiply(Integer a, Integer b);
+
+    //@ public normal_behavior
+    //@   requires isElement(a);
+    //@   ensures isElement(\result);
+    //@   ensures \result == (p - a) % p;
+    //@   spec_pure
+    public Integer negate(Integer a);
+
+    //@ public normal_behavior
+    //@   ensures \result == 0;
+    //@   spec_pure
+    public Integer zero();
+
+    //@ public normal_behavior
+    //@   ensures \result == 1;
+    //@   spec_pure
+    public Integer one();
+
+    //@ public normal_behavior
+    //@   requires isElement(a) && a != 0;
+    //@   ensures isElement(\result);
+    //@   ensures (a * \result) % p == 1;
+    //@   spec_pure
+    public Integer inverse(Integer a);
+
+    //@ public normal_behavior
+    //@   ensures \result == true;
+    //@   spec_pure
+    public boolean isAmbiguous();
+
+    //@ public normal_behavior
+    //@   ensures \result == p;
+    //@   spec_pure
+    public Integer distinguisher();
+}

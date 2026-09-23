@@ -1,12 +1,17 @@
 package consoleTools;
+
+
 import java.io.IOException;
-import java.io.InputStream;
+
 import java.nio.file.Path;
+
 
 import org.jline.reader.LineReader;
 import org.jline.reader.LineReaderBuilder;
 import org.jline.terminal.Terminal;
 import org.jline.terminal.TerminalBuilder;
+
+
 
 public class JLineInputReader implements InputReader
 {

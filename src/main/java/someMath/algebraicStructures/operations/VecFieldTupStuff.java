@@ -1,6 +1,6 @@
 package someMath.algebraicStructures.operations;
 
-import someMath.AlgebraicStructures.Interfaces.Field;
+import someMath.algebraicStructures.Interfaces.Field;
 import someMath.algebraicStructures.Storage.FieldTuple;
 import someMath.exceptions.MathException;
 

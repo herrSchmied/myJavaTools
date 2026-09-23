@@ -1,6 +1,5 @@
 package CollectionTools;
 
-import static CollectionTools.CollectionManipulation.arrayContainsValue;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -14,9 +13,13 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+
 import javafx.util.Pair;
+
+
 import someMath.exceptions.CollectionException;
 import someMath.exceptions.MathException;
+
 
 
 public class CollectionManipulation 

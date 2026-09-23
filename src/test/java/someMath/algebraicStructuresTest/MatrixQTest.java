@@ -1,4 +1,4 @@
-package someMathTest;
+package someMath.algebraicStructuresTest;
 
 
 import java.util.ArrayList;

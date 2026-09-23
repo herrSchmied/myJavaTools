@@ -1,4 +1,4 @@
-package someMath.AlgebraicStructures.Interfaces;
+package someMath.algebraicStructures.Interfaces;
 
 public interface Monoid<O>
 {

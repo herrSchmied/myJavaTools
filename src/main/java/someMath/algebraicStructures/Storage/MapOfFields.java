@@ -5,9 +5,9 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import someMath.AlgebraicStructures.Interfaces.Field;
 import someMath.algebraicStructures.DoubleField;
 import someMath.algebraicStructures.RationalField;
+import someMath.algebraicStructures.Interfaces.Field;
 import someMath.exceptions.MathException;
 
 public class MapOfFields

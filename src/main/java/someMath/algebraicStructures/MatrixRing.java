@@ -5,8 +5,8 @@ import java.util.ArrayList;
 
 import java.util.List;
 
-import someMath.AlgebraicStructures.Interfaces.Field;
-import someMath.AlgebraicStructures.Interfaces.Ring;
+import someMath.algebraicStructures.Interfaces.Field;
+import someMath.algebraicStructures.Interfaces.Ring;
 import someMath.algebraicStructures.Storage.Matrix;
 import someMath.exceptions.MathException;
 
