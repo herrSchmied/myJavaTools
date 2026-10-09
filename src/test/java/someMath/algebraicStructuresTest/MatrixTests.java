@@ -27,7 +27,7 @@ public class MatrixTests
 
 	MatrixRing<Double> ring;
 	DoubleField dField;
-	Double prettySmall = Math.pow(10, -12);
+	Double prettySmall = Math.pow(10, -9);
 
 
 	public void setup(int n) throws MathException

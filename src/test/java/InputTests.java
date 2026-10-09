@@ -8,7 +8,7 @@ import allgemein.LittleTimeTools;
 
 
 import consoleTools.InputArgumentException;
-import consoleTools.InputStreamSession;
+import consoleTools.ConsoleSession;
 import consoleTools.TestInputReader;
 
 
@@ -42,7 +42,7 @@ public class InputTests
 		
 		String gruss = "Hi u";
 		TestInputReader testInput = new TestInputReader(gruss);
-		InputStreamSession inTaker = new InputStreamSession(testInput);
+		ConsoleSession inTaker = new ConsoleSession(testInput);
 
 		String greetings = inTaker.getString("Hi u");
 		
@@ -59,7 +59,7 @@ public class InputTests
 		String month = "1";
 		String day = "6";
 		TestInputReader testInput = new TestInputReader(hour, minute, year, month, day);
-		InputStreamSession inTaker = new InputStreamSession(testInput);
+		ConsoleSession inTaker = new ConsoleSession(testInput);
 
 		LocalDateTime ldt;
 		try
@@ -86,7 +86,7 @@ public class InputTests
 
 		TestInputReader testInput = new TestInputReader(data);
 		
-		InputStreamSession inTaker = new InputStreamSession(testInput);
+		ConsoleSession inTaker = new ConsoleSession(testInput);
 
 		LocalDateTime ldt;
 		ldt = inTaker.getDateTimeInOneLine("hi", ancient, ancient.plusDays(8));

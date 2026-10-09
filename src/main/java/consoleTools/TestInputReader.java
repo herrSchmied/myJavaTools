@@ -1,5 +1,6 @@
 package consoleTools;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Queue;
@@ -23,6 +24,22 @@ public class TestInputReader implements InputReader
     @Override
     public void close()
     {
-        // Nothing to close.
+
     }
+
+    public void print(String text)
+    {
+    	
+    }
+
+    public void println(String text)
+    {
+    	
+    }
+
+	@Override
+	public void page(String text) throws IOException
+	{
+
+	}
 }

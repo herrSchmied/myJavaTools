@@ -19,7 +19,7 @@ import java.util.Set;
 import org.junit.jupiter.api.Test;
 
 import consoleTools.InputArgumentException;
-import consoleTools.InputStreamSession;
+import consoleTools.ConsoleSession;
 import consoleTools.TerminalTableDisplay;
 import consoleTools.TestInputReader;
 import javafx.util.Pair;
@@ -57,13 +57,13 @@ public class TestingConsoleTools
 	            LocalDateTime.now().minusDays(1);
 
 	    String data =
-	            InputStreamSession.translateTimeToAnswerString(yesterday);
+	            ConsoleSession.translateTimeToAnswerString(yesterday);
 
 	    TestInputReader testInput =
 	            new TestInputReader(data);
 
-	    InputStreamSession iss =
-	            new InputStreamSession(testInput);
+	    ConsoleSession iss =
+	            new ConsoleSession(testInput);
 
 	    assertThrows(InputArgumentException.class, () ->
 	        iss.getDateTimeInOneLine(

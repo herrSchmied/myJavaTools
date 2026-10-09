@@ -1,12 +1,13 @@
 package someMath.algebraicStructures.Storage;
 
+import java.io.IOException;
+import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import someMath.algebraicStructures.DoubleField;
-import someMath.algebraicStructures.RationalField;
+import someMath.algebraicStructures.*;
 import someMath.algebraicStructures.Interfaces.Field;
 import someMath.exceptions.MathException;
 
@@ -19,7 +20,6 @@ public class MapOfFields
 	{
 		map.put(Double.class, new DoubleField());
 		map.put(RationalNumber.class, new RationalField());
-		
 		/*
 			????????????????
 			Not even mentioning GF(p^n)!!!!!
@@ -37,6 +37,11 @@ public class MapOfFields
 		return  (Field<T, Integer>) map.get(clazz);
 	}
 	
+	public static FiniteField getFiniteField(int n, Path path) throws ClassNotFoundException, MathException, IOException
+	{
+		return new FiniteField(n, path);
+	}
+
 	@SuppressWarnings("rawtypes")
 	public static Set<Field> values()
 	{

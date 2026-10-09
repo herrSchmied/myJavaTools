@@ -9,4 +9,10 @@ public interface InputReader extends AutoCloseable
 
     @Override
     void close() throws IOException;
+    
+    public void page(String text) throws IOException;
+    
+    public void print(String text);
+
+    public void println(String text);
 }

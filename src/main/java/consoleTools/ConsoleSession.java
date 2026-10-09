@@ -16,7 +16,7 @@ import java.util.Map;
 import allgemein.LittleTimeTools;
 
 
-public class InputStreamSession implements AutoCloseable
+public class ConsoleSession implements AutoCloseable
 {
 
 	public static final Map<String, Month> monthMap = Map.ofEntries(
@@ -83,16 +83,31 @@ public class InputStreamSession implements AutoCloseable
 
 	private final InputReader inputReader;
 
-	public InputStreamSession(Path historyFile)
+	public ConsoleSession(Path historyFile)
 	            throws IOException
 	{    
 		this(new JLineInputReader(historyFile));
     }
 
 	// Constructor used by tests
-	public InputStreamSession(InputReader inputReader)
+	public ConsoleSession(InputReader inputReader)
 	{
 		this.inputReader = inputReader;
+	}
+
+	public void print(String text)
+	{
+	    inputReader.print(text);
+	}
+
+	public void println(String text)
+	{
+	    inputReader.println(text);
+	}
+
+	public void page(String text) throws IOException
+	{
+		inputReader.page(text);
 	}
 
 	private String readLine(String question)
@@ -357,9 +372,9 @@ public class InputStreamSession implements AutoCloseable
 		int month = ldt.getMonthValue();
 		Month m = Month.of(month);
 		String monthStr = "";
-		for(String s: InputStreamSession.monthMap.keySet())
+		for(String s: ConsoleSession.monthMap.keySet())
 		{
-			Month d = InputStreamSession.monthMap.get(s);
+			Month d = ConsoleSession.monthMap.get(s);
 			if(m.equals(d))
 			{
 				monthStr = s;
