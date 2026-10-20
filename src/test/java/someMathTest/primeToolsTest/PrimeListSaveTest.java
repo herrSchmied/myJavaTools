@@ -17,21 +17,21 @@ public class PrimeListSaveTest
 	public void SaveTest() throws MathException, IOException, ClassNotFoundException, InterruptedException
 	{
 		
+		int maxPrimeNr = 10;
 		String path = "someResources/pList";
-		new MakePrimeListFile(10, path);
+		new MakePrimeListFile(maxPrimeNr, path);
 		
 		@SuppressWarnings("unchecked")
 		List<Integer> primeList = (List<Integer>) TextAndObjSaveAndLoad.loadObject(path);
 		
-		assert(primeList.size()==10);
+		assert(primeList.size()==maxPrimeNr);
 		
-		EratosthenesSieb sieb = new EratosthenesSieb(10);
+		EratosthenesSieb sieb = new EratosthenesSieb(maxPrimeNr);
 		List<Long> primeList2 = sieb.getPrimeList();
 		
 		System.out.println(primeList);
 		System.out.println(primeList2);
-		
-		Thread.sleep(1500);
+
 		assert(primeList.equals(primeList2));
 	}
 }

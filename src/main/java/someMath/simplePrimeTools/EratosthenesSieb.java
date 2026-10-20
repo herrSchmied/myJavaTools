@@ -19,12 +19,14 @@ public class EratosthenesSieb
 	public EratosthenesSieb(int maxPrimeNr) throws MathException
 	{
 
-		if(maxPrimeNr<1) throw new MathException("maxPrimeNr too small.");
+		if(maxPrimeNr<3) throw new MathException("maxPrimeNr too small.");
 		if(this.maxPrimNr<maxPrimeNr) throw new MathException("This prime calculation takes to long.");
-		long integerStart = 2;
-		primeList.add(integerStart);
-
-		for(long k = integerStart+1;primeNr<maxPrimeNr;k++)
+		long integerStart = 3;
+		primeList.add((long)2);
+		primeList.add((long)3);
+		primeNr = primeList.size();
+		
+		for(long k = integerStart+2;primeNr<maxPrimeNr;k += 2)
 		{
 
 			boolean isPrime = true;
