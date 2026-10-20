@@ -43,7 +43,7 @@ public class FiniteField implements Field<Long, Integer>
 	@Override
 	public Long negate(Long r1) throws MathException
 	{
-		return (nrOfElements-r1);
+		return (nrOfElements-reduce(r1));
 	}
 
 	@Override

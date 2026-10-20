@@ -47,7 +47,7 @@ public class LinearEquationSolver<O>
 		{
 			
 			//calculate the original coefficientMatrix
-			Matrix<O> coefficientMatrix = new Matrix<>(cols-1, cols-1, k.zero());
+			Matrix<O> coefficientMatrix = new Matrix<>(cols-1, cols-1, k.zero(), k);
 			for(int col=0;col<cols-1;col++)
 			{
 				Matrix<O> columnVektor = customizable.getColumn(col);
@@ -324,7 +324,7 @@ public class LinearEquationSolver<O>
 			//else values.add(name);
 		}
 
-		FieldTuple<O> solutionVektor = new FieldTuple<>(values);
+		FieldTuple<O> solutionVektor = new FieldTuple<>(values, k);
 		//System.out.println(solutionVektor);
 		return solutionVektor;
 	}

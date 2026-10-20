@@ -96,7 +96,7 @@ public class MatrixRing<O> implements Ring<Matrix<O>, Integer>
 		List<O> zeros = new ArrayList<>();
 		for(int m=0;m<sideLength*sideLength;m++)zeros.add(k.zero());//DoubleField Neutral of addition!
 
-		return new Matrix<>(sideLength, zeros);
+		return new Matrix<>(sideLength, zeros, k);
 	}
 
 	@Override
@@ -117,7 +117,7 @@ public class MatrixRing<O> implements Ring<Matrix<O>, Integer>
 		
 			for(int n=0;n<rows*cols;n++)valueList.add(addNeutral);
 		
-			product = new Matrix<O>(rows, valueList);
+			product = new Matrix<O>(rows, valueList, k);
 
 			int s = r1.getColumns();//same as r2.getRows!!
 			for(int row=0;row<rows;row++)
@@ -157,7 +157,7 @@ public class MatrixRing<O> implements Ring<Matrix<O>, Integer>
 			else diagonalMOne.add(k.zero());//DoubleField Neutral of addition!
 		}
 
-		return new Matrix<>(sideLength, diagonalMOne);
+		return new Matrix<>(sideLength, diagonalMOne, k);
 	}
 
 

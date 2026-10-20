@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Objects;
 
 import someMath.exceptions.MathException;
+import someMath.algebraicStructures.Interfaces.*;
 
 public class FieldTuple<O> extends Matrix<O>
 {
@@ -22,16 +23,31 @@ public class FieldTuple<O> extends Matrix<O>
 		return list;
 	}
 
+	public FieldTuple(List<O> valueList, Field<O, Integer> k) throws MathException
+	{
+		super(1, valueList, k);
+	}
+	
 	public FieldTuple(List<O> valueList) throws MathException
 	{
 		super(1, valueList);
+	}
+
+	public FieldTuple(O[][] valueArray, Field<O, Integer> k) throws MathException
+	{
+		super(valueArray, k);
 	}
 	
 	public FieldTuple(O[][] valueArray) throws MathException
 	{
 		super(valueArray);
 	}
-	
+
+	public FieldTuple(int rows, O defaultValue, Field<O, Integer> k) throws MathException
+	{
+		super(1, getDefaultValueList(rows, defaultValue), k);
+	}
+
 	public FieldTuple(int rows, O defaultValue) throws MathException
 	{
 		super(1, getDefaultValueList(rows, defaultValue));
@@ -65,7 +81,7 @@ public class FieldTuple<O> extends Matrix<O>
 			list.add(o);
 		}
 
-		return new FieldTuple<O>(list);
+		return new FieldTuple<O>(list, super.getField());
 	}
 
 	public FieldTuple<O> clone()

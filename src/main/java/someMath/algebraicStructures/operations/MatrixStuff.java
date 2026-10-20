@@ -93,7 +93,8 @@ public class MatrixStuff
 			}
 		}
 
-		return new Matrix<O>(rows-1, valueList);
+		Field<O, Integer> k = matrix.getField();
+		return new Matrix<O>(rows-1, valueList, k);
 	}
 	
 	public static final <O> Matrix<O> scale(O d, Matrix<O> m) throws MathException
@@ -144,12 +145,12 @@ public class MatrixStuff
 
 		Matrix<O> coefficientMatrix = matrix.clone();
 		coefficientMatrix = transpone(coefficientMatrix);
-		Matrix<O> output = new Matrix<>(columns, rows, k.zero());
+		Matrix<O> output = new Matrix<>(columns, rows, k.zero(), k);
 		for(int n=0;n<rows;n++)
 		{
 	
 			System.out.println("Making ExtendedMatrix.");
-			FieldTuple<O> rowResults = new FieldTuple<>(rows, k.zero());
+			FieldTuple<O> rowResults = new FieldTuple<>(rows, k.zero(), k);
 			rowResults = rowResults.setValue(n, k.one());
 
 			Matrix<O> extendedCoefficientMatrix = 
@@ -177,7 +178,7 @@ public class MatrixStuff
 		try
 		{
 			//Remember columns and rows get switched!!
-			transponed = new Matrix<O>(rows, cols, k.zero());
+			transponed = new Matrix<O>(rows, cols, k.zero(), k);
 			for(int col=0;col<cols;col++)
 			{
 				for(int row=0;row<rows;row++)

@@ -27,6 +27,28 @@ public class Matrix<O> implements Cloneable
 
 	//In All Related Code first Columns than Rows!!!
 	@SuppressWarnings("unchecked")
+	public Matrix(int columns, int rows, O monoValue, Field<O, Integer> k)
+	{
+		this.k = k;
+		this.columns = columns;
+		this.rows = rows;
+		this.isQuadratic = (rows==columns);
+		
+		Object [][] arrayOfValues = new Object[columns][rows];
+		
+		for(int row=0;row<rows;row++)
+		{
+			for(int col=0;col<columns;col++)
+			{
+				arrayOfValues[col][row]= monoValue;
+			}
+		}
+		
+		valueArr = (O[][])arrayOfValues;
+	}
+	
+	//In All Related Code first Columns than Rows!!!
+	@SuppressWarnings("unchecked")
 	public Matrix(int columns, int rows, O monoValue) throws MathException
 	{
 		
@@ -72,6 +94,31 @@ public class Matrix<O> implements Cloneable
 		valueArr = (O[][])arrayOfValues;
 	}
 	
+	@SuppressWarnings("unchecked")
+	public Matrix(int columns, List<O> valueList, Field<O, Integer> k) throws MathException
+	{
+		if(columns<1)throw new MathException("To few rows.");
+		if(valueList.size()%columns!=0)throw new MathException("Matrix can not be initiated due to nr. of Values they don't fit.");
+		if(valueList.contains(null))throw new MathException("Matrix can not contain null values!");
+		this.columns = columns;
+		this.rows = valueList.size()/columns;
+		isQuadratic = (rows==columns);
+		this.k = k;
+		
+		Object [][] arrayOfValues = new Object[columns][rows];
+		
+		for(int n=0;n<valueList.size();n++)
+		{
+			int col = n%columns;
+			int row = (n-col)/columns;
+			
+			arrayOfValues[col][row] = valueList.get(n);
+		}
+
+		valueArr = (O[][])arrayOfValues;
+	}
+
+	@SuppressWarnings("unchecked")
 	public Matrix(O[][] valueArr) throws MathException
 	{
 		if(containsNull(valueArr)) throw new MathException("Can't Except array with null values in it!");
@@ -83,11 +130,22 @@ public class Matrix<O> implements Cloneable
 		this.valueArr = (O[][]) valueArr;
 	}
 
+	public Matrix(O[][] valueArr, Field<O, Integer> k) throws MathException
+	{
+		if(containsNull(valueArr)) throw new MathException("Can't Except array with null values in it!");
+		if(!isRegularArray(valueArr))throw new MathException("Array is not Regular meaning some Elements differ in Dimension despite having the same Position!");
+		this.columns = valueArr.length;
+		this.rows = valueArr[0].length;
+		this.k = k;
+		isQuadratic = (rows==columns);
+		this.valueArr = (O[][]) valueArr;
+	}
+
 	public Matrix<O> clone()
 	{	
 		try
 		{
-			return new Matrix<O>(deepCopyOfValueArr());
+			return new Matrix<O>(deepCopyOfValueArr(), k);
 		}
 		catch (MathException e) 
 		{
@@ -117,7 +175,7 @@ public class Matrix<O> implements Cloneable
 	{
 
 		O o = getValue(0, 0);
-		Matrix<O> output = new Matrix<>(columns-1, rows, o);
+		Matrix<O> output = new Matrix<>(columns-1, rows, o, k);
 
 		for(int col=0;col<columns;col++)
 		{
@@ -143,7 +201,7 @@ public class Matrix<O> implements Cloneable
 	{
 		
 		O o = getValue(0, 0);
-		Matrix<O> output = new Matrix<>(columns, rows-1, o);
+		Matrix<O> output = new Matrix<>(columns, rows-1, o, k);
 		
 		for(int row=0;row<rows;row++)
 		{
@@ -172,7 +230,7 @@ public class Matrix<O> implements Cloneable
 		
 		for(int i=0;i<rows;i++)valueArr[0][i]=getValue(column, i);
 		
-		return (Matrix<O>)new Matrix<>(valueArr);
+		return (Matrix<O>)new Matrix<>(valueArr, k);
 	}
 
 	public FieldTuple<O> getColumnAsVektor(int col) throws MathException
@@ -182,7 +240,7 @@ public class Matrix<O> implements Cloneable
 
 		O o = this.getValue(0, 0);
 		int rows = this.getRows();
-		FieldTuple<O> output = new FieldTuple<>(rows, o);
+		FieldTuple<O> output = new FieldTuple<>(rows, o, k);
 		for(int row=0;row<rows;row++)
 		{
 			O value = this.getValue(col, row);
@@ -212,7 +270,7 @@ public class Matrix<O> implements Cloneable
 		
 		for(int i=0;i<columns;i++)valueArr[i][0]=getValue(i, row);
 
-		return (Matrix<O>)new Matrix<>(valueArr);
+		return (Matrix<O>)new Matrix<>(valueArr, k);
 	}
 
 	public FieldTuple<O> getRowAsVektor(int row) throws MathException
@@ -222,7 +280,7 @@ public class Matrix<O> implements Cloneable
 
 		O o = this.getValue(0, 0);
 		int cols = this.getColumns();
-		FieldTuple<O> output = new FieldTuple<>(cols, o);
+		FieldTuple<O> output = new FieldTuple<>(cols, o, k);
 		for(int r=0;r<cols;r++)
 		{
 			O value = this.getValue(r, row);
@@ -253,7 +311,7 @@ public class Matrix<O> implements Cloneable
 	{
 
 		O o = this.getValue(0, 0);
-		Matrix<O> output = new Matrix<>(columns+1, rows, o);
+		Matrix<O> output = new Matrix<>(columns+1, rows, o, k);
 		for(int col=1;col<columns+1;col++)
 		{
 			FieldTuple<O> v = this.getColumnAsVektor(col-1);
@@ -268,7 +326,7 @@ public class Matrix<O> implements Cloneable
 	{
 
 		O o = this.getValue(0, 0);
-		Matrix<O> output = new Matrix<>(columns+1, rows, o);
+		Matrix<O> output = new Matrix<>(columns+1, rows, o, k);
 		for(int col=0;col<columns;col++)
 		{
 			FieldTuple<O> v = this.getColumnAsVektor(col);
@@ -283,7 +341,7 @@ public class Matrix<O> implements Cloneable
 	{
 		
 		O o = this.getValue(0, 0);
-		Matrix<O> output = new Matrix<>(columns, rows+1, o);
+		Matrix<O> output = new Matrix<>(columns, rows+1, o, k);
 		for(int row=0;row<rows-1;row++)
 		{
 			FieldTuple<O> v = this.getRowAsVektor(row);
@@ -298,7 +356,7 @@ public class Matrix<O> implements Cloneable
 	{
 		
 		O o = this.getValue(0, 0);
-		Matrix<O> output = new Matrix<>(columns, rows+1, o);
+		Matrix<O> output = new Matrix<>(columns, rows+1, o, k);
 		for(int row=1;row<rows;row++)
 		{
 			FieldTuple<O> v = this.getRowAsVektor(row);
@@ -319,7 +377,7 @@ public class Matrix<O> implements Cloneable
 		
 		for(int i=0;i<rows;i++)valueArrClone[column][i]= list.get(i);
 		
-		return new Matrix<O>(valueArrClone);
+		return new Matrix<O>(valueArrClone, k);
 	}
 
 	public Matrix<O> setColumn(Matrix<O> columnVektor, int column) throws MathException
@@ -329,7 +387,7 @@ public class Matrix<O> implements Cloneable
 		O[][] valueArrClone = valueArr.clone();
 		for(int i=0;i<rows;i++)valueArrClone[column][i]= columnVektor.getValue(0, i);
 	
-		return new Matrix<O>(valueArrClone);
+		return new Matrix<O>(valueArrClone, k);
 	}
 
 	public Matrix<O> setColumn(FieldTuple<O> columnVektor, int column) throws MathException
@@ -339,7 +397,7 @@ public class Matrix<O> implements Cloneable
 		O[][] valueArrClone = valueArr.clone();
 		for(int i=0;i<rows;i++)valueArrClone[column][i]= columnVektor.getValue(i);
 	
-		return new Matrix<O>(valueArrClone);
+		return new Matrix<O>(valueArrClone, k);
 	}	
 
 	public Matrix<O> setRow(List<O> list, int row) throws MathException
@@ -348,7 +406,7 @@ public class Matrix<O> implements Cloneable
 		O[][] valueArrClone = valueArr.clone();
 		for(int i=0;i<columns;i++)valueArrClone[i][row]=list.get(i);
 		
-		return new Matrix<O>(valueArrClone);
+		return new Matrix<O>(valueArrClone, k);
 	}
 
 	public Matrix<O> setRow(Matrix<O> rowVektor, int row) throws MathException
@@ -357,7 +415,7 @@ public class Matrix<O> implements Cloneable
 		O[][] valueArrClone = valueArr.clone();
 		for(int i=0;i<columns;i++)valueArrClone[i][row]=rowVektor.getValue(i, 0);
 		
-		return new Matrix<O>(valueArrClone);
+		return new Matrix<O>(valueArrClone, k);
 	}
 	
 	public Matrix<O> setRow(FieldTuple<O> rowVektor, int row) throws MathException
@@ -367,7 +425,7 @@ public class Matrix<O> implements Cloneable
 		O[][] valueArrClone = valueArr.clone();
 		for(int col=0;col<columns;col++)valueArrClone[col][row]=rowVektor.getValue(col);
 		
-		return new Matrix<O>(valueArrClone);
+		return new Matrix<O>(valueArrClone, k);
 	}
 	
 	public Matrix<O> setValue(int column, int row, O o) throws MathException
@@ -380,7 +438,7 @@ public class Matrix<O> implements Cloneable
 		O[][] valueArrClone = deepCopyOfValueArr();
 		valueArrClone[column][row] = o;
 		
-		return new Matrix<O>(valueArrClone);
+		return new Matrix<O>(valueArrClone, k);
 	}
 
 	public Matrix<O> switchColumns(int colA, int colB) throws MathException

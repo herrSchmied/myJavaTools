@@ -588,10 +588,19 @@ public class CollectionManipulation
 		return product;
 	}
 
+	/**
+	 * Adding up all the List elements up to a certain index and 
+	 * then returning a Double.
+	 * @param <T>
+	 * @param origin
+	 * @param n
+	 * @return
+	 * @throws CollectionException
+	 */
 	public static <T extends Number> Double addListElements(List<T> origin, int n) throws CollectionException
 	{
 
-		if(origin==null)throw new CollectionException("Set is null.");
+		if(origin==null)throw new CollectionException("List is null.");
 		if(origin.contains(null))throw new CollectionException("origin contains null.");
 
 		int s = origin.size();
