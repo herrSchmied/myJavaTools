@@ -5,7 +5,7 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Queue;
 
-public class TestInputReader implements InputReader
+public class TestInputReader implements SessionTool
 {
 
     private final Queue<String> inputs;

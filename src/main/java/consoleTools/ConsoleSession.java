@@ -81,44 +81,44 @@ public class ConsoleSession implements AutoCloseable
 	final static String dateTimeOutOfBounds = "Date out of Bounds.";
 
 
-	private final InputReader inputReader;
+	private final SessionTool sessionTool;
 
 	public ConsoleSession(Path historyFile)
 	            throws IOException
 	{    
-		this(new JLineInputReader(historyFile));
+		this(new JLineSessionTool(historyFile));
     }
 
 	// Constructor used by tests
-	public ConsoleSession(InputReader inputReader)
+	public ConsoleSession(SessionTool inputReader)
 	{
-		this.inputReader = inputReader;
+		this.sessionTool = inputReader;
 	}
 
 	public void print(String text)
 	{
-	    inputReader.print(text);
+	    sessionTool.print(text);
 	}
 
 	public void println(String text)
 	{
-	    inputReader.println(text);
+	    sessionTool.println(text);
 	}
 
 	public void page(String text) throws IOException
 	{
-		inputReader.page(text);
+		sessionTool.page(text);
 	}
 
 	private String readLine(String question)
 	{
-		return inputReader.readLine(question + ": ");
+		return sessionTool.readLine(question + ": ");
 	}
     
 	@Override
 	public void close() throws IOException
 	{
-	        inputReader.close();    
+	        sessionTool.close();    
 	}
 
 	public boolean getYesOrNo(String qPhrase) throws IOException, InputArgumentException

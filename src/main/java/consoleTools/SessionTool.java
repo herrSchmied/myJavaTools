@@ -2,7 +2,7 @@ package consoleTools;
 
 import java.io.IOException;
 
-public interface InputReader extends AutoCloseable
+public interface SessionTool extends AutoCloseable
 {
 
 	String readLine(String prompt);

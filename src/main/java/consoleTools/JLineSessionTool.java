@@ -14,13 +14,13 @@ import org.jline.terminal.TerminalBuilder;
 
 
 
-public class JLineInputReader implements InputReader
+public class JLineSessionTool implements SessionTool
 {
 
     private final Terminal terminal;
     private final LineReader reader;
 
-    public JLineInputReader(Path historyFile)
+    public JLineSessionTool(Path historyFile)
             throws IOException
     {
 
