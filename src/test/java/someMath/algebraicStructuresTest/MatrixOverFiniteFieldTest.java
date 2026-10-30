@@ -25,7 +25,7 @@ import someMath.exceptions.MathException;
 import static consoleTools.TerminalXDisplay.*;
 
 
-public class MatrixOverFiniteField
+public class MatrixOverFiniteFieldTest
 {
 
 		MatrixRing<Long> ring;
@@ -180,7 +180,7 @@ public class MatrixOverFiniteField
 					Matrix<Long> minusProd = MatrixStuff.scale(minusOne, prod);
 					Matrix<Long> sum = ring.add(e, minusProd);
 					Long norm = MatrixStuff.frobeniusNorm(sum);
-					if(norm%11!=0)
+					if(norm!=0)
 					{
 						System.out.println("Matrix:\n" + matrix);
 						System.out.println("Inverted:\n" + inverted);

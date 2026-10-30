@@ -125,19 +125,15 @@ public class LinearEquationSolver<O>
 	public Matrix<O> transformCoefficients(Matrix<O> extendedCoefficientMatrix, int upperRowNr) throws MathException
 	{
 
-		System.out.println("Transforming Coefficients. upperRowNr: " + upperRowNr);
-
 		Matrix<O> output = extendedCoefficientMatrix.clone();
 		
 		if(isInStaggeredForm(output))return output;
 
 		int rows = output.getRows();
-		System.out.println("Rows: " + rows);
 		
 		if(rows<=1)return output;
 		
 		int lowerRowNr = upperRowNr + 1;
-		System.out.println("Transforming Coefficients. lowerRowNr: " + lowerRowNr);
 
 		if(lowerRowNr>rows-1)return output;
 
@@ -158,7 +154,6 @@ public class LinearEquationSolver<O>
 		if(lowerRowLeadingZeros>upperRowLeadingZeros)
 		{
 
-			System.out.println("Next Line.");
 			upperRowNr++;
 			lowerRowNr++;
 			return transformCoefficients(extendedCoefficientMatrix, upperRowNr);
@@ -170,7 +165,6 @@ public class LinearEquationSolver<O>
 		if(upperRowLeadingZeros==lowerRowLeadingZeros)
 		{
 
-			System.out.println("Lines of Equal length.");
 
 			Matrix<O> klon = output.clone();
 
@@ -181,14 +175,8 @@ public class LinearEquationSolver<O>
 			
 			int leadingZerosLowerRowOld = nrOfLeadingZeros(lowerRowVektor);
 			int leadingZerosLowerRowNew = nrOfLeadingZeros(newRow);
-			if(leadingZerosLowerRowOld>=leadingZerosLowerRowNew)
-			{
-				String s = "Upper Row: " + upperRowVektor.toString() + "n"
-						+  "Lower Row Old: " + lowerRowVektor.toString() +"\n"
-						+  "Lower Row New: " + newRow.toString();
-				System.out.println(s);
-				assert(false);
-			}
+			if(leadingZerosLowerRowOld>=leadingZerosLowerRowNew)assert(false);
+			
 
 			if(klon.equals(output))throw new MathException("I'm stuck here!");
 
@@ -270,7 +258,6 @@ public class LinearEquationSolver<O>
 			int positionToBeSolved = nonZeroList.get(0);
 			String toBeSolvedVariableName = "x"+positionToBeSolved;
 			O toBeSolvedVariableCoefficient = rowVektor.getValue(positionToBeSolved);
-			System.out.println("Position: " + positionToBeSolved+". Name: " + toBeSolvedVariableName);
 			if(nonZeroList.size()==1)
 			{
 						
@@ -283,8 +270,7 @@ public class LinearEquationSolver<O>
 
 			//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 			//TODO:This is a block im not sure about!!!!!
-			//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-			if(nonZeroList.size()==solvedVariables.size()+1)
+			//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!			if(nonZeroList.size()==solvedVariables.size()+1)
 			{
 
 
@@ -309,7 +295,6 @@ public class LinearEquationSolver<O>
 
 		}
 
-		System.out.println("SolvedVariables: " + solvedVariables);
 		List<O> values = new ArrayList<>();
 		int s = cols;
 		for(int n=0;n<s;n++)

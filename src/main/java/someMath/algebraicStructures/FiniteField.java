@@ -75,7 +75,16 @@ public class FiniteField implements Field<Long, Integer>
 
 	public Long reduce(Long l)
 	{
-		return l%nrOfElements;
+		
+		//After this the Amount of l is
+		//smaller than nrOfElements even
+		//if l is smaller than zero.
+		l = l%nrOfElements;
+		
+		if(l<0)l=l+nrOfElements;
+
+		
+		return l;
 	}
 
 	@Override

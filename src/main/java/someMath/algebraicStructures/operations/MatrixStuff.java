@@ -122,6 +122,7 @@ public class MatrixStuff
 	public static final <O> Matrix<O> invert(Matrix<O> matrix) throws MathException
 	{
 
+		Field<O, Integer> k = matrix.getField();
 		LinearEquationSolver<O> les = new LinearEquationSolver<>(matrix.getField());
 	
 		if(!matrix.isQuadratic())
@@ -133,7 +134,7 @@ public class MatrixStuff
 		System.out.println("Inverting Matrix.");
 		
 		O determinant = determinant(matrix);
-		if(determinant.equals(0.0))
+		if(determinant.equals(k.zero()))
 		{
 			System.out.println("Matrix determinant is Zero so not invertable.");
 			return null;
@@ -141,7 +142,6 @@ public class MatrixStuff
 		
 		int columns = matrix.getColumns();
 		int rows = columns;
-		Field<O, Integer> k = matrix.getField();
 
 		Matrix<O> coefficientMatrix = matrix.clone();
 		coefficientMatrix = transpone(coefficientMatrix);
@@ -149,7 +149,6 @@ public class MatrixStuff
 		for(int n=0;n<rows;n++)
 		{
 	
-			System.out.println("Making ExtendedMatrix.");
 			FieldTuple<O> rowResults = new FieldTuple<>(rows, k.zero(), k);
 			rowResults = rowResults.setValue(n, k.one());
 
